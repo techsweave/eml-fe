@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Link from 'next/Link'
+import Link from 'next/link'
 import Image from 'next/image'
 import { ReactNode } from 'react'
 
@@ -9,10 +9,10 @@ type Props = {
 }
 
 const Layout = ({ children, title = 'POC First Try' }: Props) => {
-  return (
+    return (
         <div>
             <Head>
-                <link rel="icon" href="/EML-Logo.svg" />
+                <link rel="icon" href="/favicon.ico" />
                 <title>{title}</title>
             </Head>
             <header>
@@ -37,7 +37,7 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                 </div>
             </footer>
         </div>
-  )
+    )
 }
 
 export default Layout
