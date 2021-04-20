@@ -21,10 +21,10 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                 </div>
                 <nav>
                     <Link href="/">Home</Link>
-                    <Link href="/">Products page</Link>
+                    <Link href="/products">Products page</Link>
                     <Link href="/">Cart</Link>
 
-                    <Link href="/">Profile</Link>
+                    <Link href="/profile">Profile</Link>
                     <Link href="/">Login</Link>
 
                     <input type="text" placeholder="Search.."></input>
