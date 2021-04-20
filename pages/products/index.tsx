@@ -1,8 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import Layout from '../../components/layout'
+import Layout from '../../components/Layout'
 import { ReactNode } from 'react'
+import product from '../../types/product'
 
 export default function productPage() {
     return (

@@ -1,5 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/client'
-import Layout from '../components/layout'
+import Layout from '../components/Layout'
 export default function auth() {
     const [session, loading] = useSession();
     if (!session)
