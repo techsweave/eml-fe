@@ -15,7 +15,7 @@ export default function productPage() {
     return (
 
         <Layout title="Product-page">
-            <div>
+            {/* <div>
                 <h1 id="productH1">Product List</h1>
                 <ul id="productList">
                     <li id="productItem"><Image priority src="/images/EML-Logo.svg" width={200} height={200}></Image><span><p>Articolo 1</p></span></li>
@@ -26,8 +26,8 @@ export default function productPage() {
                     <li id="productItem"><Image priority src="/images/EML-Logo.svg" width={200} height={200}></Image><span><p>Articolo 6</p></span></li>
                     <li id="productItem"><Image priority src="/images/EML-Logo.svg" width={200} height={200}></Image><span><p>Articolo 7</p></span></li>
                 </ul>
-            </div>
-            {/* <ProductList productlist={alltheprods} /> */}
+            </div> */}
+            <ProductList productlist={alltheprods} />
         </Layout>
 
 
