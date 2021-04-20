@@ -1,9 +1,10 @@
 import ProductItem from './ProductItem'
+import product from '../types/product'
 
-const ProductList = ({products: product[]}) => {
+const ProductList = ({ productlist }: product[]) => {
     return (
         <div>
-            {products.map((product:product)=>(<ProductItem product={product} />))}
+            {productlist.map((product: product) => (<ProductItem product={product} />))}
         </div>
     )
 }
