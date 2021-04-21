@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ReactNode } from 'react'
+import layoutStyles from '../styles/Layout.module.css'
 
 type Props = {
     children?: ReactNode
@@ -9,7 +10,7 @@ type Props = {
 }
 
 const Layout = ({ children, title = 'POC First Try' }: Props) => {
-    return (
+  return (
         <div>
             <Head>
                 <link rel="icon" href="/favicon.ico" />
@@ -22,7 +23,7 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                 <nav>
                     <Link href="/">Home</Link>
                     <Link href="/products">Products page</Link>
-                    <Link href="/">Cart</Link>
+                    <Link href="/cart">Cart</Link>
 
                     <Link href="/profile">Profile</Link>
                     <Link href="/">Login</Link>
@@ -30,14 +31,14 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                     <input type="text" placeholder="Search.."></input>
                 </nav>
             </header>
-            <div className="content">{children}</div>
+            <div className="content"><h1 className={layoutStyles.title}>{title}</h1>{children}</div>
             <footer id="footer">
                 <div>
                     <span>Powered by TechSWEave</span>
                 </div>
             </footer>
         </div>
-    )
+  )
 }
 
 export default Layout
