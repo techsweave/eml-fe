@@ -6,16 +6,11 @@ export default function auth() {
         return (
             <Layout title="Profile page - EmporioLambda">
                 <p>User not authenticated</p><br />
-                <button onClick={(e) => {
-                    e.preventDefault()
-                    signIn("cognito")
-                }}>Sign-In</button>
             </Layout>
         )
     return (
         <Layout title="Profile page - EmporioLambda">
-            <p>User authenticated with the following email: {session.user.email}<br /></p>
-            <button onClick={() => signOut()}>Sign-Out</button>
+            <p>Hi, {session.user.name}, welcome on our website <br /></p>
         </Layout>
 
     )

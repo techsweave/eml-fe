@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ReactNode } from 'react'
+import { signIn, signOut, useSession } from 'next-auth/client'
+
 
 type Props = {
     children?: ReactNode
@@ -9,6 +11,7 @@ type Props = {
 }
 
 const Layout = ({ children, title = 'POC First Try' }: Props) => {
+    const [session, loading] = useSession()
     return (
         <div>
             <Head>
@@ -23,12 +26,18 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                     <Link href="/">Home</Link>
                     <Link href="/products">Products page</Link>
                     <Link href="/">Cart</Link>
-
                     <Link href="/profile">Profile</Link>
-                    <Link href="/">Login</Link>
-
-                    <input type="text" placeholder="Search.."></input>
+                    {!session && (
+                        <span><button id="loginButton" onClick={(e) => {
+                            e.preventDefault()
+                            signIn('cognito')
+                        }}>Sign-In</button></span>
+                    )}
+                    {session && (
+                        <button id="loginButton" onClick={() => signOut()}>Sign-Out</button>
+                    )}
                 </nav>
+                {/* <input type="text" placeholder="Search.."></input> */}
             </header>
             <div className="content">{children}</div>
             <footer id="footer">
