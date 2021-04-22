@@ -9,11 +9,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     payment_method_types: ['card'],
     line_items: [
       {
-        price: 'price_1IicKEKu55jX77Ik5okclAcM',
+        price: 'price_1Ij1bSKu55jX77IkDFfE7GnM',
         quantity
       },
       {
-        price: 'price_1IiisvKu55jX77Ikog36a1RW',
+        price: 'price_1Ij1cPKu55jX77IkZglGZ0aF',
         quantity
       }
     ],
