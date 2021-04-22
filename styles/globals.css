@@ -106,3 +106,18 @@ header input[type="text"] {
   padding-top: 0.8em;
   background-color: #c3d8fa;
 }
+.goToCheckout{
+ background-color:  #c3d8fa;
+ color: #dc696e;
+ font-size: large;
+ font-weight: bold;
+ margin: 0 auto;
+ display: block;
+}
+.goToCheckout:hover{
+  border-color: #dc696e;
+}
+.goToCheckout:focus{
+  background-color: #6095eb;
+  color: white;
+} 
