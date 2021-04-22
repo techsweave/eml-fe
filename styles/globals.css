@@ -11,7 +11,7 @@ h1 {
   margin-top: 1rem;
 }
 header {
-  background-color: #c3d8fa;
+  background-color: #dadada;
   border-bottom: 1px solid #e06771;
 }
 
@@ -104,18 +104,20 @@ header input[type="text"] {
   height: 3em;
   text-align: center;
   padding-top: 0.8em;
-  background-color: #c3d8fa;
+  background-color: #dadada;
 }
 .goToCheckout{
- background-color:  #c3d8fa;
- color: #dc696e;
+ background-color:  #dadada;
+ color: #e06771;
  font-size: large;
  font-weight: bold;
  margin: 0 auto;
  display: block;
+ border: none;
+ border-radius: 20px;
 }
 .goToCheckout:hover{
-  border-color: #dc696e;
+  background-color: rgba(224, 103, 113, 0.2);
 }
 .goToCheckout:focus{
   background-color: #6095eb;
