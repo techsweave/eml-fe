@@ -15,7 +15,7 @@ const alltheprods: product[] = [{ id: 1, name: 'Product sample 1', description: 
 const carteg: cart = { ID: 100, total: 1000, products: alltheprods }
 
 export default function Cart() {
-  const handleClick = async (event) => {
+  /* const handleClick = async (event) => {
     // Get Stripe.js instance
     const stripe = await stripePromise
     // Call your backend to create the Checkout Session
@@ -31,12 +31,12 @@ export default function Cart() {
     const { error } = await stripe.redirectToCheckout({
       sessionId
     })
-  }
+  } */
   return (
     <Layout title="Cart page">
       <CartList cart={carteg} />
       <br />
-      <button className="goToCheckout" onClick={handleClick}>Checkout</button>
+      {/* <button className="goToCheckout" onClick={handleClick}>Checkout</button> */}
     </Layout>
   )
 }
