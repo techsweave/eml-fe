@@ -35,7 +35,7 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                         }}>Sign-In</button></span>
                     )}
                     {session && (
-                        <button id="loginButton" onClick={() => signOut()}>Sign-Out</button>
+                        <span><button id="loginButton" onClick={() => signOut()}>Sign-Out</button></span>
                     )}
                 </nav>
                 {/* <input type="text" placeholder="Search.."></input> */}

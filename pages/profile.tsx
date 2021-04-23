@@ -11,7 +11,7 @@ export default function auth() {
   }
   return (
     <Layout title="Profile page - EmporioLambda">
-      <p>Hi, {session.user.email}, welcome on our website <br /></p>
+      <p>Hi, {session.user?.email}, welcome on our website <br /></p>
     </Layout>
 
   )
