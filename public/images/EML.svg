@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="347.56mm" height="55.37mm" viewBox="0 0 985.2 156.96">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-3, .cls-6, .cls-7 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #df6771;
+      }
+
+      .cls-3, .cls-4, .cls-6, .cls-7 {
+        fill: none;
+      }
+
+      .cls-3, .cls-6, .cls-7 {
+        stroke: #df6771;
+      }
+
+      .cls-3 {
+        stroke-width: 14.56px;
+      }
+
+      .cls-5 {
+        font-size: 24px;
+        font-family: ArialMT, Arial;
+      }
+
+      .cls-5, .cls-8 {
+        fill: #4a4a4a;
+      }
+
+      .cls-6, .cls-7 {
+        stroke-linecap: round;
+      }
+
+      .cls-6 {
+        stroke-width: 5px;
+      }
+
+      .cls-7 {
+        stroke-width: 4px;
+      }
+
+      .cls-8 {
+        font-size: 114px;
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+    </style>
+  </defs>
+  <title>EML</title>
+  <g id="Livello_2" data-name="Livello 2">
+    <path class="cls-1" d="M163.57,9.2" transform="translate(-52.22 -36.52)"/>
+    <path class="cls-1" d="M223.43,11" transform="translate(-52.22 -36.52)"/>
+    <g>
+      <polygon class="cls-2" points="187.43 104.22 180.31 121.34 64.67 121.34 63.2 115.95 63.2 104.22 187.43 104.22"/>
+      <polygon class="cls-2" points="35.19 1.35 35.19 18.57 6.67 18.57 0 1.35 35.19 1.35"/>
+      <polygon class="cls-2" points="80.53 116.11 68.27 120.94 64.49 121.34 19.33 6.7 32.04 1.7 35.32 1.35 80.53 116.11"/>
+      <circle class="cls-2" cx="86.39" cy="144.72" r="12.24"/>
+      <circle class="cls-2" cx="156.98" cy="144.72" r="12.24"/>
+    </g>
+    <g>
+      <polygon class="cls-2" points="578.25 33.27 536.05 98.23 519.35 98.23 572.04 17.1 578.25 33.27"/>
+      <polyline class="cls-3" points="541.94 12.44 562.53 12.44 591.55 89.09 611.12 82.5"/>
+    </g>
+    <polyline class="cls-4" points="512.82 105.29 520.75 105.29 537.45 105.29 588.62 105.29"/>
+    <polyline class="cls-4" points="577 55.33 575.45 51.28 569.24 35.11 568.59 33.42"/>
+  </g>
+  <g id="Livello_4" data-name="Livello 4">
+    <text class="cls-5" transform="translate(807.71 125.81)">by Red Babel</text>
+    <g>
+      <line class="cls-6" x1="957.9" y1="123.51" x2="971.99" y2="123.51"/>
+      <line class="cls-7" x1="959.63" y1="118.33" x2="970.26" y2="118.33"/>
+      <path class="cls-2" d="M1014,146.35h6.41a.39.39,0,0,1,.33.6l-3.17,5.25a.39.39,0,0,1-.67,0l-3.24-5.25A.4.4,0,0,1,1014,146.35Z" transform="translate(-52.22 -36.52)"/>
+    </g>
+  </g>
+  <g id="Livello_3" data-name="Livello 3">
+    <text class="cls-8" transform="translate(74.76 97.8)"><tspan xml:space="preserve">€mporio  </tspan></text>
+    <text class="cls-8" transform="translate(611.12 97.8)">ambda</text>
+  </g>
+</svg>
