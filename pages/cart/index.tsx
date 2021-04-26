@@ -1,7 +1,7 @@
 import Layout from '../../components/Layout'
 import CartList from '../../components/CartList'
 import product from '../../types/product'
-// import cart from '../../types/cart'
+import cart from '../../types/cart'
 import { loadStripe } from '@stripe/stripe-js'
 import { getLambdaResult } from '../api/lib/lambda'
 import { GetServerSideProps } from 'next'
@@ -42,7 +42,6 @@ export default function Cart ({ record }) {
         <span>User not authenticated, please sign-in to acces the cart</span>
     )
 }
-<<<<<<< HEAD
       {session && (<div></div>
       /*  */
       /* <br />
@@ -52,25 +51,9 @@ export default function Cart ({ record }) {
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   let cartItems = (await getLambdaResult('cart')).data
-  console.log(cartItems)
   return {
     props: {
       record: ''
 } // will be passed to the page component as props
   }
 }
-=======
-      {session && (<div><CartList cart={carteg} />
-       {/*  <br />
-        <button className="goToCheckout" onClick={handleClick}>Checkout</button> */}</div>)}
-    </Layout>
-  )
-}
-/* export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      record: await (await getLambdaResult('cart/0')).props.response.data
-    } // will be passed to the page component as props
-  }
-} */
->>>>>>> cc388c936ca7022f8ba0cf5db31e84f44d8d0d39
