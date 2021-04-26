@@ -1,7 +1,7 @@
 export class Fetcher {
   url: URL
-  constractor () {
-    this.url = new URL('e')
+  constructor (functionName) {
+    this.url = new URL('https://' + process.env.API_ID + '.execute-api.' + process.env.API_REGION + '.amazonaws.com/' + process.env.API_STAGE + '/' + functionName)
   }
 
   async getJsonResult (): Promise<any> {
