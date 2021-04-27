@@ -1,15 +1,19 @@
 import Layout from '../../components/Layout'
 import ProductList from '../../components/ProductList'
-import product from '../../types/product'
+import { getLambdaResult } from '../api/lib/lambda'
+import { GetServerSideProps } from 'next'
 
-const alltheprods: product[] = [{ id: 1, name: 'Product sample 1', description: 'Description of Product 1', price: 10, quantity: 20 },
-  { id: 2, name: 'Product sample 2', description: 'Description of Product 2', price: 1, quantity: 2 },
-  { id: 3, name: 'Product sample 3', description: 'Description of Product 3', price: 2000, quantity: 1 }]
-
-export default function productPage () {
+export default function productPage ({ record }) {
   return (
-        <Layout title="Product-page">
-            <ProductList productlist={alltheprods} />
-        </Layout>
+    <Layout title="Product-page">
+      {<ProductList productlist={record} />}
+    </Layout>
   )
+}
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {
+      record: (await getLambdaResult('products')).data
+    } // will be passed to the page component as props
+  }
 }

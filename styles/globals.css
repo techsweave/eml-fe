@@ -123,3 +123,13 @@ header input[type="text"] {
   background-color: #6095eb;
   color: white;
 } 
+#cartTable, th,td {
+  width: 30rem;
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}
+#cartTable th{
+  color:#e06771;
+  background-color: #dadada;
+}
