@@ -27,8 +27,8 @@ export default function Cart({ record }) {
             method: "POST",
             headers: headers,
             body: JSON.stringify({
-                successUrl: "http://localhost:3000/",
-                cancelUrl: "http://localhost:3000/cart"
+                successUrl: "https://eml-fe.vercel.app",
+                cancelUrl: "https://eml-fe.vercel.app/cart"
             })
         })
         const stripeSession = await response.json()
