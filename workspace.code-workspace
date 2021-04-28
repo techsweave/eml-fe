@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.autoIndent": "full",
+		"editor.tabSize": 4,
+		"editor.detectIndentation": false,
+		"typescript.format.placeOpenBraceOnNewLineForControlBlocks": false,
+		"typescript.format.placeOpenBraceOnNewLineForFunctions": false,
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true,
+		"files.associations": {
+			"*.ts": "typescript"
+		}
+	}
+}

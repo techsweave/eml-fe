@@ -1,0 +1,32 @@
+<svg id="Livello_1" data-name="Livello 1" xmlns="http://www.w3.org/2000/svg" width="66.12mm" height="59.8mm" viewBox="0 0 187.43 169.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #4b4a4a;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #4b4a4a;
+        stroke-miterlimit: 10;
+        stroke-width: 17.32px;
+      }
+
+      .cls-3 {
+        fill: #e06771;
+      }
+    </style>
+  </defs>
+  <title>EML-Logo</title>
+  <g>
+    <polygon class="cls-1" points="144.12 33.48 93.99 110.88 74.16 110.88 136.74 14.21 144.12 33.48"/>
+    <polyline class="cls-2" points="100.99 8.66 125.45 8.66 159.91 99.99 183.15 92.14"/>
+  </g>
+  <g>
+    <polygon class="cls-3" points="187.43 116.76 180.31 133.88 64.67 133.88 63.2 128.49 63.2 116.76 187.43 116.76"/>
+    <polygon class="cls-3" points="35.19 13.89 35.19 31.11 6.67 31.11 0 13.89 35.19 13.89"/>
+    <polygon class="cls-3" points="80.53 128.66 68.27 133.48 64.49 133.88 19.33 19.24 32.04 14.24 35.32 13.89 80.53 128.66"/>
+    <circle class="cls-3" cx="86.39" cy="157.26" r="12.24"/>
+    <circle class="cls-3" cx="156.98" cy="157.26" r="12.24"/>
+  </g>
+</svg>
