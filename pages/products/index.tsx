@@ -14,7 +14,7 @@ export default function productPage({ record }) {
 export const getServerSideProps: GetServerSideProps = async () => {
     return {
         props: {
-            record: await lambdaCaller.scanProductAsync(25)
+            record: (await lambdaCaller.scanProductAsync(25)).data
         } // will be passed to the page component as props
     }
 }

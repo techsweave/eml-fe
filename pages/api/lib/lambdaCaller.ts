@@ -1,6 +1,5 @@
 
 import { httpMethod } from "./httpMethod";
-import { lamdaSingleDataBody } from "./lamdaBody";
 import { lamdaMultipleDataBody } from "./lamdaBody";
 import { ConditionExpression } from "@aws/dynamodb-expressions"
 import product from "../../../types/product";
@@ -58,32 +57,32 @@ export class lambdaCaller<T> {
         return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, options))
     }
 
-    public static async getProductAsync(id: string): Promise<lamdaSingleDataBody<product>> {
+    public static async getProductAsync(id: string): Promise<product> {
         let finalURL = 'products/' + id
         let method = httpMethod.GET
 
-        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method))
+        return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method)).data)
     }
 
-    public static async createProductAsync(product: product): Promise<lamdaSingleDataBody<product>> {
+    public static async createProductAsync(product: product): Promise<product> {
         let finalURL = 'products'
         let method = httpMethod.POST
 
-        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, product))
+        return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method, product)).data)
     }
 
-    public static async updateProductAsync(product: product): Promise<lamdaSingleDataBody<product>> {
+    public static async updateProductAsync(product: product): Promise<product> {
         let finalURL = 'products/' + product.id
         let method = httpMethod.PUT
 
-        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, product))
+        return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method, product)).data)
     }
 
-    public static async deleteProductAsync(id: string): Promise<lamdaSingleDataBody<product>> {
+    public static async deleteProductAsync(id: string): Promise<product> {
         let finalURL = 'products/' + id
         let method = httpMethod.DELETE
 
-        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method))
+        return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method)).data)
     }
 
     //#endregion Product

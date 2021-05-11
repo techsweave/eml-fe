@@ -17,7 +17,7 @@ export default function productDetailPage(prop: { product: product }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const product: product = (await lambdaCaller.getProductAsync(context.params?.id as string)).data
+    const product: product = await lambdaCaller.getProductAsync(context.params?.id as string)
     return {
         props: {
             product
