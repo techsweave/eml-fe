@@ -4,6 +4,7 @@ import { getLambdaResult } from '../../api/lib/lambda'
 import ProductDetail from '../../../components/ProductDetail'
 import Layout from '../../../components/Layout'
 import { GetServerSideProps } from 'next'
+import { lambdaCaller } from '../../api/lib/lambdaCaller'
 
 export default function productDetailPage(prop: { product: product }) {
     console.log('PPP layout')
@@ -16,7 +17,7 @@ export default function productDetailPage(prop: { product: product }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const product: product = (await getLambdaResult(`products/${context.params?.id}`)).data
+    const product: product = (await lambdaCaller.getProductAsync(context.params?.id as string)).data
     return {
         props: {
             product
