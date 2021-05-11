@@ -41,7 +41,7 @@ export default function Cart({ record }) {
                 sessionId: stripeSession.data.id
             })
         }
-        
+
     }
     return (
         <Layout title="Cart page">
