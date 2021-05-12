@@ -21,9 +21,9 @@ export default function Cart({ record }) {
         const stripe = await stripePromise
 
         try {
-            console.log(stripe)
             const stripeSession = await lambdaCaller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
             console.log(stripeSession)
+
             // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe?.redirectToCheckout({
                 sessionId: stripeSession.id
