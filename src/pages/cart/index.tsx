@@ -4,7 +4,7 @@ import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/client'
 import { lambdaCaller } from '@libs/lambdaCaller'
 import { ConditionExpression } from "@aws/dynamodb-expressions"
-import Cart from '@models/cart'
+import CartItem from '@models/cart'
 import Product from '@models/product'
 
 
@@ -78,11 +78,11 @@ export default function Cart({ record }) {
 }
 export const getServerSideProps: GetServerSideProps = async () => {
 
-    let cartItems: Cart[] = new Array();
+    let cart: CartItem[] = new Array();
     let products: Product[] = new Array();
 
     try {
-        cartItems = (await lambdaCaller.getCartAsync()).data
+        cart = (await lambdaCaller.getCartAsync()).data
     }
     catch (error) {
         //TODO: Implement error handling here 
@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     const filterId: string[] = new Array()
 
-    cartItems.forEach(x => filterId.push(x.productId))
+    cart.forEach(x => filterId.push(x.productId))
 
     const filter: ConditionExpression = {
         type: 'Membership',
@@ -110,7 +110,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     return {
         props: {
-            record: products
+            cart: cart,
+            products: products
         }
     }
 }

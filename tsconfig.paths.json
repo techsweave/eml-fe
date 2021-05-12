@@ -15,13 +15,13 @@
                 "src/pages/*"
             ],
             "@public/*": [
-                "src/public/*"
+                "public/*"
             ],
             "@styles/*": [
                 "src/styles/*"
             ],
             "@api/*": [
-                "src/api/*"
+                "src/pages/api/*"
             ],
         }
     }
