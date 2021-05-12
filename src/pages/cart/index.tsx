@@ -20,13 +20,10 @@ export default function Cart({ record }) {
         // Get Stripe.js instance
         const stripe = await stripePromise
 
-
-        let headers: HeadersInit = new Headers()
-        headers.set("Content-Type", "application/json")
-
         try {
+            console.log(stripe)
             const stripeSession = await lambdaCaller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
-
+            console.log(stripeSession)
             // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe?.redirectToCheckout({
                 sessionId: stripeSession.id
@@ -60,9 +57,9 @@ export default function Cart({ record }) {
                             <tbody>
                                 {record.map((element) => (
                                     <tr>
-                                        <td>{element.product.name}</td>
-                                        <td>{element.product.price}</td>
-                                        <td>{element.product.description}</td>
+                                        <td>{element.product?.name}</td>
+                                        <td>{element.product?.price}</td>
+                                        <td>{element.product?.description}</td>
                                         <td>{element.quantity}</td>
                                     </tr>
                                 ))}
@@ -101,17 +98,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     try {
         products = (await lambdaCaller.scanProductAsync(25, undefined, undefined, undefined, filter)).data
+        cart.forEach(x => x.product = products.find(t => t.id == x.productId))
+        cart = cart.filter(x => x.product)
     }
     catch (error) {
         //TODO: Implement error handling here
         alert(error)
     }
 
-
     return {
         props: {
-            cart: cart,
-            products: products
+            record: cart
         }
     }
 }
