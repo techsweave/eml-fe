@@ -1,5 +1,5 @@
-import product from '../types/product'
-import ProductDetailStyles from '../styles/ProductDetail.module.css'
+import product from '@models/product'
+import ProductDetailStyles from '@styles/ProductDetail.module.css'
 
 const ProductDetail = (prop: { product: product }) => {
     return (

@@ -1,6 +1,6 @@
-import productStyles from '../styles/Product.module.css'
+import productStyles from '@styles/Product.module.css'
 import Link from 'next/link'
-import product from '../types/product'
+import product from '@models/product'
 
 const ProductItem = (prop: { product: product }) => {
     return (

@@ -1,12 +1,11 @@
 // https://b4bheanrza.execute-api.eu-central-1.amazonaws.com/dev/products/%7Bid%7D
-import product from '../../../types/product'
-import { getLambdaResult } from '../../api/lib/lambda'
-import ProductDetail from '../../../components/ProductDetail'
-import Layout from '../../../components/Layout'
+import Product from '@models/product'
+import ProductDetail from '@components/ProductDetail'
+import Layout from '@components/Layout'
 import { GetServerSideProps } from 'next'
-import { lambdaCaller } from '../../api/lib/lambdaCaller'
+import { lambdaCaller } from '@libs/lambdaCaller'
 
-export default function productDetailPage(prop: { product: product }) {
+export default function productDetailPage(prop: { product: Product }) {
     console.log('PPP layout')
     console.log(prop.product)
     return (
@@ -17,7 +16,15 @@ export default function productDetailPage(prop: { product: product }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const product: product = await lambdaCaller.getProductAsync(context.params?.id as string)
+    let product;
+    try {
+        product = await lambdaCaller.getProductAsync(context.params?.id as string)
+    }
+    catch (error) {
+        //TODO: Implement error handling here
+        alert(error)
+
+    }
     return {
         props: {
             product

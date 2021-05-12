@@ -1,7 +1,7 @@
-import product from '../types/product'
-import cartStyles from '../styles/Cart.module.css'
+import Product from '@models/product'
+import cartStyles from '@styles/Cart.module.css'
 
-const CartItem = (prop: { product: product }) => {
+const CartItem = (prop: { product: Product }) => {
     return (
         <div className={cartStyles.cartRow}>
             <p>{prop.product.name}</p>

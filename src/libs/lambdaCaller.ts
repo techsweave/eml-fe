@@ -1,11 +1,13 @@
 
-import { httpMethod } from "./httpMethod";
-import { lamdaMultipleDataBody } from "./lamdaBody";
+import { httpMethod } from "@libs/httpMethod";
+import { lamdaMultipleDataBody } from "@libs/lamdaBody";
 import { ConditionExpression } from "@aws/dynamodb-expressions"
-import product from "../../../types/product";
+import product from "@models/product";
+import cart from "@models/cart";
+import Stripe from "stripe";
 
 
-export class lambdaCaller<T> {
+export class lambdaCaller {
 
     private static _baseUrl: string = 'https://' + process.env.API_ID + '.execute-api.' + process.env.API_REGION + '.amazonaws.com/' + process.env.API_STAGE;
 
@@ -34,27 +36,31 @@ export class lambdaCaller<T> {
 
     //#region Products
 
+    // For filter, see more at https://www.npmjs.com/package/@aws/dynamodb-expressions
     public static async scanProductAsync(
         limit: number,
         startKey?: string,
         pageSize?: number,
         indexName?: string,
-        filter?: ConditionExpression): Promise<lamdaMultipleDataBody<product>> {
+        filter?: ConditionExpression):
+        Promise<
+            lamdaMultipleDataBody<
+                product>> {
 
         let finalURL = 'products/filter'
         let method = httpMethod.POST
 
-        let options = {
+        let body = {
             limit: limit,
             startKey: startKey ? {
                 id: startKey
-            } : null,
+            } : undefined,
             pageSize: pageSize,
             indexName: indexName,
             filter: filter
         }
 
-        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, options))
+        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, body))
     }
 
     public static async getProductAsync(id: string): Promise<product> {
@@ -86,4 +92,39 @@ export class lambdaCaller<T> {
     }
 
     //#endregion Product
+
+    //#region Cart
+
+    public static async getCartAsync():
+        Promise<
+            lamdaMultipleDataBody<
+                cart>> {
+
+        let finalURL = 'cart'
+        let method = httpMethod.GET
+
+        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method))
+    }
+
+    //#endregion
+
+    //#region Checkout
+
+    public static async goToCheckOutAsync(successUrl: string, cancelUrl: string):
+        Promise<
+            Stripe.Response<
+                Stripe.Checkout.Session>> {
+
+        let finalURL = 'checkout'
+        let method = httpMethod.POST
+
+        let body = {
+            successUrl: successUrl,
+            cancelUrl: cancelUrl
+        }
+
+        return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, body))
+    }
+
+    //#endregion
 }

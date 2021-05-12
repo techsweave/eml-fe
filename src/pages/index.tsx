@@ -1,4 +1,4 @@
-import Layout from '../components/Layout'
+import Layout from '@components/Layout'
 
 const indexPage = () => (
     <Layout title="EmporioLambda - Proof Of Concept">

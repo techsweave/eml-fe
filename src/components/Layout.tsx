@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import layoutStyles from '../styles/Layout.module.css'
+import layoutStyles from '@styles/Layout.module.css'
 import { ReactNode } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 

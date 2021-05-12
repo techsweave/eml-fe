@@ -1,11 +1,13 @@
-import Layout from '../../components/Layout'
-import CartList from '../../components/CartList'
-import product from '../../types/product'
-import cart from '../../types/cart'
+import Layout from '@components/Layout'
 import { loadStripe } from '@stripe/stripe-js'
-import { getLambdaResult } from '../api/lib/lambda'
 import { GetServerSideProps } from 'next'
 import { useSession } from 'next-auth/client'
+import { lambdaCaller } from '@libs/lambdaCaller'
+import { ConditionExpression } from "@aws/dynamodb-expressions"
+import Cart from '@models/cart'
+import Product from '@models/product'
+
+
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
@@ -22,24 +24,17 @@ export default function Cart({ record }) {
         let headers: HeadersInit = new Headers()
         headers.set("Content-Type", "application/json")
 
-        // Call your backend to create the Checkout Session
-        const response = await fetch('https://b4bheanrza.execute-api.eu-central-1.amazonaws.com/dev/checkout', {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify({
-                successUrl: "https://eml-fe.vercel.app",
-                cancelUrl: "https://eml-fe.vercel.app/cart"
-            })
-        })
-        const stripeSession = await response.json()
-        // When the customer clicks on the button, redirect them to Checkout.
-        if (stripeSession.error) {
-            alert(stripeSession.error)
-        }
-        else {
+        try {
+            const stripeSession = await lambdaCaller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
+
+            // When the customer clicks on the button, redirect them to Checkout.
             const result = await stripe?.redirectToCheckout({
-                sessionId: stripeSession.data.id
+                sessionId: stripeSession.id
             })
+        }
+        catch (error) {
+            //TODO: Implement error handling here
+            alert(error)
         }
 
     }
@@ -82,19 +77,40 @@ export default function Cart({ record }) {
     )
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-    const cartItems = (await getLambdaResult('cart')).data
-    const productItems = new Array<any>()
-    for await (const element of cartItems) {
-        productItems.push({
 
-            product: (await getLambdaResult(`products/${element.productId}`)).data,
-            quantity: element.quantity
-        })
+    let cartItems: Cart[] = new Array();
+    let products: Product[] = new Array();
+
+    try {
+        cartItems = (await lambdaCaller.getCartAsync()).data
     }
+    catch (error) {
+        //TODO: Implement error handling here 
+        alert(error)
+    }
+
+    const filterId: string[] = new Array()
+
+    cartItems.forEach(x => filterId.push(x.productId))
+
+    const filter: ConditionExpression = {
+        type: 'Membership',
+        subject: 'id',
+        values: filterId
+    }
+
+    try {
+        products = (await lambdaCaller.scanProductAsync(25, undefined, undefined, undefined, filter)).data
+    }
+    catch (error) {
+        //TODO: Implement error handling here
+        alert(error)
+    }
+
+
     return {
         props: {
-            record: productItems
-
+            record: products
         }
     }
 }

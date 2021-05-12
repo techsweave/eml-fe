@@ -1,7 +1,7 @@
-import CartItem from './CartItem'
-import cart from '../types/cart'
-import product from '../types/product'
-import cartStyles from '../styles/Cart.module.css'
+import CartItem from '@components/CartItem'
+import cart from '@models/cart'
+import product from '@models/product'
+import cartStyles from '@styles/Cart.module.css'
 
 const CartList = (prop: { cart: cart }) => {
     return (
