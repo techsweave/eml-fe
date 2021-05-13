@@ -12,15 +12,9 @@ export default function productDetailPage(prop: { product: Product }) {
     )
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-    let id;
-    let paths;
-    try {
-        id = (await lambdaCaller.scanProductAsync(25)).data;
-        paths = id.map((idPath) => ({ params: { id: idPath.id } }))
-    }
-    catch (error) {
-        alert(error)
-    }
+    //TODO: Implement this in a TRY/CATCH block, getStaticPaths doesn't support alert 
+    let id = (await lambdaCaller.scanProductAsync(25)).data;
+    let paths = id.map((idPath) => ({ params: { id: idPath.id } }))
     return {
         paths,
         fallback: false
