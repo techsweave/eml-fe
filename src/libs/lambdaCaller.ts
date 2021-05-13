@@ -9,7 +9,7 @@ import Stripe from "stripe";
 
 export class lambdaCaller {
 
-    private static _baseUrl: string = 'https://' + process.env.API_ID + '.execute-api.' + process.env.API_REGION + '.amazonaws.com/' + process.env.API_STAGE;
+    private static _baseUrl: string = 'https://' + process.env.NEXT_PUBLIC_API_ID + '.execute-api.' + process.env.NEXT_PUBLIC_API_REGION + '.amazonaws.com/' + process.env.NEXT_PUBLIC_API_STAGE;
 
     // No costructor
     private constructor() { }
