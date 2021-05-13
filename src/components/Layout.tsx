@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
-import layoutStyles from '../styles/Layout.module.css'
+import layoutStyles from '@styles/Layout.module.css'
 import { ReactNode } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
@@ -11,8 +11,8 @@ type Props = {
 }
 
 const Layout = ({ children, title = 'POC First Try' }: Props) => {
-  const [session, loading] = useSession()
-  return (
+    const [session, loading] = useSession()
+    return (
         <div>
             <Head>
                 <link rel="icon" href="/favicon.ico" />
@@ -30,8 +30,8 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                     <Link href="/profile">Profile</Link>
                     {!session && (
                         <span><button id="loginButton" onClick={(e) => {
-                          e.preventDefault()
-                          signIn('cognito')
+                            e.preventDefault()
+                            signIn('cognito')
                         }}>Sign-In</button></span>
                     )}
                     {session && (
@@ -47,7 +47,7 @@ const Layout = ({ children, title = 'POC First Try' }: Props) => {
                 </div>
             </footer>
         </div>
-  )
+    )
 }
 
 export default Layout
