@@ -1,6 +1,6 @@
 import Layout from '@components/Layout'
 import ProductList from '@components/ProductList'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import { lambdaCaller } from '@libs/lambdaCaller'
 import Product from '@models/product'
 
@@ -11,7 +11,7 @@ export default function productPage({ record }) {
         </Layout>
     )
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
     let products: Product[] = new Array();
     try {
         products = (await lambdaCaller.scanProductAsync(25)).data

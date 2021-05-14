@@ -1,21 +1,28 @@
-// https://b4bheanrza.execute-api.eu-central-1.amazonaws.com/dev/products/%7Bid%7D
 import Product from '@models/product'
 import ProductDetail from '@components/ProductDetail'
 import Layout from '@components/Layout'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticProps, GetStaticPaths } from 'next'
 import { lambdaCaller } from '@libs/lambdaCaller'
 
 export default function productDetailPage(prop: { product: Product }) {
-    console.log('PPP layout')
-    console.log(prop.product)
     return (
         <Layout title={prop.product.name}>
             <ProductDetail product={prop.product} />
         </Layout>
     )
 }
+export const getStaticPaths: GetStaticPaths = async () => {
+    //TODO: Implement this in a TRY/CATCH block, getStaticPaths doesn't support alert 
+    let id = (await lambdaCaller.scanProductAsync(25)).data;
+    let paths = id.map((idPath) => ({ params: { id: idPath.id } }))
+    return {
+        paths,
+        fallback: false
+    }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
     let product;
     try {
         product = await lambdaCaller.getProductAsync(context.params?.id as string)

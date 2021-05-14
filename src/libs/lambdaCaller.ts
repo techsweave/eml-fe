@@ -1,6 +1,6 @@
 
 import { httpMethod } from "@libs/httpMethod";
-import { lamdaMultipleDataBody } from "@libs/lamdaBody";
+import { lambdaMultipleDataBody } from "@libs/lambdaBody";
 import { ConditionExpression } from "@aws/dynamodb-expressions"
 import product from "@models/product";
 import cart from "@models/cart";
@@ -44,7 +44,7 @@ export class lambdaCaller {
         indexName?: string,
         filter?: ConditionExpression):
         Promise<
-            lamdaMultipleDataBody<
+            lambdaMultipleDataBody<
                 product>> {
 
         let finalURL = 'products/filter'
@@ -97,7 +97,7 @@ export class lambdaCaller {
 
     public static async getCartAsync():
         Promise<
-            lamdaMultipleDataBody<
+            lambdaMultipleDataBody<
                 cart>> {
 
         let finalURL = 'cart'
