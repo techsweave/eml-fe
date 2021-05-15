@@ -10,12 +10,12 @@ import Stripe from "stripe";
 export class lambdaCaller {
 
     private _baseUrl: string = 'https://' + process.env.NEXT_PUBLIC_API_ID + '.execute-api.' + process.env.NEXT_PUBLIC_API_REGION + '.amazonaws.com/' + process.env.NEXT_PUBLIC_API_STAGE;
-    private readonly _session: any;
+    private readonly _session?: any;
 
     /**
      * @param  {object}  session     NextAuth session
      */
-    public constructor(session) {
+    public constructor(session?: any) {
         this._session = session;
     }
 
@@ -35,7 +35,7 @@ export class lambdaCaller {
         let headers: HeadersInit = new Headers()
         headers.set("Content-Type", "application/json")
         if (this._session)
-            headers.set("Authentication", this._session.accessToken)
+            headers.set("Authorization", this._session.accessToken)
 
         const httpResponse = await fetch(this._baseUrl + '/' + finalURL, {
             method: method,

@@ -3,7 +3,6 @@ import ProductList from '@components/ProductList'
 import { GetServerSideProps, GetStaticProps } from 'next'
 import { lambdaCaller } from '@libs/lambdaCaller'
 import Product from '@models/product'
-import { getSession } from 'next-auth/client'
 
 
 export default function productPage({ record }) {
@@ -13,9 +12,9 @@ export default function productPage({ record }) {
         </Layout>
     )
 }
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
     let products: Product[] = new Array();
-    let caller = new lambdaCaller(await getSession(context));
+    let caller = new lambdaCaller();
     try {
         products = (await caller.scanProductAsync(25)).data
     } catch (error) {

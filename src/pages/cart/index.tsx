@@ -19,7 +19,7 @@ export default function Cart({ record }) {
 
         // Get Stripe.js instance
         const stripe = await stripePromise
-        let caller = new lambdaCaller(session);
+        let caller = new lambdaCaller();
 
         try {
             const stripeSession = await caller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
