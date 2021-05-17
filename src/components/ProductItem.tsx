@@ -1,7 +1,7 @@
 import productStyles from '@styles/Product.module.css';
 import Link from 'next/link';
 import product from '@models/product';
-import React from 'react'
+import React from 'react';
 
 const ProductItem = (prop: { product: product }) => (
   <Link href={{ pathname: '/products/detail/[id]', query: { id: prop.product.id } }}>
