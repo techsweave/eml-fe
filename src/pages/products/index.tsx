@@ -5,7 +5,7 @@ import { lambdaCaller } from '@libs/lambdaCaller';
 import React from 'react';
 import Product from '@models/product';
 
-export default function productPage(record) {
+export default function productPage({ record }) {
   return (
     <Layout title="Product-page">
       <ProductList productList={record} />
