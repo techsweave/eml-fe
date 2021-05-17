@@ -1,7 +1,7 @@
 import Layout from '@components/Layout'
 import { loadStripe } from '@stripe/stripe-js'
 import { GetServerSideProps } from 'next'
-import { useSession } from 'next-auth/client'
+import { useSession, getSession } from 'next-auth/client'
 import { lambdaCaller } from '@libs/lambdaCaller'
 import { ConditionExpression } from "@aws/dynamodb-expressions"
 import CartItem from '@models/cart'
@@ -19,9 +19,10 @@ export default function Cart({ record }) {
 
         // Get Stripe.js instance
         const stripe = await stripePromise
+        let caller = new lambdaCaller();
 
         try {
-            const stripeSession = await lambdaCaller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
+            const stripeSession = await caller.goToCheckOutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
             console.log(stripeSession)
 
             // When the customer clicks on the button, redirect them to Checkout.
@@ -73,13 +74,14 @@ export default function Cart({ record }) {
         </Layout>
     )
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let cart: CartItem[] = new Array();
     let products: Product[] = new Array();
+    let caller = new lambdaCaller(await getSession(context));
 
     try {
-        cart = (await lambdaCaller.getCartAsync()).data
+        cart = (await caller.getCartAsync()).data
     }
     catch (error) {
         //TODO: Implement error handling here 
@@ -97,7 +99,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     }
 
     try {
-        products = (await lambdaCaller.scanProductAsync(25, undefined, undefined, undefined, filter)).data
+        products = (await caller.scanProductAsync(25, undefined, undefined, undefined, filter)).data
         cart.forEach(x => x.product = products.find(t => t.id == x.productId))
         cart = cart.filter(x => x.product)
     }

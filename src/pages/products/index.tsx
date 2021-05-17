@@ -4,6 +4,7 @@ import { GetServerSideProps, GetStaticProps } from 'next'
 import { lambdaCaller } from '@libs/lambdaCaller'
 import Product from '@models/product'
 
+
 export default function productPage({ record }) {
     return (
         <Layout title="Product-page">
@@ -13,8 +14,9 @@ export default function productPage({ record }) {
 }
 export const getStaticProps: GetStaticProps = async () => {
     let products: Product[] = new Array();
+    let caller = new lambdaCaller();
     try {
-        products = (await lambdaCaller.scanProductAsync(25)).data
+        products = (await caller.scanProductAsync(25)).data
     } catch (error) {
         //TODO: Implements error handling here
         alert(error)
