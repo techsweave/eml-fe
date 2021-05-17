@@ -7,8 +7,8 @@ import layoutStyles from '@styles/Layout.module.css';
 import { signIn, signOut, useSession } from 'next-auth/client';
 
 type Props = {
-  children?: ReactNode
-  title?: string
+  children: ReactNode
+  title: string
 };
 
 const Layout = ({ children, title = 'POC First Try' }: Props) => {
