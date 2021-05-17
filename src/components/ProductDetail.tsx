@@ -1,20 +1,22 @@
-import product from '@models/product'
-import ProductDetailStyles from '@styles/ProductDetail.module.css'
+import product from '@models/product';
+import ProductDetailStyles from '@styles/ProductDetail.module.css';
+import React from 'react';
 
-const ProductDetail = (prop: { product: product }) => {
-    return (
-        <div>
-            <p className={ProductDetailStyles.bold}>
-                name:{prop.product.name}
-            </p>
-            <p>
-                description:{prop.product.description}
-            </p>
-            <p>
-                price:{prop.product.price}
-            </p>
-        </div>
-    )
-}
+const ProductDetail = (prop: { product: product }) => (
+  <div>
+    <p className={ProductDetailStyles.bold}>
+      name:
+      {prop.product.name}
+    </p>
+    <p>
+      description:
+      {prop.product.description}
+    </p>
+    <p>
+      price:
+      {prop.product.price}
+    </p>
+  </div>
+);
 
-export default ProductDetail
+export default ProductDetail;
