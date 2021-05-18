@@ -313,3 +313,4 @@ Promise <
 
   // #endregion
 }
+export default LambdaCaller;

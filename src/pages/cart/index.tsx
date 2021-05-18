@@ -44,37 +44,41 @@ export default function Cart({ record }) {
   };
 return (
     <Layout title="Cart page">
-        {!session && (
-            <span>User not authenticated, please sign-in to acces the cart</span>
-        )}
-        {session && (
-            <div>
-                <table id="cartTable">
-                    <caption> Cart sample </caption>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                            <th>Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {record.map((element) => (
+        {
+            !session && (
+                <span>User not authenticated, please sign-in to acces the cart</span>
+            )
+        }
+        {
+            session && (
+                <div>
+                    <table id="cartTable">
+                        <caption> Cart sample </caption>
+                        <thead>
                             <tr>
-                                <td>{element.product?.name}</td>
-                                <td>{element.product?.price}</td>
-                                <td>{element.product?.description}</td>
-                                <td>{element.quantity}</td>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Description</th>
+                                <th>Quantity</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <br />
-                <button type="button" className="goToCheckout" onClick={handleClick}>Checkout</button>
-            </div>
-        )}
-    </Layout>
+                        </thead>
+                        <tbody>
+                            {record.map((element) => (
+                                <tr>
+                                    <td>{element.product?.name}</td>
+                                    <td>{element.product?.price}</td>
+                                    <td>{element.product?.description}</td>
+                                    <td>{element.quantity}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <br />
+                    <button type="button" className="goToCheckout" onClick={handleClick}>Checkout</button>
+                </div>
+            )
+        }
+    </Layout >
 );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {

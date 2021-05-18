@@ -23,5 +23,8 @@ module.exports = {
   rules: {
     'react/jsx-props-no-spreading': 'off',
     'linebreak-style': 'off',
+    'no-underscore-dangle': 'off',
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': ['error', { allow: ['private-constructors'] }],
   },
 };
