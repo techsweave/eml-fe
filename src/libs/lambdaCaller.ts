@@ -1,18 +1,19 @@
 import { httpMethod } from '@libs/httpMethod';
-import { lamdaMultipleDataBody } from '@libs/lamdaBody';
+import { LambdaMultipleDataBody } from '@libs/lambdaBody';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import product from '@models/product';
 import cart from '@models/cart';
 import Stripe from 'stripe';
 
-export class lambdaCaller {
+class LambdaCaller {
   private static _baseUrl = `https://${process.env.NEXT_PUBLIC_API_ID}.execute-api.${process.env.NEXT_PUBLIC_API_REGION}.amazonaws.com/${process.env.NEXT_PUBLIC_API_STAGE}`;
 
   // No costructor
   private constructor() { }
 
   // Generic Request
-  private static async requestAsync<T>(finalURL: string, method: httpMethod, body?: any): Promise<any> {
+  private static async requestAsync<T>(finalURL: string, method: httpMethod, body?: any):
+  Promise<any> {
     const headers: HeadersInit = new Headers();
     headers.set('Content-Type', 'application/json');
 
@@ -42,7 +43,7 @@ export class lambdaCaller {
     filter?: ConditionExpression,
   ):
     Promise<
-    lamdaMultipleDataBody<
+    LambdaMultipleDataBody<
     product>> {
     const finalURL = 'products/filter';
     const method = httpMethod.POST;
@@ -57,35 +58,35 @@ export class lambdaCaller {
       filter,
     };
 
-    return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method, body));
+    return Promise.resolve(await LambdaCaller.requestAsync(finalURL, method, body));
   }
 
   public static async getProductAsync(id: string): Promise<product> {
     const finalURL = `products/${id}`;
     const method = httpMethod.GET;
 
-    return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method)).data);
+    return Promise.resolve((await LambdaCaller.requestAsync(finalURL, method)).data);
   }
 
   public static async createProductAsync(product: product): Promise<product> {
     const finalURL = 'products';
     const method = httpMethod.POST;
 
-    return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method, product)).data);
+    return Promise.resolve((await LambdaCaller.requestAsync(finalURL, method, product)).data);
   }
 
   public static async updateProductAsync(product: product): Promise<product> {
     const finalURL = `products/${product.id}`;
     const method = httpMethod.PUT;
 
-    return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method, product)).data);
+    return Promise.resolve((await LambdaCaller.requestAsync(finalURL, method, product)).data);
   }
 
   public static async deleteProductAsync(id: string): Promise<product> {
     const finalURL = `products/${id}`;
     const method = httpMethod.DELETE;
 
-    return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method)).data);
+    return Promise.resolve((await LambdaCaller.requestAsync(finalURL, method)).data);
   }
 
   // #endregion Product
@@ -94,12 +95,12 @@ export class lambdaCaller {
 
   public static async getCartAsync():
   Promise<
-  lamdaMultipleDataBody<
+  LambdaMultipleDataBody<
   cart>> {
     const finalURL = 'cart';
     const method = httpMethod.GET;
 
-    return Promise.resolve(await lambdaCaller.requestAsync(finalURL, method));
+    return Promise.resolve(await LambdaCaller.requestAsync(finalURL, method));
   }
 
   // #endregion
@@ -118,8 +119,9 @@ export class lambdaCaller {
       cancelUrl,
     };
 
-    return Promise.resolve((await lambdaCaller.requestAsync(finalURL, method, body)).data);
+    return Promise.resolve((await LambdaCaller.requestAsync(finalURL, method, body)).data);
   }
 
   // #endregion
 }
+export default LambdaCaller;

@@ -1,8 +1,8 @@
 import Product from '@models/product';
-import ProductDetail from '@components/ProductDetail';
+import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetServerSideProps } from 'next';
-import { lambdaCaller } from '@libs/lambdaCaller';
+import LambdaCaller from '@libs/lambdaCaller';
 import React from 'react';
 
 export default function productDetailPage(prop: { product: Product }) {
@@ -16,7 +16,7 @@ export default function productDetailPage(prop: { product: Product }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   let product;
   try {
-    product = await lambdaCaller.getProductAsync(context.params?.id as string);
+    product = await LambdaCaller.getProductAsync(context.params?.id as string);
   } catch (error) {
     // TODO: Implement error handling here
     // alert(error);
