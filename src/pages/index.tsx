@@ -1,8 +1,10 @@
-import Layout from '@components/Layout'
+import Layout from '@components/Layout';
+import React from 'react';
 
 const indexPage = () => (
-    <Layout title="EmporioLambda - Proof Of Concept">
-    </Layout>
-)
+  <Layout title="EmporioLambda">
+    <p>Home Page</p>
+  </Layout>
+);
 
-export default indexPage
+export default indexPage;
