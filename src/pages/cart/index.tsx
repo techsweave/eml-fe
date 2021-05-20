@@ -23,7 +23,7 @@ export default function Cart(prop: { record: CartItem[] }) {
     const caller = new LambdaCaller();
 
     try {
-      const stripeSession = await caller.goToCheckOutAsync(`${process.env.NEXT_PUBLIC_SITE_URL}`, `${process.env.NEXT_PUBLIC_SITE_URL}+cart`);
+      const stripeSession = await caller.goToCheckOutAsync(`${process.env.NEXT_PUBLIC_SITE_URL}`, `${process.env.NEXT_PUBLIC_SITE_URL}cart`);
 
       // When the customer clicks on the button, redirect them to Checkout.
       const result = await stripe?.redirectToCheckout({
