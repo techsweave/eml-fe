@@ -1,9 +1,9 @@
 import Layout from '@components/Layout';
 import ProductList from '@components/product/ProductList';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import LambdaCaller from '@libs/lambdaCaller';
-import React from 'react';
 import Product from '@models/product';
+import React from 'react';
 
 export default function productPage({ record }) {
   return (
@@ -12,13 +12,14 @@ export default function productPage({ record }) {
     </Layout>
   );
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   let products: Product[] = [];
+  const caller = new LambdaCaller();
   try {
-    products = (await LambdaCaller.scanProductAsync(25)).data;
+    products = (await caller.scanProductAsync(25)).data;
   } catch (error) {
     // TODO: Implements error handling here
-    // alert(error);
+    alert(error);
   }
   return {
     props: {
