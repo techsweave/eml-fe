@@ -1,14 +1,16 @@
-import cartStyles from '@styles/Cart.module.css';
+// import cartStyles from '@styles/Cart.module.css';
 import React from 'react';
+import { Tr, Td } from '@chakra-ui/react';
 
 const CartItem = (prop) => {
   const { product } = prop;
   return (
-    <div className={cartStyles.cartRow}>
-      <p>{product.name}</p>
-      <p>{product.quantity}</p>
-      <p>{product.price}</p>
-    </div>
+    <Tr>
+      <Td>{product.name}</Td>
+      <Td>{product.price}</Td>
+      <Td>{product.description}</Td>
+      <Td>{product.quantity}</Td>
+    </Tr>
   );
 };
 

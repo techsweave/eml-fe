@@ -1,24 +1,25 @@
 import Product from '@models/product';
-import ProductDetailStyles from '@styles/ProductDetail.module.css';
+// import ProductDetailStyles from '@styles/ProductDetail.module.css';
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 const ProductDetail = (prop: { product: Product }) => {
   const { product } = prop;
   return (
-    <div>
-      <p className={ProductDetailStyles.bold}>
-        name:
+    <Box>
+      <p>
+        Name:
         {product.name}
       </p>
       <p>
-        description:
+        Description:
         {product.description}
       </p>
       <p>
-        price:
+        Price:
         {product.price}
       </p>
-    </div>
+    </Box>
   );
 };
 
