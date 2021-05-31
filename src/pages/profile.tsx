@@ -1,25 +1,24 @@
 import { useSession } from 'next-auth/client';
 import Layout from '@components/Layout';
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 export default function auth() {
   const [session] = useSession();
   if (!session) {
     return (
       <Layout title="Profile page - EmporioLambda">
-        <p>User not authenticated</p>
-        <br />
+        <Box>User not authenticated</Box>
       </Layout>
     );
   }
   return (
     <Layout title="Profile page - EmporioLambda">
-      <p>
+      <Box>
         Hi,
         {session.user?.name}
         , welcome on our website
-        <br />
-      </p>
+      </Box>
     </Layout>
 
   );

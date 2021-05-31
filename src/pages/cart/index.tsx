@@ -8,6 +8,8 @@ import CartItem from '@models/cart';
 import Product from '@models/product';
 import React from 'react';
 import CartList from '@components/cart/CartList';
+import { Button } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/layout';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -40,10 +42,10 @@ export default function Cart(prop: { record: CartItem[] }) {
         <span>User not authenticated, please sign-in to access the cart</span>
       )}
       {session && (
-        <div>
+        <Box align="center">
           <CartList cart={record} />
-          <button className="goToCheckout" type="button" onClick={handleClick}>Checkout</button>
-        </div>
+          <Button onClick={handleClick} variant="outline" colorScheme="red">Checkout</Button>
+        </Box>
       )}
     </Layout>
   );
