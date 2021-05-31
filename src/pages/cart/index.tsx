@@ -1,6 +1,6 @@
 import Layout from '@components/Layout';
 import { loadStripe } from '@stripe/stripe-js';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { useSession, getSession } from 'next-auth/client';
 import LambdaCaller from '@libs/lambdaCaller';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
@@ -50,7 +50,7 @@ export default function Cart(prop: { record: CartItem[] }) {
     </Layout>
   );
 }
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   let cart: CartItem[] = [];
   let products: Product[] = [];
   const caller = new LambdaCaller(await getSession(context));
@@ -85,5 +85,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       record: cart,
     },
+    revalidate: 600,
   };
 };
