@@ -53,7 +53,7 @@ export default function Cart(prop: { record: CartItem[] }) {
 export const getStaticProps: GetStaticProps = async (context) => {
   let cart: CartItem[] = [];
   let products: Product[] = [];
-  const caller = new LambdaCaller(await getSession(context));
+  const caller = new LambdaCaller(await getSession(context.params));
 
   try {
     cart = (await caller.getCartAsync()).data;
