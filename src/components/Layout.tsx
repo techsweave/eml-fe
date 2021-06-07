@@ -12,13 +12,13 @@ type Props = {
 
 const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
 // const [session] = useSession();
-  <VStack h="100vh" spacing="5">
+  <VStack spacing="2">
     <Head>
       <link rel="icon" href="/favicon.ico" />
       <title>{title}</title>
     </Head>
     <Header />
-    <Flex as="main" h="full">{children}</Flex>
+    <Flex as="main" w="full" h="full">{children}</Flex>
     <Footer />
   </VStack>
 );

@@ -1,7 +1,8 @@
 export default interface Product {
-  readonly id: string,
-  readonly name: string,
-  readonly description: string,
-  readonly price: number,
-  readonly quantity: number
+  id: string,
+  name: string,
+  image: string,
+  description: string,
+  price: number,
+  quantity: number
 }

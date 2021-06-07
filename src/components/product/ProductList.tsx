@@ -7,7 +7,7 @@ import { SimpleGrid } from '@chakra-ui/react';
 const ProductList = (prop: { productList: Product[] }) => {
   const { productList } = prop;
   return (
-    <SimpleGrid columns={[1, 2, 3]} spacing="20px">
+    <SimpleGrid columns={[1, 2, 3, 4]} spacing="20">
       {productList.map((products) => (
         <ProductItem
           product={products}
