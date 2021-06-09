@@ -10,9 +10,7 @@ import ProductMock from '@test/ProductMock';
 export default function productPage({ record }) {
   return (
     <Layout title="Product-page">
-      <Flex>
         <ProductList productList={ProductMock} />
-      </Flex>
     </Layout>
   );
 }

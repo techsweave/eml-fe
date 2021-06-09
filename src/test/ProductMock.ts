@@ -28,10 +28,18 @@ const productMock: Product[] = [
   {
     id: 'rrewr4656346wb33',
     name: 'Bigoli - tipical venetian pasta',
-    image: 'images/test/Bigoli.jpg',
+    image: '/images/test/Bigoli.jpg',
     description: 'fantastic venetian pasta, eat it with carbonara or ragù',
     price: 3.5,
     quantity: 1900,
+    },
+    {
+    id: 'fdsdfdsfsdf',
+    name: 'cafe',
+    image: '/images/test/Bigoli.jpg',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras dignissim est in ligula porta, ac pretium lacus aliquam. Vivamus a laoreet ante. Quisque congue ultrices mauris eu viverra. Suspendisse sed dui turpis. Donec non condimentum odio. Donec elementum, sapien at facilisis suscipit, purus lorem vestibulum lectus, vitae finibus ligula felis nec lacus. Nullam ut tellus sodales, sagittis urna nec, molestie nunc. Curabitur pulvinar hendrerit turpis sed vestibulum. Donec molestie lorem luctus finibus rhoncus. Etiam faucibus mauris sed convallis egestas. Sed diam est, tristique vel justo vel, elementum semper augue. Phasellus aliquam pretium tellus, id laoreet dui tincidunt et. Morbi pharetra semper odio id dictum. Proin porta mauris at elementum venenatis. Fusce pulvinar nunc ac placerat feugiat.',
+    price: 45,
+    quantity: 190,
   },
 ];
 export default productMock;
@@ -45,9 +53,11 @@ export function getProductById() {
 }
 
 export async function getProductsData(id: string) {
-  let product: Product;
+    let product: Product;
+    let products: any;
   for (let i = 0; i < productMock.length; i += 1) {
-    if (productMock[i].id === id) product = productMock[i];
+    if (productMock[i].id === id) products = productMock[i];
   }
+  product = products;
   return product;
 }

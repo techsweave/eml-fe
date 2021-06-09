@@ -13,7 +13,7 @@ import { signIn, signOut, useSession } from 'next-auth/client';
 const Header = () => {
   const [session] = useSession();
   return (
-    <Flex w="full" h="10vh" borderBottomWidth={1} borderBottomColor="red" justify="space-between" align="center" wrap="nowrap">
+    <Flex w="100%" h="10vh" borderBottomWidth={1} borderBottomColor="red" justify="space-between" align="center" wrap="nowrap">
       <Box as="a" href="/" ml="2" minW="200"><Image src="/images/EML.svg" alt="EmporioLambda" boxSize="300" /></Box>
       <Spacer minW="30px" />
       <HStack spacing="10px">

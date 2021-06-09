@@ -12,7 +12,7 @@ const ProductItem = (prop: { product: Product }) => {
       <Box as="button" rounded="md" p="5px" w="300px">
         <Stack>
           <Image src={product.image} alt={product.name} w="300px" h="150px" />
-          <Heading as="h4">{product.name}</Heading>
+          <p>{product.name}</p>
           <p>
             price:
             {product.price}
