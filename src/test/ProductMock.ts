@@ -32,8 +32,8 @@ const productMock: Product[] = [
     description: 'fantastic venetian pasta, eat it with carbonara or ragù',
     price: 3.5,
     quantity: 1900,
-    },
-    {
+  },
+  {
     id: 'fdsdfdsfsdf',
     name: 'cafe',
     image: '/images/test/Bigoli.jpg',
@@ -53,8 +53,8 @@ export function getProductById() {
 }
 
 export async function getProductsData(id: string) {
-    let product: Product;
-    let products: any;
+  let product: Product;
+  let products: any;
   for (let i = 0; i < productMock.length; i += 1) {
     if (productMock[i].id === id) products = productMock[i];
   }

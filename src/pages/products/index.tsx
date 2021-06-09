@@ -10,11 +10,11 @@ import ProductMock from '@test/ProductMock';
 export default function productPage({ record }) {
   return (
     <Layout title="Product-page">
-        <ProductList productList={ProductMock} />
+      <ProductList productList={ProductMock} />
     </Layout>
   );
 }
-export const getStaticProps: GetStaticProps = async () => {
+/* export const getStaticProps: GetStaticProps = async () => {
   let products: Product[] = [];
   const caller = new LambdaCaller();
   try {
@@ -29,4 +29,4 @@ export const getStaticProps: GetStaticProps = async () => {
     }, // will be passed to the page component as props
     revalidate: 600,
   };
-};
+}; */

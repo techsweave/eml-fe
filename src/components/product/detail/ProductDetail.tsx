@@ -6,14 +6,14 @@ import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const ProductDetail = (prop: { product: Product }) => {
-    const { product } = prop;
-    const [isNotPhoneSize] = useMediaQuery("(min-width:600px)");
+  const { product } = prop;
+  const [isNotPhoneSize] = useMediaQuery('(min-width:600px)');
   return (
 
-    <Flex w="100%"  direction={isNotPhoneSize ? "row" : "column"}>
-      <Button as="a" href="/products" ml="2.5" mb={isNotPhoneSize ? "0" : "5"} size="sm" leftIcon={<ArrowBackIcon />}>back</Button>
-      <Image src={product.image} alt={product.name} w="500px" h="250px" />
-      <VStack flexBasis="50%">
+    <Flex w="90%" direction={isNotPhoneSize ? 'row' : 'column'} mr="50">
+      <Button as="a" href="/products" ml="2.5" mb={isNotPhoneSize ? '0' : '5'} size="sm" leftIcon={<ArrowBackIcon />}>back</Button>
+      <Image src={product.image} alt={product.name} w="500px" h="250px" borderRadius="base" />
+      <VStack flexBasis="50%" alignSelf="center">
         <Heading as="h2">
           {product.name}
         </Heading>
@@ -21,7 +21,7 @@ const ProductDetail = (prop: { product: Product }) => {
           {product.description}
         </p>
       </VStack>
-      <VStack marginRight="10">
+      <VStack mr={isNotPhoneSize ? '10' : '0'}>
         <p>
           Price:
           {product.price}
