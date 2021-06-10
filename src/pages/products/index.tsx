@@ -4,13 +4,17 @@ import { GetStaticProps } from 'next';
 import LambdaCaller from '@libs/lambdaCaller';
 import Product from '@models/product';
 import React from 'react';
-import { Flex } from '@chakra-ui/layout';
+import { Stack } from '@chakra-ui/layout';
 import ProductMock from '@test/ProductMock';
+import Filter from '@components/filter/Filter';
 
 export default function productPage({ record }) {
   return (
     <Layout title="Product-page">
-      <ProductList productList={ProductMock} />
+      <Stack w='95%'>
+        <Filter />
+        <ProductList productList={ProductMock} />
+      </Stack>
     </Layout>
   );
 }

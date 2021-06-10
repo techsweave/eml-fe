@@ -1,18 +1,16 @@
 import Product from '@models/product';
 import React from 'react';
-import { Image, useMediaQuery, VStack } from '@chakra-ui/react';
+import { Image, VStack } from '@chakra-ui/react';
 import { Flex, Heading } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const ProductDetail = (prop: { product: Product }) => {
   const { product } = prop;
-  const [isNotPhoneSize] = useMediaQuery('(min-width:600px)');
   return (
-
-    <Flex w="90%" direction={isNotPhoneSize ? 'row' : 'column'} mr="50">
-      <Button as="a" href="/products" ml="2.5" mb={isNotPhoneSize ? '0' : '5'} size="sm" leftIcon={<ArrowBackIcon />}>back</Button>
-      <Image src={product.image} alt={product.name} w="500px" h="250px" borderRadius="base" />
+    <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
+      <Button as="a" href="/products" ml={['0', '0', '2,5', '2,5']} mb={['5', '5', '0', '0']} w="100px" mr="50px" leftIcon={<ArrowBackIcon />}>back</Button>
+      <Image src={product.image} alt={product.name} w="500px" h="300px" borderRadius="15px" fit="cover" />
       <VStack flexBasis="50%" alignSelf="center">
         <Heading as="h2">
           {product.name}
@@ -21,7 +19,7 @@ const ProductDetail = (prop: { product: Product }) => {
           {product.description}
         </p>
       </VStack>
-      <VStack mr={isNotPhoneSize ? '10' : '0'}>
+      <VStack ml={['0', '0', '10', '10']} alignSelf="center">
         <p>
           Price:
           {product.price}

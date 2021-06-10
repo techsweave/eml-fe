@@ -8,20 +8,21 @@ import { Box, Image, Stack } from '@chakra-ui/react';
 const ProductItem = (prop: { product: Product }) => {
   const { product } = prop;
   return (
-    <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
-      <Box as="button" rounded="md" p="5px" w="500px">
+    <Box as="button">
+      <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack>
-          <Image src={product.image} alt={product.name} w="100%" h="300px" alignSelf="center" />
-          <Heading as="h4">{product.name}</Heading>
-          <p>
-            price:
-            {product.price}
-            €
-          </p>
+          <Image src={product.image} alt={product.name} w="100%" h="300px" borderRadius="15px" fit="cover" />
+          <Stack>
+            <Heading as="h4">{product.name}</Heading>
+            <p>
+              price:
+              {product.price}
+              €
+            </p>
+          </Stack>
         </Stack>
-      </Box>
-    </Link>
+      </Link>
+    </Box>
   );
 };
-
 export default ProductItem;
