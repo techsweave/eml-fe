@@ -2,23 +2,23 @@
 import Link from 'next/link';
 import Product from '@models/product';
 import React from 'react';
-import { Heading } from '@chakra-ui/layout';
+import { Heading, Text } from '@chakra-ui/layout';
 import { Box, Image, Stack } from '@chakra-ui/react';
 
 const ProductItem = (prop: { product: Product }) => {
   const { product } = prop;
   return (
-    <Box as="button">
+    <Box as="button" w={['100%', '100%', '20%', '20%']} ml={['0', '0', '5', '5']} mr={['0', '0', '5', '5']} mt={['10', '10', '0', '0']}>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
-        <Stack>
-          <Image src={product.image} alt={product.name} w="100%" h="300px" borderRadius="15px" fit="cover" />
-          <Stack>
-            <Heading as="h4">{product.name}</Heading>
-            <p>
+        <Stack position='relative'>
+          <Image src={product.image} alt={product.name} w="100%" h={['300px', '300px', '150px', '150px']} borderRadius="15px" fit="cover" />
+          <Stack position='absolute' bottom='0' bg='rgba(44,44,44,0.7)' textColor='white' w='100%' h={['25%', '25%', '40%', '40%']} borderBottomRadius='15px'>
+            <Text fontWeight='bold' fontSize='1.5em' overflow='hidden'>{product.name}</Text>
+            <Text>
               price:
               {product.price}
               €
-            </p>
+            </Text>
           </Stack>
         </Stack>
       </Link>

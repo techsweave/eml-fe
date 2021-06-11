@@ -10,7 +10,7 @@ const Filter = () => {
     console.log(value);
   };
   return (
-    <FormControl onSubmit={handleChange} flexBasis='20%' h="auto" pl='20' border='1px' borderRadius='15px' borderColor='e06771' alignItems='center'>
+    <FormControl onSubmit={handleChange} flexBasis='20%' h="auto" pl='5' pr='5' border='1px' borderRadius='15px' borderColor='e06771' alignItems='center'>
       <FormLabel>Lowest Price</FormLabel>
       <RadioGroup name="lowestPrice" onChange={setValue} value={value}>
         <Stack>

@@ -11,7 +11,7 @@ import Filter from '@components/filter/Filter';
 export default function productPage({ record }) {
   return (
     <Layout title="Product-page">
-      <Stack w='95%'>
+      <Stack w='95%' direction={['column', 'column', 'row']}>
         <Filter />
         <ProductList productList={ProductMock} />
       </Stack>

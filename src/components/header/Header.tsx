@@ -11,14 +11,13 @@ import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
 
 const Header = () => {
-  const [session] = useSession();
+    const [session] = useSession();
   return (
     <Flex flexWrap={['wrap','wrap','nowrap','nowrap']} h={['full', 'full', '20', '20']} borderBottomWidth={1} borderBottomColor="red" justify="space-between" align="center" wrap="nowrap">
-          <Box as="a" href="/" ml="2" minW="200"><Image src="/images/EML.svg" alt="EmporioLambda" w="100"/></Box>
-      <Spacer minW="30px" />
-      <HStack spacing="10px">
+          <Box as="a" href="/" ml="2" minW="200"><Image src="/images/EML.svg" alt="EmporioLambda" boxSize={['200','200','300','300']} /></Box>
+      
         <Button as="a" href="/products">Products</Button>
-        {/* <Menu>
+          {/* <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>Categories</MenuButton>
           <MenuList>
             <MenuGroup title="Category A">
@@ -34,15 +33,12 @@ const Header = () => {
             </MenuGroup>
           </MenuList>
         </Menu> */}
-      </HStack>
-      <Spacer minW="40px" />
-      <InputGroup>
+          <InputGroup>
         <Input placeholder="Search products..." />
         <InputRightElement>
           <IconButton aria-label="Search" icon={<SearchIcon />} size="sm" />
         </InputRightElement>
       </InputGroup>
-      <Spacer minW="40px" />
       <HStack mr={2} spacing="10px">
         <Button
           as="a"

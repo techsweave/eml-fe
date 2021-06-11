@@ -8,7 +8,7 @@ const ProductList = (prop: { productList: Product[] }) => {
 
   return (
     <VStack>
-      <Flex w="100%" direction={['column', 'column', 'row', 'row']} justifyContent='center'>
+      <Flex direction={['column', 'column', 'row', 'row']}>
         <Box>
           {productList.map((products) => (
             <ProductItem
