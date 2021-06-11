@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import Head from 'next/head';
 // import { signIn, signOut, useSession } from 'next-auth/client';
 import { Stack, Flex } from '@chakra-ui/layout';
-import Header from '@components/Header';
+import Header from '@components/header/Header';
 import Footer from '@components/Footer';
 
 type Props = {
