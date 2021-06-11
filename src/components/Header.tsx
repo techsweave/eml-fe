@@ -9,7 +9,6 @@ import { SearchIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
-import { wrap } from 'lodash';
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
