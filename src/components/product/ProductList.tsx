@@ -1,9 +1,9 @@
 import ProductItem from '@components/product/ProductItem';
-import Product from '@models/product';
+import { Models } from 'utilities-techsweave';
 import React, { useState } from 'react';
 import { Flex, Box, VStack } from '@chakra-ui/react';
 
-const ProductList = (prop: { productList: Product[] }) => {
+const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   const { productList } = prop;
 
   return (

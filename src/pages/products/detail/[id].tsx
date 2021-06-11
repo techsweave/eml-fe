@@ -1,4 +1,4 @@
-import Product from '@models/product';
+import { Models } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -6,9 +6,9 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import React from 'react';
 import { getProductById, getProductsData } from '@test/ProductMock';
 
-export default function productDetailPage(prop: { product: Product }) {
+export default function productDetailPage(prop: { product:Models.Tables.IProduct }) {
   return (
-    <Layout title={prop.product.name}>
+    <Layout title={prop.product.title}>
       <ProductDetail product={prop.product} />
     </Layout>
   );
@@ -31,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let product;
+  let product: Models.Tables.IProduct[] = [];
   // const caller = new LambdaCaller();
 
   try {

@@ -2,7 +2,7 @@ import Layout from '@components/Layout';
 import ProductList from '@components/product/ProductList';
 import { GetStaticProps } from 'next';
 import LambdaCaller from '@libs/lambdaCaller';
-import Product from '@models/product';
+import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Stack } from '@chakra-ui/layout';
 import ProductMock from '@test/ProductMock';
@@ -19,13 +19,13 @@ export default function productPage({ record }) {
   );
 }
 /* export const getStaticProps: GetStaticProps = async () => {
-  let products: Product[] = [];
+  // let products: Models.Tables.IProduct[] = [];
   const caller = new LambdaCaller();
   try {
-    products = (await caller.scanProductAsync(25)).data;
+    // products = (await caller.scanProductAsync(25)).data;
   } catch (error) {
     // TODO: Implements error handling here
-    alert(error);
+    // alert(error);
   }
   return {
     props: {
@@ -33,4 +33,5 @@ export default function productPage({ record }) {
     }, // will be passed to the page component as props
     revalidate: 600,
   };
-}; */
+};
+ */

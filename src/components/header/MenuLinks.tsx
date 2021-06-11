@@ -5,6 +5,7 @@ import { Stack, Box } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
+import { BiShoppingBag } from 'react-icons/bi';
 
 const MenuItem = ({ children, to = '/', ...rest }) => (
   <Link href={to}>
@@ -29,7 +30,7 @@ const MenuLinks = ({ isOpen, session }) => (
       color='black'
     >
       <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
-        <Button bg={['transparent', 'transparent', 'grey', 'grey']}>Products</Button>
+        <Button bg={['transparent', 'transparent', 'grey', 'grey']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
       </MenuItem> 
       <MenuItem to="/cart">
         <Button
