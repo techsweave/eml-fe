@@ -21,7 +21,7 @@ const NavBar = (props) => {
       <Box as="a" href="/" ml="2" minW="200"><Image src="/images/EML.svg" alt="EmporioLambda" w={['200px', '200px', '300', '300']} h={['100', '100', '300', '300']} /></Box>
       <Link href="/products">
     <Text display="block">
-      <Button display={['none', 'none', 'inherit', 'inherit']} bg='grey' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
+      <Button display={['none', 'none', 'inherit', 'inherit']} bg='gray.100' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
     </Text>
   </Link>
       <InputGroup display={['none', 'none', 'inherit', 'inherit']} ml='10' mr='10'>

@@ -30,11 +30,11 @@ const MenuLinks = ({ isOpen, session }) => (
       color='black'
     >
       <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
-        <Button bg={['transparent', 'transparent', 'grey', 'grey']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
+        <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
       </MenuItem> 
       <MenuItem to="/cart">
         <Button
-          bg={['transparent', 'transparent', 'grey', 'grey']}
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
           leftIcon={<AiOutlineShoppingCart size={20} />}
         >
           Cart
@@ -43,7 +43,7 @@ const MenuLinks = ({ isOpen, session }) => (
        <MenuItem to="/profile/profileDashboard">
         {session && (
         <Button
-          bg={['transparent', 'transparent', 'grey', 'grey']}
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
           leftIcon={<AiOutlineUser size={20} />}
         >
           Profile
@@ -53,7 +53,7 @@ const MenuLinks = ({ isOpen, session }) => (
       <MenuItem>
         {!session && (
         <Button
-          bg={['transparent', 'transparent', 'grey', 'grey']}
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
           leftIcon={<IoEnterOutline size={20} />}
           onClick={(e) => {
             e.preventDefault();
@@ -65,7 +65,7 @@ const MenuLinks = ({ isOpen, session }) => (
         )}
         {session && (
         <Button
-          bg={['transparent', 'transparent', 'grey', 'grey']}
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
           onClick={() => signOut()}
           leftIcon={<IoExitOutline size={20} />}
         >
