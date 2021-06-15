@@ -14,16 +14,10 @@ export default function productDetailPage(prop: { product:Models.Tables.IProduct
   );
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  let paths;
   // const caller = new LambdaCaller();
-  try {
-    paths = getProductById();
-    /*  const id = (await caller.scanProductAsync(25)).data;
+  const paths = getProductById();
+  /*  const id = (await caller.scanProductAsync(25)).data;
     paths = id.map((idPath) => ({ params: { id: idPath.id } })); */
-  } catch (error) {
-    // TODO: Implement error handling here
-    alert(error);
-  }
   return {
     paths,
     fallback: false,
@@ -33,14 +27,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   let product: Models.Tables.IProduct[] = [];
   // const caller = new LambdaCaller();
-
-  try {
-    // product = await caller.getProductAsync(context.params?.id as string);
-    product = await getProductsData(context.params?.id as string);
-  } catch (error) {
-    // TODO: Implement error handling here
-    alert(error);
-  }
+  // product = await caller.getProductAsync(context.params?.id as string);
+  product = await getProductsData(context.params?.id as string);
   return {
     props: {
       product,

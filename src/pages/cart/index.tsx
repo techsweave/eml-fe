@@ -33,8 +33,9 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
         sessionId: stripeSession.id,
       });
     } catch (error) {
-      // TODO: Implement error handling here
-      alert(error);
+      /*  // TODO: Implement error handling here
+      alert(error); */
+      return null;
     }
   };
   return (
@@ -55,13 +56,7 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
   const cart: Models.Tables.ICart[] = [];
   let products: Models.Tables.IProduct[] = [];
   const caller = new LambdaCaller(await getSession(context.params));
-
-  try {
     // cart = (await caller.getCartAsync()).data;
-  } catch (error) {
-    // TODO: Implement error handling here
-    alert(error);
-  }
 
   const filterId: string[] = [];
 
@@ -72,15 +67,10 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
     values: filterId,
   };
 
-  try {
     // products = (await caller.scanProductAsync(25, undefined, undefined, undefined, filter)).data;
     products = getProductsArrayData(filterId);
     /* cart.forEach((x) => { const y = x; y.products = products.find((t) => t.id === y.productId); });
     cart = cart.filter((x) => x.products);
-  } catch (error) {
-    // TODO: Implement error handling here
-    alert(error);
-  }
 
   return {
     props: {
