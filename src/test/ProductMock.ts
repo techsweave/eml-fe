@@ -46,6 +46,15 @@ const productMock: Models.Tables.IProduct[] = [
     imageURL: '/images/test/Bigoli.jpg',
     availabilityQta: 190,
   },
+  {
+    id: 'asdqwdwqdqwfqwf',
+    SKU: 'fsdpfddwww321q09',
+    title: 'Lenovo ThinkPad L14 GEN1',
+    description: 'A fantstic portable pc to work and game with cool style',
+    price: 999,
+    imageURL: '/images/test/thinkpad.webp',
+    availabilityQta: 76,
+  },
 ];
 export default productMock;
 

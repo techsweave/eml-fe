@@ -1,8 +1,5 @@
 import CartItem from '@components/cart/CartItem';
 import { Models } from 'utilities-techsweave';
-import ProductMock, { getProductsArayData } from '@test/ProductMock';
-
-// import cartStyles from '@styles/Cart.module.css';
 import React from 'react';
 import {
   Table, Thead, Tbody, Tr, Th, TableCaption,
