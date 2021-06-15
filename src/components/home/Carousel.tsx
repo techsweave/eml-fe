@@ -11,17 +11,18 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
   const { product } = prop;
   return (
     <Swiper
+      id='main'
       tag="section"
       wrapperTag="ul"
       navigation
       spaceBetween={0}
       slidesPerView={1}
-      pagination={{ clickable: true }}
     >
       {product.map((products) => (
         <SwiperSlide
+          id={products.id}
           tag="li"
-          style={{ listStyle: 'none', color: 'black' }}
+          style={{ listStyle: 'none' }}
         >
           <CarouselItem
             product={products}

@@ -25,7 +25,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let product: Models.Tables.IProduct[] = [];
+  let product: Models.Tables.IProduct;
   // const caller = new LambdaCaller();
   // product = await caller.getProductAsync(context.params?.id as string);
   product = await getProductsData(context.params?.id as string);
