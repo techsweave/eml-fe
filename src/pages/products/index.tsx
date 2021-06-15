@@ -21,12 +21,7 @@ export default function productPage({ record }) {
 /* export const getStaticProps: GetStaticProps = async () => {
   // let products: Models.Tables.IProduct[] = [];
   const caller = new LambdaCaller();
-  try {
     // products = (await caller.scanProductAsync(25)).data;
-  } catch (error) {
-    // TODO: Implements error handling here
-    // alert(error);
-  }
   return {
     props: {
       record: products,
