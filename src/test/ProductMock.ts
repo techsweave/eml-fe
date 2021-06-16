@@ -75,11 +75,10 @@ export async function getProductsData(id: string) {
   product = products;
   return product;
 }
-export async function getProductsArrayData(id: string[]) {
+/* export async function getProductsArrayData(id: string[]) {
   let product: Models.Tables.IProduct[];
-  let products: any[];
+  const products: any[];
   for (let j = 0; j < id.length; j += 1) {
-    console.log(id[j]);
     for (let i = 0; i < productMock.length; i += 1) {
       if (productMock[i].id === id[j]) {
         products.push(productMock[i]);
@@ -88,4 +87,4 @@ export async function getProductsArrayData(id: string[]) {
   }
   product = products;
   return product;
-}
+} */
