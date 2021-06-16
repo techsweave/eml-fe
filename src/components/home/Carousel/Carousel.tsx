@@ -3,11 +3,11 @@ import { Models } from 'utilities-techsweave';
 import CarouselItem from '@components/home/Carousel/CarouselItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
-  Navigation, Pagination, Controller,
+  Navigation, Pagination, Autoplay,
 } from 'swiper';
 import { Heading } from '@chakra-ui/react';
 
-SwiperCore.use([Navigation, Pagination, Controller]);
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
   const { product } = prop;
   return (
@@ -17,6 +17,10 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
         id='main'
         tag="section"
         wrapperTag="ul"
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
         navigation
         pagination={{ clickable: true }}
         spaceBetween={0}

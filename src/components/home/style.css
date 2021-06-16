@@ -4,9 +4,20 @@
 
 .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
     bottom: 10px;
-    left: 10px;
+    left: 50px;
     width: auto;
 }
 .swiper-pagination-bullet-active {
 background: white;
+}
+.swiper-slide {
+    text-align: center;
+}
+@media screen and (max-width: 500px) {
+    .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+        left: 10px;
+    }
+    #swiper-color, .swiper-button-next, .swiper-button-prev {
+        display: none;
+    }
 }
