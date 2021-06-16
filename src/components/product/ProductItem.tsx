@@ -1,18 +1,17 @@
-// import productStyles from '@styles/Product.module.css';
 import Link from 'next/link';
 import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Text } from '@chakra-ui/layout';
 import { Box, Image, Stack } from '@chakra-ui/react';
 
-const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
+const CarouselItem = (prop: { product: Models.Tables.IProduct }) => {
   const { product } = prop;
   return (
-    <Box as="button" w={['100%', '100%', '20%', '20%']} ml={['0', '0', '10', '10']} mt={['10', '10', '5', '5']}>
+    <Box as="button" w='100%'>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack position='relative'>
-          <Image src={product.imageURL} alt={product.title} w="100%" h={['300px', '300px', '150px', '150px']} borderRadius="15px" fit="cover" />
-          <Stack position='absolute' bottom='0' bg='rgba(44,44,44,0.7)' textColor='white' w='100%' h={['25%', '25%', '40%', '40%']} borderBottomRadius='15px'>
+          <Image src={product.imageURL} alt={product.title} w="100%" h='300px' borderRadius="15px" fit="cover" />
+          <Stack position='absolute' bottom='0' bg='rgba(44,44,44,0.7)' textColor='white' w='100%' h={['25%', '25%', '40%', '40%']} borderBottomRadius='15px' justifyContent='center'>
             <Text fontWeight='bold' fontSize='1.5em' overflow='hidden'>{product.title}</Text>
             <Text>
               price:
@@ -25,4 +24,4 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
     </Box>
   );
 };
-export default ProductItem;
+export default CarouselItem;

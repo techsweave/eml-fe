@@ -1,6 +1,6 @@
 import React from 'react';
 import { Models } from 'utilities-techsweave';
-import CarouselItem from '@components/home/CarouselItem';
+import CarouselItem from '@components/home/Carousel/CarouselItem';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
   Navigation, Pagination, Controller,
