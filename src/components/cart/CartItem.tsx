@@ -6,7 +6,7 @@ const CartItem = (prop) => {
   const { product } = prop;
   return (
     <Tr>
-      <Td>{product.name}</Td>
+      <Td>{product.title}</Td>
       <Td>{product.price}</Td>
       <Td>{product.description}</Td>
       <Td>{product.quantity}</Td>

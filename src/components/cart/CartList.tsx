@@ -1,12 +1,11 @@
 import CartItem from '@components/cart/CartItem';
-import Cart from '@models/cart';
-// import cartStyles from '@styles/Cart.module.css';
+import { Models } from 'utilities-techsweave';
 import React from 'react';
 import {
   Table, Thead, Tbody, Tr, Th, TableCaption,
 } from '@chakra-ui/react';
 
-const CartList = (prop: { cart: Cart[] }) => {
+const CartList = (prop: { cart: Models.Tables.IProduct[] }) => {
   const { cart } = prop;
   return (
     <Table variant="simple">
@@ -22,7 +21,7 @@ const CartList = (prop: { cart: Cart[] }) => {
       <Tbody>
         {cart.map((products) => (
           <CartItem
-            product={products.product}
+            product={products}
             key={products.id}
           />
         ))}

@@ -1,20 +1,29 @@
 import ProductItem from '@components/product/ProductItem';
-// import productStyles from '@styles/Product.module.css';
-import Product from '@models/product';
+import { Models } from 'utilities-techsweave';
 import React from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { Grid, GridItem, Box } from '@chakra-ui/react';
 
-const ProductList = (prop: { productList: Product[] }) => {
+const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   const { productList } = prop;
+
   return (
-    <SimpleGrid columns={[1, 2, 3]} spacing="20px">
-      {productList.map((products) => (
-        <ProductItem
-          product={products}
-          key={products.id}
-        />
-      ))}
-    </SimpleGrid>
+    <Box>
+      <Grid ml={['0', '0', '50', '50']} templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(4, 1fr)', 'repeat(4, 1fr)']} gap={10}>
+        {productList.map((products) => (
+          <GridItem
+            id={products.id}
+            tag="li"
+            style={{ listStyle: 'none' }}
+          >
+            <ProductItem
+              product={products}
+              key={products.id}
+            />
+          </GridItem>
+        ))}
+      </Grid>
+    </Box>
+
   );
 };
 

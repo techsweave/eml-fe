@@ -23,6 +23,9 @@
             "@api/*": [
                 "src/pages/api/*"
             ],
+            "@test/*": [
+                "src/test/*"
+            ],
         }
     }
 }
