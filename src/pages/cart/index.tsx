@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 import { useSession, getSession } from 'next-auth/client';
 import LambdaCaller from '@libs/lambdaCaller';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import { Models } from 'utilities-techsweave';
+import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import CartList from '@components/cart/CartList';
 import { Button } from '@chakra-ui/react';
@@ -51,11 +51,13 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
     </Layout>
   );
 }
-/* export const getStaticProps: GetStaticProps = async (context) => {
-  const cart: Models.Tables.ICart[] = [];
+export const getStaticProps: GetStaticProps = async (context) => {
+  let cart: Models.Tables.ICart[] = [];
   let products: Models.Tables.IProduct[] = [];
-  const caller = new LambdaCaller(await getSession(context.params));
-    // cart = (await caller.getCartAsync()).data;
+  const callerCart = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const callerProducts = new Services.Products('vyx7o27url', `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+
+  cart = (await callerCart.getAsync()).data;
 
   const filterId: string[] = [];
 
@@ -66,10 +68,10 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
     values: filterId,
   };
 
-    // products = (await caller.scanProductAsync(25, undefined, undefined, undefined, filter)).data;
-    products = getProductsArrayData(filterId);
-    /* cart.forEach((x) => { const y = x; y.products = products.find((t) => t.id === y.productId); });
-    cart = cart.filter((x) => x.products);
+  products = (await callerProducts.scanAsync(25, undefined, undefined, undefined, filter)).data;
+
+  /*  cart.forEach((x) => { const y = x; y.productId = products.find((t) => t.id === y.productId); });
+  cart = cart.filter((x) => x.products); */
 
   return {
     props: {
@@ -78,4 +80,3 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
     revalidate: 600,
   };
 };
- */

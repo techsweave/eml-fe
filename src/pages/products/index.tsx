@@ -1,8 +1,7 @@
 import Layout from '@components/Layout';
 import ProductList from '@components/product/ProductList';
 import { GetStaticProps } from 'next';
-import LambdaCaller from '@libs/lambdaCaller';
-import { Models } from 'utilities-techsweave';
+import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import { Stack } from '@chakra-ui/layout';
 // import ProductMock from '@test/ProductMock';
@@ -19,7 +18,9 @@ export default function productPage({ record }) {
   );
 }
 export const getStaticProps: GetStaticProps = async () => {
-  const products: Models.Tables.IProduct[] = [];
+  let products: Models.Tables.IProduct[] = [];
+  const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  products = (await caller.scanAsync(25)).data;
   return {
     props: {
       record: products,
