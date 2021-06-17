@@ -7,7 +7,7 @@ import { Box, Image, Stack } from '@chakra-ui/react';
 const CarouselItem = (prop: { product: Models.Tables.IProduct }) => {
   const { product } = prop;
   return (
-    <Box as="button" w={['100%', '100%', '95%', '95%']}>
+    <Box as="button" w='100%'>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack position='relative'>
           <Image src={product.imageURL} alt={product.title} w="100%" h={['300px', '300px', '600px', '600px']} borderRadius="15px" fit="cover" />
