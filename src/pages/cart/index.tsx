@@ -15,7 +15,7 @@ import CartMock from '@test/CartMock';
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`);
 
-export default function Cart(prop: { record: Models.Tables.ICart[] }) {
+export default function Cart(prop: { record: Models.Tables.IProduct[] }) {
   const { record } = prop;
   const [session] = useSession();
 
@@ -44,7 +44,7 @@ export default function Cart(prop: { record: Models.Tables.ICart[] }) {
       )}
       {session && (
         <Box align="center">
-          {/* <CartList cart={CartMock} /> */}
+          <CartList cart={record} />
           <Button onClick={handleClick} variant="outline" colorScheme="red">Checkout</Button>
         </Box>
       )}
@@ -55,23 +55,33 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let cart: Models.Tables.ICart[] = [];
   let products: Models.Tables.IProduct[] = [];
   const callerCart = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
-  const callerProducts = new Services.Products('vyx7o27url', `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
-
-  cart = (await callerCart.getAsync()).data;
+  const callerProducts = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  try {
+    cart = (await callerCart.getAsync()).data;
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
 
   const filterId: string[] = [];
 
-  CartMock.forEach((x) => filterId.push(x.productId));
+  cart.forEach((x) => filterId.push(x.productId));
   const filter: ConditionExpression = {
     type: 'Membership',
     subject: 'id',
     values: filterId,
   };
+  try {
+    products = (await callerProducts.scanAsync(25, undefined, undefined, undefined, filter)).data;
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
 
-  products = (await callerProducts.scanAsync(25, undefined, undefined, undefined, filter)).data;
-
-  /*  cart.forEach((x) => { const y = x; y.productId = products.find((t) => t.id === y.productId); });
-  cart = cart.filter((x) => x.products); */
+  /* cart.forEach((x) => { const y = x; y.product = products.find((t) => t.id === y.productId); });
+  cart = cart.filter((x) => x.product); */
 
   return {
     props: {

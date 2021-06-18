@@ -12,7 +12,7 @@ export default function productDetailPage(prop: { product:Models.Tables.IProduct
   );
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  const caller = new Services.Products('vyx7o27url', `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   const id = (await caller.scanAsync(25)).data;
   const paths = id.map((idPath) => ({ params: { id: idPath.id } }));
   return {
@@ -22,9 +22,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  let product: Models.Tables.IProduct;
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
-  product = await caller.getAsync(context.params?.id as string);
+  const product = await caller.getAsync(context.params?.id as string);
   return {
     props: {
       product,
