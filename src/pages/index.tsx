@@ -8,7 +8,7 @@ import { GetStaticProps } from 'next';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 
-const indexPage = () => (
+const indexPage = (record) => (
   <Layout title="EmporioLambda">
     <Box w='95%'>
       <Carousel product={productMock} />
@@ -16,7 +16,7 @@ const indexPage = () => (
     </Box>
   </Layout>
 );
-export const getStaticProps: GetStaticProps = async () => {
+/* export const getStaticProps: GetStaticProps = async () => {
   let products: Models.Tables.IProduct[];
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
 
@@ -28,15 +28,14 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     products = (await caller.scanAsync(6, undefined, undefined, undefined, filter)).data;
   } catch (error) {
-    return {
-      notFound: true,
-    };
+    console.log(error);
   }
+  console.log(products);
   return {
     props: {
       record: products,
     },
     revalidate: 600,
   };
-};
+}; */
 export default indexPage;

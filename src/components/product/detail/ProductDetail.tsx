@@ -10,7 +10,7 @@ const ProductDetail = (prop: { product: Models.Tables.IProduct }) => {
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Button as="a" href="/products" ml={['0', '0', '2,5', '2,5']} mb={['5', '5', '0', '0']} w="100px" mr={['0', '0', '20', '20']} leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
-      <Image src={product.imageURL} alt={product.title} w="500px" h="300px" borderRadius="15px" fit="cover" />
+      <Image src={product.imageURL} fallbackSrc='@public/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" fit="cover" />
       <VStack flexBasis="50%" alignSelf="center">
         <Heading as="h2">
           {product.title}
