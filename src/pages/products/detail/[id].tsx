@@ -2,7 +2,7 @@ import { Models, Services } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import RelatedProduct from '@components/product/detail/RelatedArticles';
+import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArticles';
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import productMock from '@test/ProductMock';
@@ -32,7 +32,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   const product = await caller.getAsync(context.params?.id as string);
-  console.log('Categpria');
+  console.log('Categoria');
   console.log(product.categorieId);
   /* const filter: ConditionExpression = {
     type: 'Equals',
