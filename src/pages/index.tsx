@@ -16,8 +16,8 @@ const indexPage = (record) => (
     </Box>
   </Layout>
 );
-/* export const getStaticProps: GetStaticProps = async () => {
-  let products: Models.Tables.IProduct[];
+export const getStaticProps: GetStaticProps = async () => {
+  let products: Models.Tables.IProduct[] = [];
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
 
   const filter: ConditionExpression = {
@@ -37,5 +37,5 @@ const indexPage = (record) => (
     },
     revalidate: 600,
   };
-}; */
+};
 export default indexPage;
