@@ -1,0 +1,18 @@
+import React from 'react';
+import { SimpleGrid, Heading, Box } from '@chakra-ui/react';
+import PersonalInfo from '@components/profile/dashboard/PersonalInfo';
+import BillingInfo from '@components/profile/dashboard/BillingInfo';
+import PaymentInfo from '@components/profile/dashboard/PaymentInfo';
+
+const DashboardContent = () => (
+  <Box p={5}>
+    <Heading size="md" mb={5}>My dashboard</Heading>
+    <SimpleGrid columns={[1, 2, 3]} spacing={100}>
+      <PersonalInfo />
+      <BillingInfo />
+      <PaymentInfo />
+    </SimpleGrid>
+  </Box>
+);
+
+export default DashboardContent;
