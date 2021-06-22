@@ -8,10 +8,10 @@ import { GetStaticProps } from 'next';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 
-const indexPage = (record) => (
+const indexPage = ({ record }) => (
   <Layout title="EmporioLambda">
     <Box w='95%'>
-      <Carousel product={productMock} />
+      <Carousel product={record} />
       <RecentProduct product={productMock} />
     </Box>
   </Layout>
@@ -22,15 +22,14 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const filter: ConditionExpression = {
     type: 'NotEquals',
-    object: 0,
     subject: 'discount',
+    object: '0',
   };
   try {
     products = (await caller.scanAsync(6, undefined, undefined, undefined, filter)).data;
   } catch (error) {
     console.log(error);
   }
-  console.log(products);
   return {
     props: {
       record: products,

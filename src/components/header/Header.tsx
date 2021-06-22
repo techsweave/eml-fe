@@ -9,7 +9,7 @@ import MenuToggle from '@components/header/MenuToggle';
 import MenuLinks from '@components/header/MenuLinks';
 import NavBarContainer from '@components/header/NavBarContainer';
 import { BiShoppingBag } from 'react-icons/bi';
-
+import SearchBar from '@components/header/SearchBar';
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -23,21 +23,11 @@ const NavBar = (props) => {
     <Text display="block">
       <Button display={['none', 'none', 'inherit', 'inherit']} bg='gray.100' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
     </Text>
-  </Link>
-      <InputGroup display={['none', 'none', 'inherit', 'inherit']} ml='10' mr='10'>
-        <Input placeholder="Search products..." />
-        <InputRightElement>
-          <IconButton aria-label="Search" icon={<SearchIcon />} size="sm" />
-        </InputRightElement>
-      </InputGroup>
+        </Link>
+      <SearchBar display={['none', 'none', 'inherit', 'inherit']} ml='10' mr='10'/>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} session={session} />
-      <InputGroup display={['inherit', 'inherit', 'none', 'none']} mb='5'>
-        <Input placeholder="Search products..." />
-        <InputRightElement>
-          <IconButton aria-label="Search" icon={<SearchIcon />} size="sm" />
-        </InputRightElement>
-      </InputGroup>
+          <MenuLinks isOpen={isOpen} session={session} />
+          <SearchBar display={['inherit', 'inherit', 'none', 'none']} mb='5'/>
     </NavBarContainer>
   );
 };
