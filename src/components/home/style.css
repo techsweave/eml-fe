@@ -10,3 +10,6 @@
 .swiper-pagination-bullet-active {
 background: white;
 }
+.swiper-slide {
+    text-align: center;
+}
