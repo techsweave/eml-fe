@@ -20,7 +20,11 @@ export default function productPage({ record }) {
 export const getStaticProps: GetStaticProps = async () => {
   let products: Models.Tables.IProduct[] = [];
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
-  products = (await caller.scanAsync(25)).data;
+  try {
+    products = (await caller.scanAsync(25)).data;
+  } catch (error) {
+    console.log(error);
+  }
   return {
     props: {
       record: products,
