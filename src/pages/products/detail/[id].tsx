@@ -31,20 +31,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   const product = await caller.getAsync(context.params?.id as string);
-  const productId = product.id;
-  const category = product.categorieId;
+  const productId = product.id as string;
+  const category = product.categorieId as string;
   const filter: ConditionExpression = {
     type: 'And',
     conditions: [
       {
-        type: 'NotEquals',
-        subject: 'id',
-        object: productId,
-      },
-      {
         type: 'Equals',
         subject: 'categorieId',
         object: category,
+      },
+      {
+        type: 'NotEquals',
+        subject: 'id',
+        object: productId,
       },
     ],
   };

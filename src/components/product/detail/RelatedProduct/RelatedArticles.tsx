@@ -12,17 +12,7 @@ const RelatedProducts = (prop: { product: Models.Tables.IProduct[] }) => {
     <Box>
       <Heading textAlign='center' m='10'>Related Product</Heading>
       <Grid templateColumns={['repeat(2, 1fr)', 'repeat(2, 1fr)', 'repeat(6, 1fr)', 'repeat(6, 1fr)']} gap={10} ml={['5', '5', '10', '10']} mr={['5', '5', '10', '10']}>
-        {product.length === 1 && (
-        <GridItem
-          id={product[0].id}
-        >
-          <RelatedItem
-            product={product[0]}
-            key={product[0].id}
-          />
-        </GridItem>
-        )}
-        {product.length !== 1 && (product.map((products) => (
+        {product.map((products) => (
           <GridItem
             id={products.id}
           >
@@ -31,7 +21,7 @@ const RelatedProducts = (prop: { product: Models.Tables.IProduct[] }) => {
               key={products.id}
             />
           </GridItem>
-        )))}
+        ))}
       </Grid>
     </Box>
   );
