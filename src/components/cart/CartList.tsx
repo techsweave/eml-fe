@@ -5,11 +5,11 @@ import {
   Table, Thead, Tbody, Tr, Th, TableCaption,
 } from '@chakra-ui/react';
 
-const CartList = (prop: { cart: Models.Tables.IProduct[] }) => {
-  const { cart } = prop;
+const CartList = (prop: { product: Models.Tables.IProduct[] }) => {
+  const { product } = prop;
   return (
     <Table variant="simple">
-      <TableCaption>Cart is ready</TableCaption>
+      <TableCaption>product is ready</TableCaption>
       <Thead>
         <Tr>
           <Th>Name</Th>
@@ -19,7 +19,7 @@ const CartList = (prop: { cart: Models.Tables.IProduct[] }) => {
         </Tr>
       </Thead>
       <Tbody>
-        {cart.map((products) => (
+        {product.map((products) => (
           <CartItem
             product={products}
             key={products.id}

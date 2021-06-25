@@ -13,7 +13,7 @@ const RecentProduct = (prop: { product: Models.Tables.IProduct[] }) => {
       <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']} gap={20}>
         {product.map((products) => (
           <GridItem
-            id={products.id}
+            key={products.id}
             tag="li"
             style={{ listStyle: 'none' }}
           >

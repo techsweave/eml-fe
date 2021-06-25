@@ -14,7 +14,7 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
     <div>
       <Heading textAlign='center' m='5'>Offer products</Heading>
       <Swiper
-        id='main'
+        key='main'
         tag="section"
         wrapperTag="ul"
         autoplay={{
@@ -27,7 +27,7 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
       >
         {product.map((products) => (
           <SwiperSlide
-            id={products.id}
+            key={products.id}
             tag="li"
             style={{ listStyle: 'none' }}
           >

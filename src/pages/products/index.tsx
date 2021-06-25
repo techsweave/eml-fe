@@ -1,11 +1,10 @@
 import Layout from '@components/Layout';
 import ProductList from '@components/product/ProductList';
 import { GetStaticProps } from 'next';
-import LambdaCaller from '@libs/lambdaCaller';
-import { Models } from 'utilities-techsweave';
+import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import { Stack } from '@chakra-ui/layout';
-import ProductMock from '@test/ProductMock';
+// import ProductMock from '@test/ProductMock';
 import Filter from '@components/filter/Filter';
 
 export default function productPage({ record }) {
@@ -13,15 +12,19 @@ export default function productPage({ record }) {
     <Layout title="Product-page">
       <Stack w='95%' direction={['column', 'column', 'row']}>
         <Filter />
-        <ProductList productList={ProductMock} />
+        <ProductList productList={record} />
       </Stack>
     </Layout>
   );
 }
-/* export const getStaticProps: GetStaticProps = async () => {
-  // let products: Models.Tables.IProduct[] = [];
-  const caller = new LambdaCaller();
-    // products = (await caller.scanProductAsync(25)).data;
+export const getStaticProps: GetStaticProps = async () => {
+  let products: Models.Tables.IProduct[] = [];
+  const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  try {
+    products = (await caller.scanAsync(25)).data;
+  } catch (error) {
+    alert(error);
+  }
   return {
     props: {
       record: products,
@@ -29,4 +32,3 @@ export default function productPage({ record }) {
     revalidate: 600,
   };
 };
- */
