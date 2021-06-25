@@ -30,8 +30,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  let product:Models.Tables.IProduct;
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
-  const product = await caller.getAsync(context.params?.id as string);
+  try {
+    product = await caller.getAsync(context.params?.id as string);
+  } catch (error) {
+    alert(error);
+  }
   return {
     props: {
       product,

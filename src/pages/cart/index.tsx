@@ -31,9 +31,8 @@ export default function Cart(prop: { record: Models.Tables.IProduct[] }) {
         sessionId: stripeSession.id,
       });
     } catch (error) {
-      /*  // TODO: Implement error handling here
-      alert(error); */
-      console.log(error);
+      // TODO: Implement error handling here
+      alert(error);
     }
   };
   return (
