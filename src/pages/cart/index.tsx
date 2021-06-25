@@ -33,7 +33,7 @@ export default function Cart(prop: { record: Models.Tables.IProduct[] }) {
     } catch (error) {
       /*  // TODO: Implement error handling here
       alert(error); */
-      return null;
+      console.log(error);
     }
   };
   return (
