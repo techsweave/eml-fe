@@ -6,7 +6,7 @@
     ],
     "settings": {
         "editor.autoIndent": "full",
-        "editor.tabSize": 4,
+        "editor.tabSize": 2,
         "editor.detectIndentation": false,
         "typescript.format.placeOpenBraceOnNewLineForControlBlocks": false,
         "typescript.format.placeOpenBraceOnNewLineForFunctions": false,

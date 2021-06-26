@@ -2,9 +2,17 @@
 import React from 'react';
 import { Tr, Td } from '@chakra-ui/react';
 import Link from 'next/link';
+import { Models } from 'utilities-techsweave';
 
-const CartItem = (prop) => {
-  const { product } = prop;
+type ICart = Models.Tables.ICart;
+type ICartItemDetail = Models.Tables.IProduct & {
+  productId: string
+};
+
+const CartItem = (prop: {
+  cartItem: ICart
+}) => {
+  const { cartItem } = prop;
   return (
     <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
       <Tr>

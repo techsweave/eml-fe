@@ -2,7 +2,6 @@ import Layout from '@components/Layout';
 import React from 'react';
 import Carousel from '@components/home/Carousel/Carousel';
 import RecentProduct from '@components/home/RecentProduct';
-import productMock from '@test/ProductMock';
 import { Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Models, Services } from 'utilities-techsweave';
