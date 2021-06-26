@@ -7,20 +7,25 @@ import {
   Th,
   Td,
   TableCaption,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
   IconButton,
   Popover,
-  PopoverTrigger,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
+  PopoverTrigger,
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import OrderDetail from '@components/profile/orders/OrderDetail';
 import { Models } from 'utilities-techsweave';
 import OrderedProductsMock from '@test/OrderedProductsMock';
-import { IoPersonRemoveSharp } from 'react-icons/io5';
 import { getTotal } from '@test/OrderedProductsMock';
 
 const OrdersTable = (prop: { ordersList: Models.Tables.IOrder[] }) => {
@@ -43,7 +48,26 @@ const OrdersTable = (prop: { ordersList: Models.Tables.IOrder[] }) => {
                         <Td>{orders.id}</Td>
                         <Td>{orders.date.getDate()}-{orders.date.getMonth() + 1}-{orders.date.getFullYear()}</Td>
                         <Td>{total}</Td>
-                        <Td><Popover placement="right" arrowSize={15}>
+                        <Td display={['none','none','none','flex']}>
+                            <Accordion defaultIndex={[1]} allowMultiple>
+                                <AccordionItem>
+                                    <AccordionButton>
+                                        <Box flex="1" textAlign="left" mr={10}>
+                                            {orders.id} order's detail
+                                        </Box>
+                                        <Box flex="1" display={['flex','none','none','none']}>
+                                        </Box>
+                                        <AccordionIcon />
+                                    </AccordionButton>
+                                    <AccordionPanel>
+                                        <OrderDetail products={orders.products} />
+                                    </AccordionPanel>
+                                </AccordionItem>
+                            </Accordion>
+                            {/* <IconButton /> */}
+                        </Td>
+                        <Td display={['flex','flex','flex','none']}>
+                            <Popover placement="auto" arrowSize={15}>
                             <PopoverTrigger>
                                 <Td><IconButton aria-label="Detail" icon={<VscChevronRight />} size="sm" /></Td>
                             </PopoverTrigger>
@@ -53,11 +77,13 @@ const OrdersTable = (prop: { ordersList: Models.Tables.IOrder[] }) => {
                                 <PopoverHeader>{orders.id} Detail</PopoverHeader>
                                 <PopoverBody><OrderDetail products={orders.products}/></PopoverBody>
                             </PopoverContent>
-                        </Popover></Td>
-                    </Tr>
+                        </Popover>
+                        </Td>
+                    </Tr>                        
                 ))}
             </Tbody>
         </Table>
     );
 }
 export default OrdersTable;
+

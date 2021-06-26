@@ -7,7 +7,7 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { FiTruck } from 'react-icons/fi';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 
-const Navigation = () => (
+const NavigationDesktop = () => (
   <VStack p={6} justifyContent="space-between" alignItems="center" w="full">
     <VStack spacing={4}>
       <Flex
@@ -50,24 +50,6 @@ const Navigation = () => (
           Orders
         </Button>
       </Tooltip>
-      {/* <Tooltip label="Notifications" placement="right">
-        <Button
-          as="a"
-          href="#"
-          leftIcon={<IoNotificationsOutline size={20} />}
-        >
-          Notifications
-        </Button>
-      </Tooltip>
-      <Tooltip label="Messages" placement="right">
-        <Button
-          as="a"
-          href="#"
-          leftIcon={<FiMail size={20} />}
-        >
-          Messages
-        </Button>
-      </Tooltip> */}
     </VStack>
     <Tooltip label="Settings" placement="right">
       <Button
@@ -81,4 +63,4 @@ const Navigation = () => (
   </VStack>
 );
 
-export default Navigation;
+export default NavigationDesktop;

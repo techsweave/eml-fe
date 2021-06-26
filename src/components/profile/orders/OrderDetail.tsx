@@ -9,22 +9,21 @@ import {
   Td,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { Models } from 'utilities-techsweave';
 import { getProductsData } from '@test/ProductMock';
 
 const OrderDetail = (prop) => {
   const { products } = prop;
   return (
 
-    <Box>
-      <Table variant="simple">
+    <Box w={['min-content']}>
+      <Table variant="simple" size="sm">
         <Thead>
           <Tr>
             <Th>Name</Th>
             <Th>Product ID</Th>
             <Th>Price</Th>
             <Th>Quantity</Th>
-            <Th>Total €</Th>
+            <Th>Total</Th>
           </Tr>
         </Thead>
         <Tbody>

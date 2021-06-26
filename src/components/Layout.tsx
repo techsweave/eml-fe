@@ -18,7 +18,7 @@ const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
       <title>{title}</title>
     </Head>
     <Header />
-    <Flex as="main" justifyContent='center'>{children}</Flex>
+    <Flex as="main">{children}</Flex>
     <Footer />
   </Stack>
 );
