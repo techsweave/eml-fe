@@ -18,7 +18,6 @@ const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_K
 export default function Cart(prop: { record: Models.Tables.ICart[] }) {
   const { record } = prop;
   const [session] = useSession();
-
   const handleClick = async () => {
     // Get Stripe.js instance
     const stripe = await stripePromise;

@@ -7,7 +7,7 @@ import PaymentInfo from '@components/profile/dashboard/PaymentInfo';
 const DashboardContent = () => (
   <Box p={5}>
     <Heading size="md" mb={5}>My dashboard</Heading>
-    <SimpleGrid columns={[1, 2, 3]} spacing={100}>
+    <SimpleGrid columns={[1, 2, 2, 3]} spacing={['10', '10', '25', '50']}>
       <PersonalInfo />
       <BillingInfo />
       <PaymentInfo />

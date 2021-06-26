@@ -1,9 +1,10 @@
 import { useSession } from 'next-auth/client';
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import { HStack, Flex } from '@chakra-ui/layout';
+import { Stack, Flex } from '@chakra-ui/layout';
 import Layout from '@components/Layout';
-import Navigation from '@components/profile/Navigation';
+import NavigationDesktop from '@components/profile/NavigationDesktop';
+import NavigationSmartphone from '@components/profile/NavigationSmartphone';
 import DashboardContent from '@components/profile/DashboardContent';
 
 export default function auth() {
@@ -17,13 +18,14 @@ export default function auth() {
   }
   return (
     <Layout title="Profile page - EmporioLambda">
-      <HStack spacing={0}>
-        <Flex as="nav" h="full" w={340} bg="gray.100"><Navigation /></Flex>
-        <Flex as="main" h="full"><DashboardContent /></Flex>
+      <Stack direction={['column', 'column', 'row', 'row']}>
+        <Flex as="nav" h="full" w={340} bg="gray.100" display={['none', 'none', 'inherit', 'inherit']}><NavigationDesktop /></Flex>
+        <Flex as="nav" h="min-content" w="full" display={['flex', 'flex', 'none', 'none']} justify="center"><NavigationSmartphone /></Flex>
+        <Flex as="main" justify="center"><DashboardContent /></Flex>
         {/* Hi,
         {session.user?.name}
         , welcome on our website */}
-      </HStack>
+      </Stack>
     </Layout>
   );
 }
