@@ -7,6 +7,7 @@ export default NextAuth({
       clientId: process.env.COGNITO_CLIENT_ID,
       domain: process.env.COGNITO_DOMAIN,
       idToken: true,
+      scope: 'openid profile email aws.cognito.signin.user.admin',
     }),
   ],
   callbacks: {

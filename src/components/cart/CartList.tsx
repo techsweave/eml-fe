@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import CartItem from '@components/cart/CartItem';
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  Table, Thead, Tbody, Tr, Th, TableCaption,
+  Table, Thead, Tbody, Tr, Th, TableCaption, useToast,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 
@@ -19,7 +20,7 @@ const CartList = () => {
     let fetchedData: Array<ICart> = [];
 
     const cartService = new Services.Carts(
-      process.env.NEXT_PUBLIC_API_ID_PRODUCTS!,
+      process.env.NEXT_PUBLIC_API_ID_CART!,
       process.env.NEXT_PUBLIC_API_REGION!,
       process.env.NEXT_PUBLIC_API_STAGE!,
       session?.accessToken as string,
@@ -31,10 +32,25 @@ const CartList = () => {
 
     return Promise.resolve(fetchedData);
   };
+  const toast = useToast();
+  const showError = async () => {
+    if (!error) return;
+    toast({
+      title: error.name,
+      description: error.message,
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
 
   useEffect(() => {
+    showError();
+
     // Avoid infinte loop render -> useEffect -> setState -> render
     if (state.length > 0) return;
+    if (error) return;
 
     fetchData()
       .then((data) => {
@@ -46,7 +62,7 @@ const CartList = () => {
   }, [state, setState, error, setError]);
 
   return (
-    <Table variant="simple">
+    <Table variant="simple" onClick={showError}>
       <TableCaption>product is ready</TableCaption>
       <Thead>
         <Tr>
