@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
-import CartItem from '@components/cart/CartItem';
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  Table, Thead, Tbody, Tr, Th, TableCaption, useToast,
+  useToast, Flex,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 
@@ -15,6 +14,19 @@ const CartList = () => {
   const [state, setState] = useState(init);
   const [error, setError] = useState<Error>();
   const session = useSession()[0];
+
+  const toast = useToast();
+  const showError = async () => {
+    if (!error) return;
+    toast({
+      title: error.name,
+      description: error.message,
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  };
 
   const fetchData = async (): Promise<Array<ICart>> => {
     let fetchedData: Array<ICart> = [];
@@ -32,18 +44,6 @@ const CartList = () => {
 
     return Promise.resolve(fetchedData);
   };
-  const toast = useToast();
-  const showError = async () => {
-    if (!error) return;
-    toast({
-      title: error.name,
-      description: error.message,
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top-right',
-    });
-  };
 
   useEffect(() => {
     showError();
@@ -55,6 +55,7 @@ const CartList = () => {
     fetchData()
       .then((data) => {
         setState(data);
+        console.log(session);
       })
       .catch((err) => {
         setError(err.error);
@@ -62,26 +63,10 @@ const CartList = () => {
   }, [state, setState, error, setError]);
 
   return (
-    <Table variant="simple" onClick={showError}>
-      <TableCaption>product is ready</TableCaption>
-      <Thead>
-        <Tr>
-          <Th>Name</Th>
-          <Th>Price</Th>
-          <Th>Description</Th>
-          <Th>Quantity</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {state.map((cartRecord) => (
-          <CartItem
-            cartItem={cartRecord}
-            key={cartRecord.id}
-          />
-        ))}
-      </Tbody>
-
-    </Table>
+    <Flex border='1px'>
+      <Flex border='1px' />
+      <Flex border='1px' />
+    </Flex>
   );
 };
 
