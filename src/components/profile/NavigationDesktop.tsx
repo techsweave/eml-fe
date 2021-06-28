@@ -54,7 +54,7 @@ const NavigationDesktop = () => (
     <Tooltip label="Settings" placement="right">
       <Button
         as="a"
-        href="#"
+        href="/profile/profileSettings"
         leftIcon={<IoSettingsOutline size={20} />}
       >
         Privacy and settings
