@@ -2,17 +2,20 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  useToast, Flex,
+  useToast, Flex, CircularProgress,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
+import NoItemInCart from '@components/cart/NoItemInCart';
 
 type ICart = Models.Tables.ICart;
 
 const init: Array<ICart> = [];
+const initLoading = true;
 
 const CartList = () => {
-  const [state, setState] = useState(init);
   const [error, setError] = useState<Error>();
+  const [state, setState] = useState(init);
+  const [loading, setLoading] = useState(initLoading);
   const session = useSession()[0];
 
   const toast = useToast();
@@ -49,24 +52,38 @@ const CartList = () => {
     showError();
 
     // Avoid infinte loop render -> useEffect -> setState -> render
-    if (state.length > 0) return;
+    if (!loading) return;
     if (error) return;
 
     fetchData()
       .then((data) => {
+        setLoading(false);
         setState(data);
-        console.log(session);
       })
       .catch((err) => {
+        setLoading(false);
         setError(err.error);
       });
-  }, [state, setState, error, setError]);
+  }, [state, setState, error, setError, loading, setLoading]);
 
+  if (loading) {
+    return (
+      <CircularProgress
+        isIndeterminate
+        color='red.300'
+        width='5em'
+        height='5em'
+      />
+    );
+  }
+
+  if (state.length === 0) {
+    return (
+      <NoItemInCart />
+    );
+  }
   return (
-    <Flex border='1px'>
-      <Flex border='1px' />
-      <Flex border='1px' />
-    </Flex>
+    <Flex />
   );
 };
 

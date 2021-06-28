@@ -19,6 +19,8 @@
         "@middy/http-cors": "^2.4.1",
         "@stripe/stripe-js": "^1.13.2",
         "axios": "^0.21.1",
+        "cookie-cutter": "^0.2.0",
+        "cookies": "^0.8.0",
         "framer-motion": "^4.1.17",
         "next": "^10.2.0",
         "next-auth": "^3.14.8",

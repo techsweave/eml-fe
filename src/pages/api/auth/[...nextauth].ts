@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import Cookies from 'cookies';
 
 async function refreshAccessToken(token) {
   try {
@@ -41,7 +42,7 @@ async function refreshAccessToken(token) {
   }
 }
 
-export default NextAuth({
+const getOptions = (req, res) => ({
   providers: [
     Providers.Cognito({
       clientId: process.env.COGNITO_CLIENT_ID,
@@ -51,36 +52,40 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async jwt(token, user, account, profile) {
+    async jwt(token, user, account) {
       // Initial sign in
       if (account && user) {
+        const cookies = new Cookies(req, res);
+        cookies.set('userId', user.id);
+        cookies.set('idToken', account.idToken);
         // Max 4096 bytes
         return {
           accessToken: account.accessToken,
-          idToken: account.idToken,
-          // accessTokenExpires: Date.now() + account.expires_in! * 1000,
-          // refreshToken: account.refresh_token,
-          // user,
-          // profile,
+          accessTokenExpires: Date.now() + account.expires_in! * 1000,
+          refreshToken: account.refresh_token,
         };
       }
-      return token;
 
-      // TODO:
-      // // Return previous token if the access token has not expired yet
-      // if (Date.now() < (token.accessTokenExpires as number)) {
-      //   return token;
-      // }
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        return token;
+      }
 
-      // // Access token has expired, try to update it
-      // return refreshAccessToken(token);
+      // Access token has expired, try to update it
+      return refreshAccessToken(token);
     },
     async session(session, token) {
+      const cookies = new Cookies(req, res);
+      const userId = cookies.get('userId');
+      const idToken = cookies.get('idToken');
+
       const sessionToken = session;
       sessionToken.accessToken = token.accessToken;
-      sessionToken.idToken = token.idToken;
-      // sessionToken.profile = token.profile;
+      sessionToken.idToken = idToken;
+      sessionToken.userId = userId;
       return sessionToken;
     },
   },
 });
+
+export default (req, res) => NextAuth(req, res, getOptions(req, res));

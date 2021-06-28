@@ -23,7 +23,8 @@ export default function Cart() {
       {session && (
         <Box align="center">
           <CartList />
-          <Button onClick={handleClick} variant="outline" colorScheme="red">Checkout</Button>
+          {
+          /* <Button onClick={handleClick} variant="outline" colorScheme="red">Checkout</Button> */}
         </Box>
       )}
     </Layout>
