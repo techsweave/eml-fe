@@ -1,14 +1,14 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  Flex, Text, Heading,
+  Flex, Text, Heading, CircularProgress,
 } from '@chakra-ui/react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { useSession } from 'next-auth/client';
 
 type IProduct = Models.Tables.IProduct;
 type ICart = Models.Tables.ICart;
-const initTotalPrice = 0;
+const initTotalPrice = [0, 0];
 const initLoading = true;
 
 const CartSummary = (props: { cart: Array<ICart> }) => {
@@ -19,14 +19,15 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
   const session = useSession()[0];
   const { cart } = props;
 
-  const getTotalPrice = async (): Promise<number> => {
+  const getTotalPrice = async (): Promise<[number, number]> => {
     let products: Array<IProduct> = [];
     let scanResult: Models.IMultipleDataBody<IProduct> = {
       data: [],
       count: 0,
     };
     const ids: Array<string> = [];
-    let sum = 0;
+    let total = 0;
+    let totalNoDiscount = 0;
 
     cart.forEach((x) => {
       if (!x.isChanged) {
@@ -35,7 +36,7 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
     });
 
     if (ids.length === 0) {
-      return 0;
+      return [0, 0];
     }
 
     const filter: ConditionExpression = {
@@ -67,17 +68,16 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
       products.forEach((product) => {
         const cartItem = cart.find((x) => x.productId === product.id)!;
         let price = product.price ? product.price : 0;
+        totalNoDiscount += price * cartItem.quantity;
         if (product?.discount) {
           price -= ((price / 100) * product.discount!);
         }
-        sum += price * cartItem.quantity;
+        total += price * cartItem.quantity;
       });
-
-      return Promise.resolve(sum);
     } catch (err) {
       setError(err.error);
     }
-    return Promise.resolve(sum);
+    return Promise.resolve([total, totalNoDiscount]);
   };
 
   useEffect(() => {
@@ -96,6 +96,19 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
       });
   }, [state, setState, error, setError, loading, setLoading]);
 
+  if (loading) {
+    return (
+      <Flex
+        justifyContent='center'
+      >
+        <CircularProgress
+          isIndeterminate
+          color='red.300'
+        />
+      </Flex>
+    );
+  }
+
   return (
     <Flex
       direction='column'
@@ -104,16 +117,37 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
     >
       <Text
         color='gray.500'
-        fontSize='lg'
+        fontSize='xl'
       >
         Total:
       </Text>
       <Heading
         as='h3'
       >
-        {state}
+        {state[0]}
         €
       </Heading>
+      <Text
+        as='del'
+        color='gray.500'
+        fontSize='lg'
+      >
+        {state[1]}
+        €
+      </Text>
+      <Text
+        color='gray.500'
+        fontSize='lg'
+      >
+        {(Math.round(
+          100 * 100 * (
+            (state[1] - state[0])
+            / state[1]),
+        ) / 100)
+          .toString()
+          .replace('.', ',')
+          .concat(' % saved!')}
+      </Text>
     </Flex>
   );
 };
