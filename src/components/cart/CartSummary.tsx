@@ -1,10 +1,11 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  Flex, Text, Heading, CircularProgress,
+  Flex, Text, Heading, CircularProgress, Button,
 } from '@chakra-ui/react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { useSession } from 'next-auth/client';
+import { FaShoppingBag } from 'react-icons/fa';
 
 type IProduct = Models.Tables.IProduct;
 type ICart = Models.Tables.ICart;
@@ -109,11 +110,16 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
     );
   }
 
+  const goToChechOut = async () => {
+    // TODO
+    alert("Magikarp used splash! But nothing appened!")
+  }
+
   return (
     <Flex
       direction='column'
-      width='30%'
-      padding='0.5em'
+      width={['100%', '100%', '30%', '30%', '30%']}
+      padding='1em'
     >
       <Text
         color='gray.500'
@@ -148,6 +154,26 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
           .replace('.', ',')
           .concat(' % saved!')}
       </Text>
+      <Button
+        mt='3%'
+        leftIcon={<FaShoppingBag />}
+        variant='solid'
+        backgroundColor='red.400'
+        height='4em'
+        color='white'
+        _hover={{
+          backgroundColor: 'red.500',
+        }}
+        onClick={goToChechOut}
+      >
+        <Text
+          fontSize='xl'
+          fontWeight='bold'
+          color='white'
+        >
+          Checkout
+        </Text>
+      </Button>
     </Flex>
   );
 };
