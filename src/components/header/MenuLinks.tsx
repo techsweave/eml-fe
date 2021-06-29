@@ -23,6 +23,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
       display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
       flexBasis={{ base: '100%', md: 'auto' }}
     >
+<<<<<<< HEAD
       <Stack
         align="center"
         justify={['center', 'center', 'flex-end', 'flex-end']}
@@ -92,4 +93,53 @@ const MenuLinks = ({ isOpen, isVendor }) => {
     </Box>
   );
 }
+=======
+      <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
+        <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
+      </MenuItem> 
+      <MenuItem to="/cart">
+        <Button
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+          leftIcon={<AiOutlineShoppingCart size={20} />}
+        >
+          Cart
+        </Button>
+      </MenuItem>
+       <MenuItem to="/profile">
+        {session && (
+        <Button
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+          leftIcon={<AiOutlineUser size={20} />}
+        >
+          Profile
+        </Button>
+        )}
+      </MenuItem> 
+      <MenuItem>
+        {!session && (
+        <Button
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+          leftIcon={<IoEnterOutline size={20} />}
+          onClick={(e) => {
+            e.preventDefault();
+            signIn('cognito');
+          }}
+        >
+          Sign in
+        </Button>
+        )}
+        {session && (
+        <Button
+          bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+          onClick={() => signOut()}
+          leftIcon={<IoExitOutline size={20} />}
+        >
+          Sign out
+        </Button>
+        )}
+      </MenuItem>
+    </Stack>
+  </Box>
+);
+>>>>>>> d6f768a (change clients' order page)
 export default MenuLinks;

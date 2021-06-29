@@ -93,7 +93,7 @@ const BillingInfo = () => (
         </NumberInput>
       </FormControl>
       <FormControl display={['block', 'block', 'none', 'none']}>
-        <FormLabel>Cap</FormLabel>
+        <FormLabel>Number</FormLabel>
         <HookUsage />
       </FormControl>
       <FormControl>

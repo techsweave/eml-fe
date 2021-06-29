@@ -13,6 +13,7 @@ import { getProductsData } from '@test/ProductMock';
 
 const OrderDetail = (prop) => {
   const { products } = prop;
+  console.log(products);
   return (
 
     <Box w={['min-content']}>

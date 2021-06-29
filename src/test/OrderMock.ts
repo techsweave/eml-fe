@@ -11,4 +11,22 @@ const OrderMock: Models.Tables.IOrder[] = [
   },
 ];
 
+export function getOrderById() {
+  return OrderMock.map((oM) => ({
+    params: {
+      id: oM.id,
+    },
+  }));
+}
+
+export function getOrdersData(id: string) {
+  let order: Models.Tables.IOrder;
+  let orders: any;
+  for (let i = 0; i < OrderMock.length; i += 1) {
+    if (OrderMock[i].id === id) orders = OrderMock[i];
+  }
+  order = orders;
+  return order;
+}
+
 export default OrderMock;
