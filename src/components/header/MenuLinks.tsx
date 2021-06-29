@@ -40,7 +40,7 @@ const MenuLinks = ({ isOpen, session }) => (
           Cart
         </Button>
       </MenuItem>
-       <MenuItem to="/profile/profileDashboard">
+       <MenuItem to="/profile">
         {session && (
         <Button
           bg={['transparent', 'transparent', 'gray.100', 'gray.100']}

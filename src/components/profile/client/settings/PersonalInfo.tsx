@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  Box, FormControl, FormLabel, Input, InputGroup, InputLeftElement, VStack,
+  Box, Button, FormControl, FormLabel, Input, InputGroup, InputLeftElement, VStack,
 } from '@chakra-ui/react';
 import { PhoneIcon, EmailIcon } from '@chakra-ui/icons';
+
+class ModButton extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isToggleOn: false,
+    };
+  }
+
+  handleClick = () => {
+    this.setState((state) => ({
+      isToggleOn: !state.isToggleOn,
+    }));
+  };
+
+  render() {
+    return (
+      <Button size="sm" rounded="md" variant="outline" w="full" onClick={this.handleClick}>{this.state.isToggleOn ? 'Save changes' : 'Modify'}</Button>
+    );
+  }
+}
 
 const PersonalInfo = () => (
   <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={6}>
@@ -44,6 +65,7 @@ const PersonalInfo = () => (
           <Input placeholder="Phone number" variant="outline" rounded="md" />
         </InputGroup>
       </FormControl>
+      <ModButton />
     </VStack>
   </Box>
 );

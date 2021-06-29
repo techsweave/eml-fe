@@ -23,7 +23,8 @@ import {
   PopoverTrigger,
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
-import OrderDetail from '@components/profile/orders/OrderDetail';
+import Link from 'next/link';
+import OrderDetail from '@components/profile/client/orders/OrderDetail';
 import { Models } from 'utilities-techsweave';
 import OrderedProductsMock from '@test/OrderedProductsMock';
 import { getTotal } from '@test/OrderedProductsMock';
@@ -48,8 +49,24 @@ const OrdersTable = (prop: { ordersList: Models.Tables.IOrder[] }) => {
                         <Td>{orders.id}</Td>
                         <Td>{orders.date.getDate()}-{orders.date.getMonth() + 1}-{orders.date.getFullYear()}</Td>
                         <Td>{total}</Td>
-                        <Td display={['none','none','none','flex']}>
-                            <Accordion defaultIndex={[1]} allowMultiple>
+                        <Td>
+                            <Link href={{ pathname: '/profile/client/orders/[id]', query: { id: orders.id } }}>
+                                <IconButton
+                                    size="sm"
+                                    rounded="md"
+                                    aria-label="Order detail"
+                                    icon={<VscChevronRight />} />
+                            </Link>
+                        </Td>
+                    </Tr>                        
+                ))}
+            </Tbody>
+        </Table>
+    );
+}
+export default OrdersTable;
+
+{/* <Accordion defaultIndex={[1]} allowMultiple>
                                 <AccordionItem>
                                     <AccordionButton>
                                         <Box flex="1" textAlign="left" mr={10}>
@@ -63,27 +80,4 @@ const OrdersTable = (prop: { ordersList: Models.Tables.IOrder[] }) => {
                                         <OrderDetail products={orders.products} />
                                     </AccordionPanel>
                                 </AccordionItem>
-                            </Accordion>
-                            {/* <IconButton /> */}
-                        </Td>
-                        <Td display={['flex','flex','flex','none']}>
-                            <Popover placement="auto" arrowSize={15}>
-                            <PopoverTrigger>
-                                <Td><IconButton aria-label="Detail" icon={<VscChevronRight />} size="sm" /></Td>
-                            </PopoverTrigger>
-                            <PopoverContent ml={10} w="fit-content">
-                                <PopoverArrow />
-                                <PopoverCloseButton />
-                                <PopoverHeader>{orders.id} Detail</PopoverHeader>
-                                <PopoverBody><OrderDetail products={orders.products}/></PopoverBody>
-                            </PopoverContent>
-                        </Popover>
-                        </Td>
-                    </Tr>                        
-                ))}
-            </Tbody>
-        </Table>
-    );
-}
-export default OrdersTable;
-
+                            </Accordion> */}

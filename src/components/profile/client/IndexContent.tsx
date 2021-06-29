@@ -1,8 +1,8 @@
 import React from 'react';
 import { SimpleGrid, Heading, Box } from '@chakra-ui/react';
-import PersonalInfo from '@components/profile/dashboard/PersonalInfo';
-import BillingInfo from '@components/profile/dashboard/BillingInfo';
-import PaymentInfo from '@components/profile/dashboard/PaymentInfo';
+import PersonalInfo from '@components/profile/client/dashboard/PersonalInfo';
+import BillingInfo from '@components/profile/client/dashboard/BillingInfo';
+import PaymentInfo from '@components/profile/client/dashboard/PaymentInfo';
 
 const DashboardContent = () => (
   <Box p={5}>

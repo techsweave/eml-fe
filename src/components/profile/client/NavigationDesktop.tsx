@@ -26,7 +26,7 @@ const NavigationDesktop = () => (
       <Tooltip label="Dashboard" placement="right">
         <Button
           as="a"
-          href="/profile/profileDashboard"
+          href="/profile/index"
           leftIcon={<RiDashboardLine size={20} />}
         >
           Dashboard
@@ -44,7 +44,7 @@ const NavigationDesktop = () => (
       <Tooltip label="Orders" placement="right">
         <Button
           as="a"
-          href="/profile/profileOrders"
+          href="/profile/client/profileOrders"
           leftIcon={<FiTruck size={20} />}
         >
           Orders
@@ -54,7 +54,7 @@ const NavigationDesktop = () => (
     <Tooltip label="Settings" placement="right">
       <Button
         as="a"
-        href="/profile/profileSettings"
+        href="/profile/client/profileSettings"
         leftIcon={<IoSettingsOutline size={20} />}
       >
         Privacy and settings

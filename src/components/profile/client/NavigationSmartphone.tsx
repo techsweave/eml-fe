@@ -17,7 +17,7 @@ const NavigationSmartphone = () => (
     >
         <Button
             as="a"
-            href="/profile/profileDashboard"
+            href="/profile/index"
             leftIcon={<RiDashboardLine size={20} />}
             display={['none','flex']}
         >
@@ -25,7 +25,7 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/profileDashboard"
+                href="/profile/index"
                 aria-label="Dashboard"
                 icon={<RiDashboardLine size={30} />}
                 display={['flex', 'none']}
@@ -47,7 +47,7 @@ const NavigationSmartphone = () => (
             />
         <Button
             as="a"
-            href="/profile/profileOrders"
+            href="/profile/client/profileOrders"
             leftIcon={<FiTruck size={20} />}
             display={['none','flex']}
         >
@@ -55,14 +55,14 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/profileOrders"
+                href="/profile/client/profileOrders"
                 aria-label="Orders"
                 icon={<FiTruck size={30} />}
                 display={['flex', 'none']}
             />
         <Button
             as="a"
-            href="/profile/profileSettings"
+            href="/profile/client/profileSettings"
             leftIcon={<IoSettingsOutline size={20} />}
             display={['none','flex']}
       >
@@ -70,7 +70,7 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/profileSettings"
+                href="/profile/client/profileSettings"
                 aria-label="Orders"
                 icon={<IoSettingsOutline size={30} />}
                 display={['flex', 'none']}
