@@ -21,11 +21,7 @@ export default function Cart() {
         <span>User not authenticated, please sign-in to access the cart</span>
       )}
       {session && (
-        <Box align="center">
-          <CartList />
-          {
-          /* <Button onClick={handleClick} variant="outline" colorScheme="red">Checkout</Button> */}
-        </Box>
+        <CartList />
       )}
     </Layout>
   );

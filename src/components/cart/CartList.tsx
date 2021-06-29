@@ -2,10 +2,11 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  useToast, Flex, CircularProgress,
+  useToast, Flex, CircularProgress, Text,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import NoItemInCart from '@components/cart/NoItemInCart';
+import CartSummary from './CartSummary';
 
 type ICart = Models.Tables.ICart;
 
@@ -57,23 +58,26 @@ const CartList = () => {
 
     fetchData()
       .then((data) => {
-        setLoading(false);
         setState(data);
+        setLoading(false);
       })
       .catch((err) => {
-        setLoading(false);
         setError(err.error);
+        setLoading(false);
       });
   }, [state, setState, error, setError, loading, setLoading]);
 
   if (loading) {
     return (
-      <CircularProgress
-        isIndeterminate
-        color='red.300'
-        width='5em'
-        height='5em'
-      />
+      <Flex
+        justifyContent='center'
+      >
+        <CircularProgress
+          isIndeterminate
+          color='red.300'
+          size='3em'
+        />
+      </Flex>
     );
   }
 
@@ -82,8 +86,23 @@ const CartList = () => {
       <NoItemInCart />
     );
   }
+
   return (
-    <Flex />
+    <Flex
+      direction={['column', 'column', 'row', 'row', 'row']}
+      width={['100%', '100%', '80%', '60%', '60%']}
+    >
+      {/* Cart Item List */}
+      <Flex
+        direction='column'
+        width='70%'
+        padding='0.5em'
+      >
+        <Text>Ciao</Text>
+      </Flex>
+      {/* Cart Item List */}
+      <CartSummary cart={state} />
+    </Flex>
   );
 };
 

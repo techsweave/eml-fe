@@ -11,14 +11,20 @@ type Props = {
 };
 
 const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
-// const [session] = useSession();
+  // const [session] = useSession();
   <Stack spacing="2">
     <Head>
       <link rel="icon" href="/favicon.ico" />
       <title>{title}</title>
     </Head>
     <Header />
-    <Flex as="main" justifyContent='center'>{children}</Flex>
+    <Flex
+      as="main"
+      justifyContent='center'
+      justifySelf='stretch'
+    >
+      {children}
+    </Flex>
     <Footer />
   </Stack>
 );
