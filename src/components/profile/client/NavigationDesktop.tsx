@@ -26,7 +26,7 @@ const NavigationDesktop = () => (
       <Tooltip label="Dashboard" placement="right">
         <Button
           as="a"
-          href="/profile/index"
+          href="/profile"
           leftIcon={<RiDashboardLine size={20} />}
         >
           Dashboard

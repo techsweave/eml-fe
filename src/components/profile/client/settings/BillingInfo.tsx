@@ -1,36 +1,36 @@
 import React from 'react';
 import {
-  Box, Button, FormControl, FormLabel,
+  Box, FormControl, FormLabel,
   Input, InputGroup, InputLeftElement, NumberDecrementStepper,
   NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-  HStack, useNumberInput, VStack,
+  HStack, VStack,
 } from '@chakra-ui/react';
 import { PhoneIcon } from '@chakra-ui/icons';
 
-function HookUsage() {
-  const {
-    getInputProps,
-    getIncrementButtonProps,
-    getDecrementButtonProps,
-  } = useNumberInput({
-    step: 1,
-    defaultValue: 0,
-    min: 1,
-    max: 99999,
-  });
+// function HookUsage() {
+//   const {
+//     getInputProps,
+//     getIncrementButtonProps,
+//     getDecrementButtonProps,
+//   } = useNumberInput({
+//     step: 1,
+//     defaultValue: 0,
+//     min: 1,
+//     max: 99999,
+//   });
 
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps({ readOnly: true });
+//   const inc = getIncrementButtonProps();
+//   const dec = getDecrementButtonProps();
+//   const input = getInputProps({ readOnly: true });
 
-  return (
-    <HStack>
-      <Button {...inc} size="sm" rounded="md" border="1px" borderColor="gray.200">+</Button>
-      <Input {...input} size="sm" rounded="md" />
-      <Button {...dec} size="sm" rounded="md" border="1px" borderColor="gray.200">-</Button>
-    </HStack>
-  );
-}
+//   return (
+//     <HStack>
+//       <Button {...inc} size="sm" rounded="md" border="1px" borderColor="gray.200">+</Button>
+//       <Input {...input} size="sm" rounded="md" />
+//       <Button {...dec} size="sm" rounded="md" border="1px" borderColor="gray.200">-</Button>
+//     </HStack>
+//   );
+// }
 
 const BillingInfo = () => (
   <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={6}>
@@ -71,7 +71,13 @@ const BillingInfo = () => (
         </FormControl>
         <FormControl display={['block', 'block', 'none', 'none']}>
           <FormLabel>Cap</FormLabel>
-          <HookUsage />
+          <NumberInput max={99999} min={0} variant="outline" size="sm" defaultValue={0} rounded="md">
+            <NumberInputField rounded="md" />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
         </FormControl>
       </HStack>
       <FormControl>
@@ -94,7 +100,13 @@ const BillingInfo = () => (
       </FormControl>
       <FormControl display={['block', 'block', 'none', 'none']}>
         <FormLabel>Number</FormLabel>
-        <HookUsage />
+        <NumberInput max={99999} min={0} variant="outline" size="sm" defaultValue={0} rounded="md">
+          <NumberInputField rounded="md" />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </FormControl>
       <FormControl>
         <FormLabel>Telephone</FormLabel>

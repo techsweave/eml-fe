@@ -1,13 +1,8 @@
 import React from 'react';
-// import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   Box,
+  Center,
   Heading,
-  Button,
   Select,
 } from '@chakra-ui/react';
 import { VscChevronDown } from 'react-icons/vsc';
@@ -17,7 +12,9 @@ import OrderMock from '@test/OrderMock';
 
 const OrdersContent = (prop: { ordersContent: Models.Tables.IOrder[] }) => (
   <Box p={5}>
-    <Heading size="md">My orders</Heading>
+        <Center>
+            <Heading size="md">My orders</Heading>
+        </Center>
     <Select
       placeholder="Last month orders"
       variant="filled"
@@ -31,32 +28,6 @@ const OrdersContent = (prop: { ordersContent: Models.Tables.IOrder[] }) => (
     </Select>
         <OrdersTable ordersList={OrderMock} />
   </Box>
-//   <Tabs m={10} w="full" variant="line" colorScheme="none">
-//     <TabList w="full" justifyContent="space-evenly">
-//       <Tab>Last Month Orders</Tab>
-//       <Tab>Last 3 Month Orders</Tab>
-//       <Tab>Last 6 Month Orders</Tab>
-//       <Tab>Last 12 Month Orders</Tab>
-//       <Tab>All Orders</Tab>
-//     </TabList>
-//     <TabPanels>
-//       <TabPanel>
-//         <OrdersTable />
-//       </TabPanel>
-//       <TabPanel>
-//         <p>Ordini ultimi 3 mesi</p>
-//       </TabPanel>
-//       <TabPanel>
-//         <p>Ordini ultimi 6 mesi</p>
-//       </TabPanel>
-//       <TabPanel>
-//         <p>Ordini ultimi 12 mesi</p>
-//       </TabPanel>
-//       <TabPanel>
-//         <p>Tutti gli ordini</p>
-//       </TabPanel>
-//     </TabPanels>
-//   </Tabs>
 );
 
 export default OrdersContent;

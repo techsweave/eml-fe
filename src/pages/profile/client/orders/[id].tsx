@@ -2,17 +2,14 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import OrderDetail from '@components/profile/client/orders/OrderDetail';
 import Layout from '@components/Layout';
-import OrderMock, { getOrderById, getOrdersData } from '@test/OrderMock';
-import OrderedProductsMock from '@test/OrderedProductsMock';
+import { getOrderById, getOrdersData } from '@test/OrderMock';
 import { Models } from 'utilities-techsweave';
 
 export default function OrderDetailPage(prop: { order: Models.Tables.IOrder }) {
-  const { order } = prop;
-  console.log(order);
+    const { order } = prop;
   return (
     <Layout title={order.id}>
-      <p>{order.date}</p>
-      <OrderDetail products={order.products} />
+      <OrderDetail products={order.products} order={order} />
     </Layout>
   );
 }
@@ -33,7 +30,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // const caller = new LambdaCaller();
   // product = await caller.getProductAsync(context.params?.id as string);
   order = await getOrdersData(context.params?.id as string);
-  console.log(order);
   return {
     props: {
       order,
