@@ -11,6 +11,7 @@ import {
   Text,
   Center,
   Button,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
@@ -19,6 +20,12 @@ import { ConditionExpression } from '@aws/dynamodb-expressions';
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
 const initLoading = true;
+
+function getTableSize() {
+  const [isSmallerThan600] = useMediaQuery('(max-width: 600px)');
+  if (isSmallerThan600) return 'sm';
+  return 'md';
+}
 
 const OrderDetail = (prop: {
   products: Models.Tables.IOrderedProduct[],
@@ -82,11 +89,11 @@ const OrderDetail = (prop: {
           </Text>
         </Center>
       </Box>
-      <Table variant="simple" display={['none', 'table', 'table', 'table']}>
+      <Table variant="simple" size={getTableSize()}>
         <Thead>
           <Tr>
             <Th>Name</Th>
-            <Th>Product ID</Th>
+            <Th display={['none', 'none', 'table-cell', 'table-cell']}>Product ID</Th>
             <Th>Price</Th>
             <Th>Quantity</Th>
             <Th>Total</Th>
@@ -103,29 +110,6 @@ const OrderDetail = (prop: {
             </Tr>
           ))}
 
-        </Tbody>
-      </Table>
-      <Table variant="simple" display={['table', 'none', 'none', 'none']} size="sm">
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Price</Th>
-            <Th>Quantity</Th>
-            <Th>Total</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {products.map((orderData) => {
-            const productData = getProductsData(orderData.productId);
-            return (
-              <Tr _hover={{ backgroundColor: 'blue.100' }}>
-                <Td><Link href={{ pathname: '/products/detail/[id]', query: { id: productData.id } }}>{productData.title}</Link></Td>
-                <Td>{productData.price}</Td>
-                <Td>{ orderData.quantity}</Td>
-                <Td>{orderData.quantity * productData.price}</Td>
-              </Tr>
-            );
-          })}
         </Tbody>
       </Table>
       <Center><Button as="a" href="/profile/client/profileOrders" w={['full', 'full', '600px', '900px']} m="10">Back</Button></Center>
