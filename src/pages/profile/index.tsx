@@ -22,9 +22,6 @@ export default function auth() {
         <Flex as="nav" h="full" w={340} bg="gray.100" display={['none', 'none', 'inherit', 'inherit']}><NavigationDesktop /></Flex>
         <Flex as="nav" h="min-content" w="full" display={['flex', 'flex', 'none', 'none']} justify="center"><NavigationSmartphone /></Flex>
         <Flex as="main" justify="center"><DashboardContent /></Flex>
-        {/* Hi,
-        {session.user?.name}
-        , welcome on our website */}
       </Stack>
     </Layout>
   );

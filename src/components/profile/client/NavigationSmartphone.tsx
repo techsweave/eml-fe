@@ -17,7 +17,7 @@ const NavigationSmartphone = () => (
     >
         <Button
             as="a"
-            href="/profile/index"
+            href="/profile"
             leftIcon={<RiDashboardLine size={20} />}
             display={['none','flex']}
         >
@@ -25,7 +25,7 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/index"
+                href="/profile"
                 aria-label="Dashboard"
                 icon={<RiDashboardLine size={30} />}
                 display={['flex', 'none']}
