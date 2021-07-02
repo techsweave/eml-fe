@@ -56,15 +56,6 @@ const PersonalInfo = () => (
         <FormLabel>Username</FormLabel>
         <Input variant="outline" size="sm" placeholder="User" rounded="md" />
       </FormControl>
-      <FormControl>
-        <FormLabel>Telephone</FormLabel>
-        <InputGroup size="sm">
-          <InputLeftElement>
-            <PhoneIcon color="gray.300" />
-          </InputLeftElement>
-          <Input placeholder="Phone number" variant="outline" rounded="md" />
-        </InputGroup>
-      </FormControl>
       <ModButton />
     </VStack>
   </Box>

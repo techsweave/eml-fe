@@ -1,43 +1,49 @@
-import React from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import React, { useState, useEffect } from 'react';
 import OrderDetail from '@components/profile/client/orders/OrderDetail';
 import Layout from '@components/Layout';
-import OrderMock, { getOrderById, getOrdersData } from '@test/OrderMock';
-import OrderedProductsMock from '@test/OrderedProductsMock';
-import { Models } from 'utilities-techsweave';
+import { Models, Services } from 'utilities-techsweave';
+import { useSession } from 'next-auth/client';
 
+type IOrder = Models.Tables.IOrder;
+let init: IOrder;
+const initLoading = true;
 export default function OrderDetailPage(prop: { order: Models.Tables.IOrder }) {
   const { order } = prop;
-  console.log(order);
+  const [error, setError] = useState<Error>();
+  const [state, setState] = useState(init);
+  const [loading, setLoading] = useState(initLoading);
+  const session = useSession()[0];
+  const fetchData = async (): Promise<IOrder> => {
+    let fetchedData: IOrder;
+    const caller = new Services.Orders(
+      `${process.env.NEXT_PUBLIC_API_ID_ORDERS}`,
+      `${process.env.NEXT_PUBLIC_API_REGION}`,
+      `${process.env.NEXT_PUBLIC_API_STAGE}`,
+      session?.accessToken as string,
+      session?.idToken as string,
+    );
+    fetchedData = await caller.getAsync(order.id);
+    return Promise.resolve(fetchedData);
+  };
+  useEffect(() => {
+    // Avoid infinte loop render -> useEffect -> setState -> render
+    if (!loading) return;
+    if (error) return;
+
+    fetchData()
+      .then((data) => {
+        setLoading(false);
+        setState(data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.error);
+      });
+  }, [state, setState, error, setError, loading, setLoading]);
+
   return (
-    <Layout title={order.id}>
-      <p>{order.date}</p>
-      <OrderDetail products={order.products} />
+    <Layout title={state.id}>
+      <OrderDetail products={state.products} />
     </Layout>
   );
 }
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  // const caller = new LambdaCaller();
-  const paths = getOrderById();
-  /*  const id = (await caller.scanProductAsync(25)).data;
-    paths = id.map((idPath) => ({ params: { id: idPath.id } })); */
-  return {
-    paths,
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  let order: Models.Tables.IOrder;
-  // const caller = new LambdaCaller();
-  // product = await caller.getProductAsync(context.params?.id as string);
-  order = await getOrdersData(context.params?.id as string);
-  console.log(order);
-  return {
-    props: {
-      order,
-    }, // will be passed to the page component as props
-    revalidate: 600,
-  };
-};
