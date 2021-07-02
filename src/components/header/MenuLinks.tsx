@@ -6,7 +6,7 @@ import { signIn, signOut, useSession } from 'next-auth/client';
 import { AiOutlineShoppingCart, AiOutlineForm, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
 import { BiShoppingBag } from 'react-icons/bi';
-
+import { BsBook } from 'react-icons/bs'
 const MenuItem = ({ children, to = '/', ...rest }) => (
   <Link href={to}>
     <Text display="block" {...rest}>
@@ -51,6 +51,15 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             leftIcon={<AiOutlineForm size={20} />}
           >
             Create New Product
+          </Button>
+        </MenuItem>
+        <MenuItem to="/orders">
+          <Button
+            hidden={!isVendor ? true : undefined}
+            bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+            leftIcon={<BsBook size={20} />}
+          >
+            View Orders
           </Button>
         </MenuItem>
         <MenuItem to="/profile/profileDashboard">

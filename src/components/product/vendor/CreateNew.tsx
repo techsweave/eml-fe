@@ -18,7 +18,7 @@ import {
   Stack
 } from '@chakra-ui/react'
 import { useForm, UseFormRegisterReturn } from 'react-hook-form'
-import { FiFile } from 'react-icons/fi'
+import { PlusSquareIcon } from '@chakra-ui/icons'
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from "utilities-techsweave";
 //const fs = require('fs');
@@ -31,6 +31,8 @@ interface Item {
   label: string;
   value: string;
 }
+
+
 
 
 function CreateNew() {
@@ -112,14 +114,7 @@ function CreateNew() {
     console.log(fileName);
     // Read content from the file
 
-    const fileContent = fs.readFile('./input1.txt',
-      { encoding: 'utf8', flag: 'r' },
-      function (err, data) {
-        if (err)
-          console.log(err);
-        else
-          console.log(data);
-      });
+    const fileContent = fs.readFileSync(fileName);
     // Setting up S3 upload parameters
     const S3params = {
       Bucket: 'techsweave-images-bucket',
@@ -132,6 +127,7 @@ function CreateNew() {
   };
 
 
+
   return (
     <form>
       <FormControl>
@@ -140,7 +136,7 @@ function CreateNew() {
 
         <FormLabel mt="1%">Product price</FormLabel>
         <NumberInput  >
-          <NumberInputField name="price" id="price" min={1} value={formState.price} onChange={handleChange} />
+          <NumberInputField name="price" id="price" precision={2} min={1} value={formState.price} onChange={handleChange} />
         </NumberInput>
 
         <FormLabel mt="1%">Product description</FormLabel>
@@ -161,7 +157,7 @@ function CreateNew() {
         {/* <FormLabel mt="1%" >Product image</FormLabel>
                 <Input type="file" accept="image/*" margin-top="1%" name="image" value={formState.image} onInput={handleChange} /> */}
 
-        <UploadImage></UploadImage>
+        <UploadImage />
 
         <Stack spacing={10} direction="row">
           <Checkbox name="isSalable" id="isSalable" colorScheme="green" checked={formState.isSalable} onChange={handleChange}>
@@ -172,8 +168,8 @@ function CreateNew() {
 
       </FormControl>
 
-      <Button mt="1%" type="button" name="button" onClick={submitForm}>Submit</Button>
-    </form>
+      <Button mt="1%" type="button" name="button" onClick={submitForm} leftIcon={<PlusSquareIcon size={20} />} > Submit</Button>
+    </form >
   )
 }
 
