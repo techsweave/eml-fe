@@ -7,6 +7,11 @@ import {
   Tr,
   Th,
   Td,
+  Heading,
+  Text,
+  Center,
+  Button,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
@@ -15,6 +20,12 @@ import { ConditionExpression } from '@aws/dynamodb-expressions';
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
 const initLoading = true;
+
+function getTableSize() {
+  const [isSmallerThan600] = useMediaQuery('(max-width: 600px)');
+  if (isSmallerThan600) return 'sm';
+  return 'md';
+}
 
 const OrderDetail = (prop) => {
   const { products } = prop;
@@ -58,13 +69,12 @@ const OrderDetail = (prop) => {
       });
   }, [state, setState, error, setError, loading, setLoading]);
   return (
-
-    <Box w={['min-content']}>
-      <Table variant="simple" size="sm">
+    <Box minW="full">
+      <Table variant="simple" size={getTableSize()}>
         <Thead>
           <Tr>
             <Th>Name</Th>
-            <Th>Product ID</Th>
+            <Th display={['none', 'none', 'table-cell', 'table-cell']}>Product ID</Th>
             <Th>Price</Th>
             <Th>Quantity</Th>
             <Th>Total</Th>
@@ -83,6 +93,7 @@ const OrderDetail = (prop) => {
 
         </Tbody>
       </Table>
+      <Center><Button as="a" href="/profile/client/profileOrders" w={['full', 'full', '600px', '900px']} m="10">Back</Button></Center>
     </Box>
   );
 };

@@ -9,12 +9,12 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { IconButton } from "@chakra-ui/react"
 
 const NavigationSmartphone = () => (
-    <VStack spacing={8}>
+    <VStack spacing={10}>
     <Stack
         direction="row"
         w="full"
         spacing={['10', '6']}
-    >
+        >
         <Button
             as="a"
             href="/profile"
@@ -81,7 +81,7 @@ const NavigationSmartphone = () => (
             flexDirection="column"
             alignItems="center"
             justifyContent="space-between"
-      >
+        >
         <Avatar name="Name Surname" bg="gray.100" size="lg" borderWidth={1} borderColor="gray.400" />
         <VStack>
           <Heading size="sm" mt={2}>Hi, Name Surname</Heading>
