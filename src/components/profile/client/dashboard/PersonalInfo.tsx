@@ -19,6 +19,12 @@ const PersonalInfo = () => {
   const [state, setState] = useState({
     email: '',
     username: '',
+    name: '',
+    familyName: '',
+    telephone: '',
+    brithdate: '',
+    address: '',
+
   });
   const [loading, setLoading] = useState(initLoading);
   async function fetchData(s) {
@@ -26,6 +32,11 @@ const PersonalInfo = () => {
     return {
       email: await user.getEmail(),
       username: await user.getUserId(),
+      name: await user.getName(),
+      familyName: await user.getFamilyName(),
+      telephone: await user.getPhoneNumber(),
+      brithdate: await user.getBirthdate(),
+      address: await user.getAddress(),
     };
   }
   useEffect(() => {
@@ -44,6 +55,7 @@ const PersonalInfo = () => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
+  console.log(state.email);
   return (
     <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={3}>
       <Box
@@ -55,20 +67,36 @@ const PersonalInfo = () => {
       </Box>
       <Box mt={3}>
         <p>
-          Name:
+          Name:&nbsp;
+          {state.name}
 
         </p>
-        <p>Surname: surname</p>
+        <p>
+          Surname: &nbsp;
+          {state.familyName}
+        </p>
+        <p>
+          Birthdate: &nbsp;
+          {state.brithdate}
+        </p>
         <p>
           Email:
-          {session?.user?.email}
+          &nbsp;
+          {state.email}
         </p>
         <p>
           Username:
         &nbsp;
           {state.username}
         </p>
-        <p>Telephone: telephone</p>
+        <p>
+          Telephone: &nbsp;
+          {state.telephone}
+        </p>
+        <p>
+          Address: &nbsp;
+          {state.address}
+        </p>
       </Box>
     </Box>
   );

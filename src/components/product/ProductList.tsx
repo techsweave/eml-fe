@@ -11,9 +11,7 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
       <Grid ml={['0', '0', '50', '50']} templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(4, 1fr)', 'repeat(4, 1fr)']} gap={10}>
         {productList.map((products) => (
           <GridItem
-            id={products.id}
-            tag="li"
-            style={{ listStyle: 'none' }}
+            key={products.id}
           >
             <ProductItem
               product={products}
