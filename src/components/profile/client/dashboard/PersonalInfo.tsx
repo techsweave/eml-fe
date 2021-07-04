@@ -55,7 +55,6 @@ const PersonalInfo = () => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
-  console.log(state.email);
   return (
     <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={3}>
       <Box
