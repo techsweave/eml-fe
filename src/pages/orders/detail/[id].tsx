@@ -8,13 +8,12 @@ import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { Flex } from '@chakra-ui/react';
 import productMock from '@test/ProductMock';
 
-export default function productDetailPage(prop) {
-  const { product } = prop;
+export default function orderDetailPage(prop) {
+  const { order } = prop;
   return (
-    <Layout title={product.title}>
+    <Layout title={order.title}>
       <Flex flexDirection='column' alignSelf="center">
-        <ProductDetail product={product} />
-        <RelatedProduct product={productMock} />
+        <OrderDetail order={order} />
       </Flex>
     </Layout>
   );

@@ -25,37 +25,45 @@ export default function orderPage() {
 
 
   async function isVendor(s, l) {
-    if (s) {
-      if (!l) return userState;
-      const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
-      return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
-    }
+    if (!l) return userState;
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
   }
 
-  async function scanOrders(s) {
+
+  async function scanOrders(s, v, l) {
+    if (!l) return;
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     const caller = new Services.Orders(`${process.env.NEXT_PUBLIC_API_ID_ORDERS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
-    return (await caller.scanAsync(25, undefined, undefined, undefined, undefined)).data;
+    if (await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string))
+      return (await caller.scanAsync(25, undefined, undefined, undefined, undefined)).data;
+    else
+      return (await caller.scanAsync(25, undefined, undefined, undefined, {
+        type: 'Equals',
+        subject: 'userId',
+        object: await user.getUserId()
+      })).data;
   }
 
   useEffect(() => {
     const s = session;
     const l = isLoading;
     if (state != undefined) return;
-
+    if (s == undefined) return;
     isVendor(s, l).then(
       (data) => {
         setUserState(data);
-        console.log(data);
       }
-    )
-    // scanOrders(s).then(
-    //   (data) => {
-    //     setState(data)
-    //     setLoading(false);
+    ).catch((err) => console.log(err))
+    const v = userState;
 
-    //   }
-    // )
-    setLoading(false);
+    if (s)
+      scanOrders(s, v, l).then(
+        (data) => {
+          setState(data)
+          setLoading(false);
+        }
+      ).catch((err) => console.log(err))
   }, [session, state, setState, userState, setUserState, isLoading, setLoading]);
 
 
@@ -63,10 +71,10 @@ export default function orderPage() {
     return (
       <Layout title="Order-page">
         <Stack>
-          <Stack hidden={userState} w='95%' direction={['column', 'column', 'row']}>
+          <Stack hidden={!userState} w='95%' direction={['column', 'column', 'row']}>
             <OrderList orderList={state!} />
           </Stack>
-          <Heading hidden={!userState}>403 - Forbidden</Heading>
+          <Heading hidden={userState}>403 - Forbidden</Heading>
         </Stack>
       </Layout>
     );

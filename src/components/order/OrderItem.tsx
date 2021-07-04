@@ -14,12 +14,13 @@ import {
   Th,
   Td,
   TableCaption,
-  Button
+  Button,
+  Grid,
+  GridItem
 } from '@chakra-ui/react';
 
 const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
   const { order } = prop;
-  console.log(order);
 
   const [state, setState] = useState(new Array());
   const [isLoading, setLoading] = useState(true);
@@ -31,7 +32,8 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       total += item.price * item.quantity;
     })
 
-  async function getProductOrders() {
+  async function getProductOrders(l) {
+    if (!l) return state;
     let ids: Array<string> = [];
 
     if (order.products)
@@ -54,10 +56,12 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
   }
 
   useEffect(() => {
-    if (state != new Array()) return;
+    //if (state != new Array()) return;
     const l = isLoading;
-    if (!l) return
-    getProductOrders().then(
+    console.log('state')
+    console.log(state)
+    if (state.length != 0) return;
+    getProductOrders(l).then(
       (data) => {
         setState(data)
         setLoading(false)
@@ -67,37 +71,47 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
         console.log(err.message);
       }
     )
-  }, [state, setState]);
+  }, [state, setState, isLoading, setLoading]);
 
-  console.log(state);
-
+  function openDetail(detailsElement) {
+    $(detailsElement).prev().attr('open', 'open')
+  }
 
   if (!isLoading)
     return (
-      <Box as="button" w='100%'>
+      <Box w='100%'>
         <Stack position='relative'>
           <Table variant="simple">
             <TableCaption>Total: {total} €</TableCaption>
             <Thead>
               <Tr>
-                <Th>{order.date.toUTCString()}</Th>
-                <Th>{order.userId}</Th>
+                <Th textAlign='center'>Customer: {order.userId}</Th>
+
+                <Th textAlign='center'>Order: {order.id}</Th>
               </Tr>
             </Thead>
             <Tbody>
               {state.map((item) => {
                 return (
                   <Tr>
-                    <Td><Image src={item.imageURL} alt={item.title}></Image></Td>
-                    <Td><Link href={{ pathname: '/products/detail/[id]', query: { id: item.productId } }}>{item.title}</Link></Td>
-                    <Td>Subtotal: {item.price * item.quantity}</Td>
+                    <Td><Image src={item.imageURL} alt={item.title} maxWidth='250'></Image></Td>
+                    <Td>{item.title}</Td>
+                    <Td>
+                      <Tr>
+                        <Td>Price: {item.price} €</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>Quantity: {item.quantity}</Td>
+                      </Tr>
+                    </Td>
+                    <Td textAlign='center'>Subtotal: {item.price * item.quantity}</Td>
                   </Tr>
                 )
               })}
             </Tbody>
             <Tfoot>
               <Link href={{ pathname: '/orders/detail/[id]', query: { id: order.id } }}>
-                <Button> Go to detail </Button>
+                <Button mt='2'> Go to detail </Button>
               </Link>
             </Tfoot>
           </Table>

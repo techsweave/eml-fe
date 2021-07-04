@@ -8,7 +8,7 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
 
   return (
     <Box>
-      <Grid ml={['0', '0', '50', '50']} templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(4, 1fr)', 'repeat(4, 1fr)']} gap={10}>
+      <Grid ml={['0', '0', '50', '50']} templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)']} gap={30}>
         {orderList.map((orders) => (
           <GridItem
             key={orders.id}
