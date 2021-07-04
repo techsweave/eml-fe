@@ -16,17 +16,6 @@ const OrdersContent = (prop: { ordersContent: Models.Tables.IOrder[] }) => {
     return (
         <Box p={5}>
             <Heading size="md">My orders</Heading>
-            <Select
-                placeholder="Last month orders"
-                variant="filled"
-                mt={5}
-                mb={5}
-            >
-                <option value="Last 3 months orders">Last 3 months orders</option>
-                <option value="Last 6 months orders">Last 6 months orders</option>
-                <option value="Last 12 months orders">Last 12 months orders</option>
-                <option value="All orders">All orders</option>
-            </Select>
             <OrdersTable ordersList={ordersContent} />
         </Box>
 

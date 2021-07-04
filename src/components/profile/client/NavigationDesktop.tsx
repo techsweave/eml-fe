@@ -92,7 +92,7 @@ return    (
                     href="/profile/client/profileSettings"
                     leftIcon={<IoSettingsOutline size={20} />}
                 >
-                    Privacy and settings
+                    Edit profile
                 </Button>
             </Tooltip>
         </VStack>
