@@ -12,8 +12,6 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
         {productList.map((products) => (
           <GridItem
             key={products.id}
-            tag="li"
-            style={{ listStyle: 'none' }}
           >
             <ProductItem
               product={products}

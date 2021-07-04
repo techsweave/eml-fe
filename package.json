@@ -38,11 +38,7 @@
     "react-hook-form": "^7.9.0",
     "stripe": "^8.145.0",
     "swiper": "^6.7.0",
-<<<<<<< HEAD
-        "utilities-techsweave": "^1.2.4"
-=======
-        "utilities-techsweave": "^1.2.3"
->>>>>>> 46fa88a (add fetch of client data and client order, refactor of layout)
+    "utilities-techsweave": "^1.2.4"
   },
   "devDependencies": {
     "@types/react": "^17.0.3",
