@@ -66,7 +66,7 @@ const NavigationSmartphone = () => (
             leftIcon={<IoSettingsOutline size={20} />}
             display={['none','flex']}
       >
-        Settings
+        s
             </Button>
             <IconButton
                 as="a"
