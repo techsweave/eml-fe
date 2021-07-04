@@ -81,12 +81,12 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
     return (
       <Box w='100%'>
         <Stack position='relative'>
-          <Table variant="simple">
+          <Table variant="simple" minWidth='-webkit-max-content'>
             <TableCaption>Total: {total} €</TableCaption>
             <Thead>
               <Tr>
                 <Th textAlign='center'>Customer: {order.userId}</Th>
-
+                <Th colSpan={2} />
                 <Th textAlign='center'>Order: {order.id}</Th>
               </Tr>
             </Thead>
@@ -109,11 +109,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                 )
               })}
             </Tbody>
-            <Tfoot>
-              <Link href={{ pathname: '/orders/detail/[id]', query: { id: order.id } }}>
-                <Button mt='2'> Go to detail </Button>
-              </Link>
-            </Tfoot>
           </Table>
         </Stack>
       </Box >

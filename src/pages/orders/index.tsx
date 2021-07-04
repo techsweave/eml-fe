@@ -70,11 +70,8 @@ export default function orderPage() {
   if (!isLoading) {
     return (
       <Layout title="Order-page">
-        <Stack>
-          <Stack hidden={!userState} w='95%' direction={['column', 'column', 'row']}>
-            <OrderList orderList={state!} />
-          </Stack>
-          <Heading hidden={userState}>403 - Forbidden</Heading>
+        <Stack w='95%' direction={['column', 'column', 'row']}>
+          <OrderList orderList={state!} />
         </Stack>
       </Layout>
     );

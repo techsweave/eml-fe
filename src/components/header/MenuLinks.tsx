@@ -76,11 +76,10 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             <Button
               bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
               leftIcon={<IoEnterOutline size={20} />}
-              // onClick={(e) => {
-              //   e.preventDefault();
-              //   signIn('cognito');
-              // }}
-              onClick={() => signIn('cognito')}
+              onClick={(e) => {
+                e.preventDefault();
+                signIn('cognito');
+              }}
             >
               Sign in
             </Button>
