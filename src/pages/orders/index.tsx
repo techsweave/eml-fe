@@ -1,21 +1,18 @@
 import Layout from '@components/Layout';
 import OrderList from '@components/order/OrderList';
-import { GetStaticProps } from 'next';
 import { Models, Services, AuthenticatedUser } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
-import { Heading, Stack } from '@chakra-ui/layout';
-// import ProductMock from '@test/ProductMock';
-import Filter from '@components/filter/Filter';
-import * as AWS from 'aws-sdk'
+import { Stack } from '@chakra-ui/layout';
+import * as AWS from 'aws-sdk';
 import { useSession } from 'next-auth/client';
 
 export default function orderPage() {
   AWS.config.update({
     region: 'eu-central-1',
     credentials: {
-      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY!,
-      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS!
-    }
+      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY as string,
+      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
+    },
   });
 
   const session = useSession()[0];
@@ -30,8 +27,7 @@ export default function orderPage() {
     return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
   }
 
-
-  async function scanOrders(s, v, l) {
+  async function scanOrders(s, v, l): Promise<any> {
     if (!l) return;
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     const caller = new Services.Orders(`${process.env.NEXT_PUBLIC_API_ID_ORDERS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
@@ -48,29 +44,30 @@ export default function orderPage() {
   useEffect(() => {
     const s = session;
     const l = isLoading;
-    if (state != undefined) return;
-    if (s == undefined) return;
+    if (state !== undefined) return;
+    if (s === undefined) return;
     isVendor(s, l).then(
       (data) => {
         setUserState(data);
-      }
-    ).catch((err) => console.log(err))
+      },
+    ).catch((err) => console.log(err));
     const v = userState;
 
-    if (s)
+    if (s) {
       scanOrders(s, v, l).then(
         (data) => {
-          setState(data)
+          setState(data);
           setLoading(false);
-        }
-      ).catch((err) => console.log(err))
+        },
+      ).catch((err) => console.log(err));
+    }
   }, [session, state, setState, userState, setUserState, isLoading, setLoading]);
 
 
   if (!isLoading) {
     return (
       <Layout title="Order-page">
-        <Stack w='95%' direction={['column', 'column', 'row']}>
+        <Stack w='95%' direction={['column', 'column', 'row']} justifyContent='center'>
           <OrderList orderList={state!} />
         </Stack>
       </Layout>
