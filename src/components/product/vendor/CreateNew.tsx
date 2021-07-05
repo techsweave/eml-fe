@@ -17,7 +17,6 @@ import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
 // const fs = require('fs');
 import * as fs from 'fs';
-import UploadImage from './UploadImage';
 
 interface Item {
   label: string;
@@ -151,11 +150,9 @@ function CreateNew() {
           <NumberInputField id="availability" name="availability" min={1} value={formState.availability} onChange={handleChange} />
         </NumberInput>
 
-        {/* <FormLabel mt="1%" >Product image</FormLabel>
-                <Input type="file" accept="image/*"
-                margin-top="1%" name="image" value={formState.image} onInput={handleChange} /> */}
-
-        <UploadImage />
+        <FormLabel mt="1%" >Product image</FormLabel>
+        <Input type="file" accept="image/*"
+          margin-top="1%" name="image" value={formState.image} onInput={handleChange} />
 
         <Stack spacing={10} direction="row">
           <Checkbox name="isSalable" id="isSalable" colorScheme="green" checked={formState.isSalable} onChange={handleChange}>
