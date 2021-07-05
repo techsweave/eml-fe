@@ -1,5 +1,5 @@
 import { Models, Services } from 'utilities-techsweave';
-import ProductDetail from '@components/order/OrderDetail';
+import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArticles';
