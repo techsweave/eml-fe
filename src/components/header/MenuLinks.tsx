@@ -35,6 +35,9 @@ const MenuLinks = ({ isOpen, isVendor }) => {
         <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </MenuItem>
+        <MenuItem to="/orders" display={['inherit', 'inherit', 'none', 'none']}>
+          <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BsBook size={20} />}>Orders</Button>
+        </MenuItem>
         <MenuItem to="/cart">
           <Button
             hidden={isVendor ? true : undefined}
@@ -53,15 +56,6 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             Create New Product
           </Button>
         </MenuItem>
-        <MenuItem to="/orders">
-          <Button
-            hidden={!isVendor ? true : undefined}
-            bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
-            leftIcon={<BsBook size={20} />}
-          >
-            View Orders
-          </Button>
-        </MenuItem>
         <MenuItem to="/profile/profileDashboard">
           <Button
             hidden={!session ? true : undefined}
@@ -72,27 +66,27 @@ const MenuLinks = ({ isOpen, isVendor }) => {
           </Button>
         </MenuItem>
         <MenuItem>
-          {!session && (
-            <Button
-              bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
-              leftIcon={<IoEnterOutline size={20} />}
-              onClick={(e) => {
-                e.preventDefault();
-                signIn('cognito');
-              }}
-            >
-              Sign in
-            </Button>
-          )}
-          {session && (
-            <Button
-              bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
-              onClick={() => signOut()}
-              leftIcon={<IoExitOutline size={20} />}
-            >
-              Sign out
-            </Button>
-          )}
+
+          <Button
+            hidden={session ? true : undefined}
+            bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+            leftIcon={<IoEnterOutline size={20} />}
+            onClick={(e) => {
+              e.preventDefault();
+              signIn('cognito');
+            }}
+          >
+            Sign in
+          </Button>
+
+          <Button
+            hidden={!session ? true : undefined}
+            bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
+            onClick={() => signOut()}
+            leftIcon={<IoExitOutline size={20} />}
+          >
+            Sign out
+          </Button>
         </MenuItem>
       </Stack>
     </Box>
