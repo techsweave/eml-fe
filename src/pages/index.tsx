@@ -2,7 +2,6 @@ import Layout from '@components/Layout';
 import React from 'react';
 import Carousel from '@components/home/Carousel/Carousel';
 import RecentProduct from '@components/home/RecentProduct';
-import productMock from '@test/ProductMock';
 import { Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Models, Services } from 'utilities-techsweave';
@@ -33,7 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     products = (await caller.scanAsync(6, undefined, undefined, undefined, filter)).data;
   } catch (error) {
-    alert(error);
+    //alert(error);
   }
   const filter2: ConditionExpression = {
     type: 'LessThanOrEqualTo',
@@ -43,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     lessProducts = (await caller.scanAsync(6, undefined, undefined, undefined, filter2)).data;
   } catch (error) {
-    alert(error);
+    //alert(error);
   }
   return {
     props: {
