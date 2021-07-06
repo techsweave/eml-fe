@@ -3,9 +3,9 @@ import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { Stack, Flex } from '@chakra-ui/layout';
 import Layout from '@components/Layout';
-import NavigationDesktop from '@components/profile/client/NavigationDesktop';
-import NavigationSmartphone from '@components/profile/client/NavigationSmartphone';
-import DashboardContent from '@components/profile/client/IndexContent';
+import NavigationDesktop from '@components/profile/NavigationDesktop';
+import NavigationSmartphone from '@components/profile/NavigationSmartphone';
+import DashboardContent from '@components/profile/IndexContent';
 
 export default function auth() {
   const [session] = useSession();

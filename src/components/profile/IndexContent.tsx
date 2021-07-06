@@ -2,7 +2,7 @@ import React from 'react';
 import {
   SimpleGrid, Heading, Box, Center,
 } from '@chakra-ui/react';
-import PersonalInfo from '@components/profile/client/dashboard/PersonalInfo';
+import PersonalInfo from '@components/profile/dashboard/PersonalInfo';
 
 const DashboardContent = () => (
   <Box p={5}>

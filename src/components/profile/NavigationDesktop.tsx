@@ -79,7 +79,7 @@ return    (
                 <Tooltip label="Orders" placement="right">
                     <Button
                         as="a"
-                        href="/profile/client/profileOrders"
+                        href="/orders"
                         leftIcon={<FiTruck size={20} />}
                     >
                         Orders

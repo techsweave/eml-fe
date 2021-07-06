@@ -8,7 +8,6 @@ import {
 import { VscChevronDown } from 'react-icons/vsc';
 import OrdersTable from './orders/OrdersTable';
 import { Models } from 'utilities-techsweave';
-import OrderMock from '@test/OrderMock';
 
 const OrdersContent = (prop: { ordersContent: Models.Tables.IOrder[] }) => {
     const { ordersContent } = prop;

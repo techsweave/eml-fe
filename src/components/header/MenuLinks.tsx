@@ -56,7 +56,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             Create New Product
           </Button>
         </MenuItem>
-        <MenuItem to="/profile/profileDashboard">
+        <MenuItem to="/profile">
           <Button
             hidden={!session ? true : undefined}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
