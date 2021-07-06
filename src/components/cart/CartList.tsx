@@ -2,35 +2,29 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  useToast, Flex, CircularProgress, Text,
+  Flex, CircularProgress, Stack,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import NoItemInCart from '@components/cart/NoItemInCart';
+import showError from '@libs/showError';
 import CartSummary from './CartSummary';
+import CartItem from './CartItem';
 
 type ICart = Models.Tables.ICart;
+type IState = {
+  loading: boolean,
+  error?: Error,
+  data: Array<ICart>,
+};
 
-const init: Array<ICart> = [];
-const initLoading = true;
+const init: IState = {
+  loading: true,
+  data: [],
+};
 
 const CartList = () => {
-  const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
-  const [loading, setLoading] = useState(initLoading);
   const session = useSession()[0];
-
-  const toast = useToast();
-  const showError = async () => {
-    if (!error) return;
-    toast({
-      title: error.name,
-      description: error.message,
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top-right',
-    });
-  };
 
   const fetchData = async (): Promise<Array<ICart>> => {
     let fetchedData: Array<ICart> = [];
@@ -44,30 +38,33 @@ const CartList = () => {
     );
 
     const fetch = await cartService.getAsync();
-    fetchedData = fetchedData.concat(fetch.data);
+    fetchedData = fetchedData.concat(fetch.data ? fetch.data : fetch as any);
 
     return Promise.resolve(fetchedData);
   };
 
   useEffect(() => {
-    showError();
-
     // Avoid infinte loop render -> useEffect -> setState -> render
-    if (!loading) return;
-    if (error) return;
+    if (!state.loading) return;
+    if (state.error) return;
 
     fetchData()
       .then((data) => {
-        setState(data);
-        setLoading(false);
+        setState({
+          loading: false,
+          data,
+        });
       })
       .catch((err) => {
-        setError(err.error);
-        setLoading(false);
+        setState({
+          loading: false,
+          error: err.error,
+          data: [],
+        });
       });
-  }, [state, setState, error, setError, loading, setLoading]);
+  }, [state, setState]);
 
-  if (loading) {
+  if (state.loading) {
     return (
       <Flex
         justifyContent='center'
@@ -81,7 +78,54 @@ const CartList = () => {
     );
   }
 
-  if (state.length === 0) {
+  // const setStateFunction = (oldState: IState, id: string) => {
+  //   if (!state.data) return state;
+
+  //   const newState: IState = {
+  //     loading: false,
+  //     data: oldState.data.slice(oldState.data.findIndex((x) => x.id === id)),
+  //   };
+
+  //   return newState;
+  // };
+
+  const updateState = async (id?: string): Promise<void> => {
+    if (!id) {
+      // reload and do nothing
+      setState({
+        loading: true,
+        data: [],
+      });
+      return;
+    }
+
+    const cartService = new Services.Carts(
+      process.env.NEXT_PUBLIC_API_ID_CART!,
+      process.env.NEXT_PUBLIC_API_REGION!,
+      process.env.NEXT_PUBLIC_API_STAGE!,
+      session?.accessToken as string,
+      session?.idToken as string,
+    );
+
+    try {
+      await cartService.removeProductAsync(id);
+      const res = await fetchData();
+      setState({
+        loading: false,
+        data: res,
+      });
+    } catch (err) {
+      setState({
+        loading: false,
+        error: err.error,
+        data: [],
+      });
+    }
+  };
+
+  showError(state.error);
+
+  if (state.data.length === 0) {
     return (
       <NoItemInCart />
     );
@@ -93,15 +137,21 @@ const CartList = () => {
       width={['100%', '100%', '80%', '60%', '60%']}
     >
       {/* Cart Item List */}
-      <Flex
+      <Stack
         direction='column'
-        width='70%'
+        width={['100%', '100%', '70%', '70%', '70%']}
         padding='0.5em'
       >
-        <Text>Ciao</Text>
-      </Flex>
+        {state.data.map((c) => (
+          <CartItem
+            cartItem={c}
+            updateState={updateState}
+            key={c?.id}
+          />
+        ))}
+      </Stack>
       {/* Cart Item List */}
-      <CartSummary cart={state} />
+      <CartSummary cart={state.data} />
     </Flex>
   );
 };

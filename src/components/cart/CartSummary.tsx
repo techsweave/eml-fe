@@ -4,6 +4,7 @@ import {
   Flex, Text, Heading, CircularProgress, Button,
 } from '@chakra-ui/react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
+import showError from '@libs/showError';
 import { useSession } from 'next-auth/client';
 import { FaShoppingBag } from 'react-icons/fa';
 
@@ -54,30 +55,27 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
       session?.idToken as string,
     );
 
-    try {
-      do {
-        scanResult = await productService.scanAsync(
-          50,
-          scanResult?.lastEvaluatedKey?.id,
-          undefined,
-          undefined,
-          filter,
-        );
-        products = products.concat(scanResult.count ? scanResult.data : scanResult as any);
-      } while (scanResult?.lastEvaluatedKey);
+    do {
+      scanResult = await productService.scanAsync(
+        50,
+        scanResult?.lastEvaluatedKey?.id,
+        undefined,
+        undefined,
+        filter,
+      );
+      products = products.concat(scanResult.count ? scanResult.data : scanResult as any);
+    } while (scanResult?.lastEvaluatedKey);
 
-      products.forEach((product) => {
-        const cartItem = cart.find((x) => x.productId === product.id)!;
-        let price = product.price ? product.price : 0;
-        totalNoDiscount += price * cartItem.quantity;
-        if (product?.discount) {
-          price -= ((price / 100) * product.discount!);
-        }
-        total += price * cartItem.quantity;
-      });
-    } catch (err) {
-      setError(err.error);
-    }
+    products.forEach((product) => {
+      const cartItem = cart.find((x) => x.productId === product.id)!;
+      let price = product.price ? product.price : 0;
+      totalNoDiscount += price * cartItem.quantity;
+      if (product?.discount) {
+        price -= ((price / 100) * product.discount!);
+      }
+      total += price * cartItem.quantity;
+    });
+
     return Promise.resolve([total, totalNoDiscount]);
   };
 
@@ -108,6 +106,10 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
         />
       </Flex>
     );
+  }
+
+  if (error) {
+    showError(error);
   }
 
   const goToChechOut = async () => {
