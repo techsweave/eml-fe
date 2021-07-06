@@ -64,6 +64,8 @@ const CartList = () => {
       });
   }, [state, setState]);
 
+  showError(state.error);
+
   if (state.loading) {
     return (
       <Flex
@@ -122,8 +124,6 @@ const CartList = () => {
       });
     }
   };
-
-  showError(state.error);
 
   if (state.data.length === 0) {
     return (
