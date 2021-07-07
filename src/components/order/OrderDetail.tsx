@@ -12,6 +12,12 @@ import {
   Center,
   Button,
   useMediaQuery,
+  Stack,
+  Grid,
+  GridItem,
+  HStack,
+  Image,
+  Flex,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
@@ -21,16 +27,7 @@ type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
 const initLoading = true;
 
-function getTableSize() {
-  const [isSmallerThan600] = useMediaQuery('(max-width: 600px)');
-  if (isSmallerThan600) return 'sm';
-  return 'md';
-}
-
-const OrderDetail = (prop: {
-  products: Models.Tables.IOrderedProduct[],
-  order: Models.Tables.IOrder
-}) => {
+const OrderDetail = (prop) => {
   const { products } = prop;
   const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
@@ -38,7 +35,7 @@ const OrderDetail = (prop: {
   const fetchData = async (): Promise<Array<any>> => {
     let fetchedData: IProduct[] = [];
     const caller = new Services.Products(
-      `${process.env.NEXT_PUBLIC_API_ID_PRODUCT}`,
+      `${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`,
       `${process.env.NEXT_PUBLIC_API_REGION}`,
       `${process.env.NEXT_PUBLIC_API_STAGE}`,
     );
@@ -73,46 +70,44 @@ const OrderDetail = (prop: {
   }, [state, setState, error, setError, loading, setLoading]);
   return (
     <Box minW="full">
-      <Box mb="10">
-        <Center>
-          <Heading as="h6" mb="2">
-            {order.id}
-            {' '}
-            details
-          </Heading>
-        </Center>
-        <Center>
-          <Text>
-            Purchased on:
-            {' '}
-            {order.date}
-          </Text>
-        </Center>
-      </Box>
-      <Table variant="simple" size={getTableSize()}>
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th display={['none', 'none', 'table-cell', 'table-cell']}>Product ID</Th>
-            <Th>Price</Th>
-            <Th>Quantity</Th>
-            <Th>Total</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {state.map((productData) => (
-            <Tr>
-              <Td><Link href={{ pathname: '/products/detail/[id]', query: { id: productData.id } }}>{productData.title}</Link></Td>
-              <Td>{productData.id}</Td>
-              <Td>{productData.price}</Td>
-              <Td>{productData.quantity}</Td>
-              <Td>{productData.price * productData.quantity}</Td>
-            </Tr>
-          ))}
-
-        </Tbody>
-      </Table>
-      <Center><Button as="a" href="/profile/client/profileOrders" w={['full', 'full', '600px', '900px']} m="10">Back</Button></Center>
+      <Grid templateColumns='repeat(1, 1fr)' alignItems='center'>
+        {state.map((productData) => (
+          <GridItem
+            key={productData.id}
+          >
+            <Box as='button' w='100%'>
+              <Link href={{ pathname: '/products/detail/[id]', query: { id: productData.id } }}>
+                <Stack>
+                  <Text textAlign='center'>{productData.title}</Text>
+                  <Flex alignItems='flex-end'>
+                    <HStack>
+                      <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w="50%" h='50%' borderRadius="15px" fit="cover" />
+                      <Stack>
+                        <Text>
+                          Price:
+                          {' '}
+                          {productData.price}
+                        </Text>
+                        <Text>
+                          Quantity:
+                          {' '}
+                          {productData.quantity}
+                        </Text>
+                      </Stack>
+                      <Text>
+                        Total:
+                        {' '}
+                        {productData.price * productData.quantity}
+                      </Text>
+                    </HStack>
+                  </Flex>
+                </Stack>
+              </Link>
+            </Box>
+          </GridItem>
+        ))}
+      </Grid>
+      <Center><Button as="a" href="/orders" w={['full', 'full', '600px', '900px']} m="10">Back</Button></Center>
     </Box>
   );
 };

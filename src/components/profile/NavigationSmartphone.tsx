@@ -47,7 +47,7 @@ const NavigationSmartphone = () => (
             />
         <Button
             as="a"
-            href="/profile/client/profileOrders"
+            href="/orders"
             leftIcon={<FiTruck size={20} />}
             display={['none','flex']}
         >
@@ -55,7 +55,7 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/client/profileOrders"
+                href="/orders"
                 aria-label="Orders"
                 icon={<FiTruck size={30} />}
                 display={['flex', 'none']}
