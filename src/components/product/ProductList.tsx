@@ -8,12 +8,10 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
 
     return (
         <Box>
-            <Grid ml={['0', '0', '50', '50']} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={10}>
+            <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={10}>
                 {productList.map((products) => (
                     <GridItem
                         key={products.id}
-                        tag="li"
-                        style={{ listStyle: 'none' }}
                     >
                         <ProductItem
                             product={products}
