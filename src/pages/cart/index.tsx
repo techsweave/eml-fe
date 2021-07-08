@@ -9,7 +9,6 @@ import React from 'react';
 import CartList from '@components/cart/CartList';
 import { Button } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/layout';
-import CartMock from '@test/CartMock';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.

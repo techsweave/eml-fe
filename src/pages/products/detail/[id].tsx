@@ -6,7 +6,6 @@ import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArt
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { Flex } from '@chakra-ui/react';
-import productMock from '@test/ProductMock';
 
 export default function productDetailPage(prop) {
   const { product } = prop;

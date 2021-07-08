@@ -54,7 +54,7 @@ const ProductDetail = (prop: { product: Models.Tables.IProduct }) => {
         </p>
         <Button hidden={userState ? true : undefined} onClick={handleClick}>Add to Cart</Button>
         {/* TODO */}
-        <Link href=''>
+        <Link href='/'>
           <Button hidden={!userState ? true : undefined}>Edit product</Button>
         </Link>
       </VStack>
