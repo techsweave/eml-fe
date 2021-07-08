@@ -20,7 +20,8 @@ import { PhoneIcon, EmailIcon } from '@chakra-ui/icons';
 
   render() {
     return (
-      <Button size="sm" rounded="md" variant="outline" w="full" onClick={this.handleClick}>{this.state.isToggleOn ? 'Save changes' : 'Modify'}</Button>
+      <Button size="sm" rounded="md" variant="outline" w="full"
+      onClick={this.handleClick}>{this.state.isToggleOn ? 'Save changes' : 'Modify'}</Button>
     );
   }
 } */
@@ -56,7 +57,7 @@ const PersonalInfo = () => (
         <FormLabel>Username</FormLabel>
         <Input variant="outline" size="sm" placeholder="User" rounded="md" />
       </FormControl>
-      <ModButton />
+      {/* <ModButton /> */}
     </VStack>
   </Box>
 );
