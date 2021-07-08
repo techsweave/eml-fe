@@ -18,12 +18,17 @@ export default function productPage({ record }) {
   );
 }
 export const getStaticProps: GetStaticProps = async () => {
-  let products: Models.Tables.IProduct[] = [];
+  let products;
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
-    products = (await caller.scanAsync(25)).data;
+    products = await caller.scanAsync(25);
   } catch (error) {
     alert(error);
+  }
+  if (products.data) {
+    products = products.data;
+  } else {
+    products = [products];
   }
   return {
     props: {
