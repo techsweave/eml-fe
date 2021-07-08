@@ -12,11 +12,11 @@ class ModButton extends Component {
     };
   }
 
-  handleClick = () => {
+  /*  handleClick = () => {
     this.setState((state) => ({
       isToggleOn: !state.isToggleOn,
     }));
-  };
+  }; */
 
   render() {
     return (
