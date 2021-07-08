@@ -22,13 +22,14 @@ import {
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
+import orderPage from '@pages/orders';
 
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
 const initLoading = true;
 
 const OrderDetail = (prop) => {
-  const { products } = prop;
+  const { products, order } = prop;
   const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
   const [loading, setLoading] = useState(initLoading);
@@ -68,40 +69,60 @@ const OrderDetail = (prop) => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading]);
+  let total = 0;
+  state.forEach((item) => {
+    total += item.price * item.quantity;
+  });
   return (
-    <Box minW="full">
-      <Grid templateColumns='repeat(1, 1fr)' alignItems='center'>
+    <Box minW="95%">
+      <Flex justifyContent='space-between' mt='5'>
+        <Text fontWeight='bold'>
+          {order.id}
+        </Text>
+        <Text fontWeight='bold'>
+          Total:
+          {' '}
+          {total}
+          {' '}
+          €
+        </Text>
+      </Flex>
+      <Grid templateColumns='repeat(1, 1fr)'>
+
         {state.map((productData) => (
           <GridItem
             key={productData.id}
           >
-            <Box as='button' w='100%'>
+            <Box as='button' mt='5'>
               <Link href={{ pathname: '/products/detail/[id]', query: { id: productData.id } }}>
-                <Stack>
-                  <Text textAlign='center'>{productData.title}</Text>
-                  <Flex alignItems='flex-end'>
-                    <HStack>
-                      <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w="50%" h='50%' borderRadius="15px" fit="cover" />
-                      <Stack>
-                        <Text>
-                          Price:
-                          {' '}
-                          {productData.price}
-                        </Text>
-                        <Text>
-                          Quantity:
-                          {' '}
-                          {productData.quantity}
-                        </Text>
-                      </Stack>
+                <div>
+                  <Text fontWeight='bold' textAlign='center' mb='5'>{productData.title}</Text>
+                  <Flex justifyContent='space-between' alignItems='center'>
+                    <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="cover" />
+                    <Stack ml='10'>
                       <Text>
-                        Total:
+                        Price:
                         {' '}
-                        {productData.price * productData.quantity}
+                        {productData.price}
+                        {' '}
+                        €
                       </Text>
-                    </HStack>
+                      <Text>
+                        Quantity:
+                        {' '}
+                        {productData.quantity}
+
+                      </Text>
+                    </Stack>
                   </Flex>
-                </Stack>
+                  <Text mt='5' textAlign='center'>
+                    Subtotal:
+                    {' '}
+                    {productData.price * productData.quantity}
+                    {' '}
+                    €
+                  </Text>
+                </div>
               </Link>
             </Box>
           </GridItem>
