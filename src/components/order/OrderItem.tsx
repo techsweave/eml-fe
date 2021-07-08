@@ -119,7 +119,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                 </Td>
               </Tr>
               {state.map((item) => (
-                <Tr key={item.id}>
+                <Tr key={item.title}>
                   <Td><Image fallbackSrc="/images/fallback.png" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
                   <Td>{item.title}</Td>
                   <Td>
