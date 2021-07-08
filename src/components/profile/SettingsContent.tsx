@@ -1,7 +1,9 @@
 import React from 'react';
-import { SimpleGrid, Heading, Box, Center } from '@chakra-ui/react';
-import PersonalInfo from '@components/profile/client/settings/PersonalInfo';
-import BillingInfo from '@components/profile/client/settings/BillingInfo';
+import {
+  SimpleGrid, Heading, Box, Center,
+} from '@chakra-ui/react';
+import PersonalInfo from '@components/profile/settings/PersonalInfo';
+import BillingInfo from '@components/profile/settings/BillingInfo';
 
 const SettingsContent = () => (
   <Box p={5}>
