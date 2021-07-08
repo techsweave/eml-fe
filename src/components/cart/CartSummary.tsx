@@ -95,22 +95,20 @@ const CartSummary = (props: { cart: Array<ICart> }) => {
       });
   }, [state, setState, error, setError, loading, setLoading]);
 
-  if (loading) {
-    return (
-      <Flex
-        justifyContent='center'
-      >
-        <CircularProgress
-          isIndeterminate
-          color='red.300'
-        />
-      </Flex>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <Flex
+  //       justifyContent='center'
+  //     >
+  //       <CircularProgress
+  //         isIndeterminate
+  //         color='red.300'
+  //       />
+  //     </Flex>
+  //   );
+  // }
 
-  if (error) {
-    showError(error);
-  }
+  showError(error);
 
   const goToChechOut = async () => {
     // TODO
