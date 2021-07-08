@@ -13,9 +13,10 @@ type ICartItemDetail = ICart & Omit<IProduct, 'id'>
 
 const CartItem = (prop: {
   cartItem: ICartItemDetail,
-  addQuantity: (id: string, val: number) => Promise<void>
+  addQuantity: (id: string, val: number) => Promise<void>,
+  removeProduct: (id: string) => Promise<void>
 }) => {
-  const { cartItem, addQuantity } = prop;
+  const { cartItem, addQuantity, removeProduct } = prop;
   return (
     <Flex
       direction='row'

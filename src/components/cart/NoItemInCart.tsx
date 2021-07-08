@@ -12,12 +12,13 @@ const NoItemInCart = () => (
     <Flex
       padding='1em'
       justifyContent='center'
+      alignItems='center'
     >
       <Icon
         as={FaShoppingCart}
         color='gray.300'
-        width='50%'
-        height='50%'
+        width='80%'
+        height='80%'
       />
     </Flex>
     <Flex
@@ -25,6 +26,7 @@ const NoItemInCart = () => (
       <Text
         fontSize="lg"
         color='gray.500'
+        align='center'
       >
         Your cart is empty! Let's continue your shopping by click the link below
       </Text>
@@ -33,23 +35,22 @@ const NoItemInCart = () => (
       padding='1em'
       justifyContent='center'
     >
-      <LinkOverlay
+      <Button
+        as='a'
         href='/products'
+
+        leftIcon={<FaShoppingBag />}
+        variant='solid'
+        backgroundColor='red.400'
+        color='white'
+        _hover={{
+          backgroundColor: 'red.500',
+        }}
       >
-        <Button
-          leftIcon={<FaShoppingBag />}
-          variant='solid'
-          backgroundColor='red.400'
-          color='white'
-          _hover={{
-            backgroundColor: 'red.500',
-          }}
-        >
-          Continue your shopping
-        </Button>
-      </LinkOverlay>
+        Continue your shopping
+      </Button>
     </Flex>
-  </Flex>
+  </Flex >
 );
 
 export default NoItemInCart;

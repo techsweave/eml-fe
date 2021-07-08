@@ -66,6 +66,45 @@ const CartList = () => {
   };
 
   /**
+   * Remove a cart row from the state
+   * @param oldState Old State
+   * @param id Id of cart to remove
+   * @returns New State
+   */
+  const removeProductToState = (oldState: IState, id: string) => {
+    if (!oldState.data) return oldState;
+    const temp = oldState;
+
+    const index = temp.data.findIndex((x) => x.id === id);
+    temp.data.splice(index, 1);
+
+    const newState: IState = {
+      loading: false,
+      data: temp.data,
+    };
+    return newState;
+  };
+
+  /**
+  * Add a cart row from the state
+  * @param oldState Old State
+  * @param item Cart row to add
+  * @returns New State
+  */
+  const addProductToState = (oldState: IState, item: ICartItemDetail) => {
+    if (!state.data) return state;
+    const temp = oldState;
+
+    temp.data.push(item);
+
+    const newState: IState = {
+      loading: false,
+      data: temp.data,
+    };
+    return newState;
+  };
+
+  /**
    * Fetch user cart and product detail
    * @returns Array of ICartItemDetail
    */
@@ -110,6 +149,10 @@ const CartList = () => {
       values: ids,
     };
 
+    if (ids.length === 0) {
+      return Promise.resolve([]);
+    }
+
     do {
       scanResult = await productService.scanAsync(
         50,
@@ -124,8 +167,9 @@ const CartList = () => {
 
     fetchedProducts.forEach((x) => {
       const prod: Omit<IProduct, 'id'> & { id?: string } = x;
-      delete prod.id;
       const cart: ICart = fetchedCart.find((y) => y.productId === x.id)!;
+
+      delete prod.id;
 
       newState.push({
         ...cart,
@@ -165,14 +209,53 @@ const CartList = () => {
 
       const newQuantity = item.quantity + quantity;
 
-      setState(addQuantityToState(state, item.id, newQuantity));
+      // First set the state and then call the API (better performance)
+      if (newQuantity <= 0) {
+        setState(removeProductToState(state, item.id));
+      } else {
+        setState(addQuantityToState(state, item.id, quantity));
+      }
+
       await cartService.changeQuantityAsync(item.id, newQuantity);
     } catch (err) {
+      // Rollback
       setState(addQuantityToState(state, item.id, 0 - quantity));
       setState(setError(state, err.error));
     }
   };
 
+  /**
+   * Add quantity to a specific item and store it
+   * @param id Cart id
+   * @param quantity Quantitu to add
+   * @returns Void
+   */
+  const removeProduct = async (id: string): Promise<void> => {
+    const item = state.data.find((x) => x.id === id);
+    if (!item) return;
+
+    try {
+      const cartService = new Services.Carts(
+        process.env.NEXT_PUBLIC_API_ID_CART!,
+        process.env.NEXT_PUBLIC_API_REGION!,
+        process.env.NEXT_PUBLIC_API_STAGE!,
+        session?.accessToken as string,
+        session?.idToken as string,
+      );
+
+      // First set the state and then call the API (better performance)
+      setState(removeProductToState(state, item.id));
+      await cartService.removeProductAsync(item.id);
+    } catch (err) {
+      // Rollback
+      setState(addProductToState(state, item));
+      setState(setError(state, err.error));
+    }
+  };
+
+  /**
+   * Get the data when the component render
+   */
   useEffect(() => {
     // Avoid infinte loop render -> useEffect -> setState -> render
     if (!state.loading) return;
@@ -231,12 +314,16 @@ const CartList = () => {
           <CartItem
             cartItem={c}
             addQuantity={addQuantity}
+            removeProduct={removeProduct}
             key={c?.id}
           />
         ))}
       </Stack>
       {/* Cart Item List */}
-      <CartSummary cart={state.data} />
+      <CartSummary
+        cart={state.data}
+        key='summary'
+      />
     </Flex>
   );
 };
