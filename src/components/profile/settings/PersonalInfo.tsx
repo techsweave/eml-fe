@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import { PhoneIcon, EmailIcon } from '@chakra-ui/icons';
 
-class ModButton extends Component {
+/* class ModButton extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,18 +12,18 @@ class ModButton extends Component {
     };
   }
 
-  /*  handleClick = () => {
+   handleClick = () => {
     this.setState((state) => ({
       isToggleOn: !state.isToggleOn,
     }));
-  }; */
+  };
 
   render() {
     return (
       <Button size="sm" rounded="md" variant="outline" w="full" onClick={this.handleClick}>{this.state.isToggleOn ? 'Save changes' : 'Modify'}</Button>
     );
   }
-}
+} */
 
 const PersonalInfo = () => (
   <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={6}>
