@@ -6,15 +6,14 @@ import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArt
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { Flex } from '@chakra-ui/react';
-import productMock from '@test/ProductMock';
 
 export default function productDetailPage(prop) {
-  const { product } = prop;
+  const { product, relatedProducts } = prop;
   return (
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
         <ProductDetail product={product} />
-        <RelatedProduct product={productMock} />
+        <RelatedProduct product={relatedProducts} />
       </Flex>
     </Layout>
   );
@@ -37,9 +36,39 @@ export const getStaticProps: GetStaticProps = async (context) => {
   } catch (error) {
     alert(error);
   }
+  const category = product.categorieId;
+  const productId = product.id;
+  const filter: ConditionExpression = {
+    type: 'And',
+    conditions: [
+      {
+        type: 'Equals',
+        subject: 'categorieId',
+        object: category,
+      },
+      {
+        type: 'NotEquals',
+        subject: 'id',
+        object: productId,
+      },
+    ],
+  };
+  let relatedProducts;
+  try {
+    relatedProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter);
+    if (relatedProducts.data) {
+      relatedProducts = relatedProducts.data;
+    } else {
+      relatedProducts = [relatedProducts];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(relatedProducts);
   return {
     props: {
       product,
+      relatedProducts,
     }, // will be passed to the page component as props
     revalidate: 600,
   };
