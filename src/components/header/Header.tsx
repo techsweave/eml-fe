@@ -54,9 +54,9 @@ const NavBar = (props) => {
           <Button bg='gray.100' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </Text>
       </Link>
-      <Link href="/orders">
+      <Link href="/orders"  hidden={userState ? undefined : true}>
         <Text display="block">
-          <Button display={['none', 'none', 'inherit', 'inherit']} bg='gray.100' ml='10' leftIcon={<BsBook size={20} />}>Orders</Button>
+          <Button  display={['none', 'none', 'inherit', 'inherit']} bg='gray.100' ml='10' leftIcon={<BsBook size={20} />}>Orders</Button>
         </Text>
       </Link>
       <SearchBar display={['none', 'none', 'inherit', 'inherit']} ml='10' mr='10' />

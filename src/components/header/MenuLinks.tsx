@@ -35,7 +35,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
         <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </MenuItem>
-        <MenuItem to="/orders" display={['inherit', 'inherit', 'none', 'none']}>
+        <MenuItem to="/orders" hidden={isVendor ?  undefined : true} display={['inherit', 'inherit', 'none', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BsBook size={20} />}>Orders</Button>
         </MenuItem>
         <MenuItem to="/cart">
@@ -56,7 +56,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             Create New Product
           </Button>
         </MenuItem>
-        <MenuItem to="/profile/profileDashboard">
+        <MenuItem to="/profile">
           <Button
             hidden={!session ? true : undefined}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
