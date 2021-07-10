@@ -1,24 +1,41 @@
 import { Models, Services, AuthenticatedUser } from 'utilities-techsweave';
 import React, { useState, useEffect } from 'react';
-import { Image, VStack, Link } from '@chakra-ui/react';
-import { Flex, Heading } from '@chakra-ui/layout';
+import {
+  Image, VStack, Link,
+  NumberInput, NumberInputField,
+  Text,
+} from '@chakra-ui/react';
+import { Flex, Heading, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
 
-const ProductDetail = (prop: { product: Models.Tables.IProduct }) => {
-  const { product } = prop;
+const ProductDetail = (prop: {
+  product: Models.Tables.IProduct,
+  category: Models.Tables.ICategory
+}) => {
+  const { product, category } = prop;
   const session = useSession()[0];
   const [userState, setState] = useState<boolean>();
+  const [cartState, setCartState] = useState<Models.Tables.INewCart>();
+  const [quantityState, setQuantityState] = useState(1);
 
+  const handleChange = (e) => {
+    setQuantityState(e.target.value);
+  };
+
+  const handleClick = async (s) => {
+    const caller = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
+    return caller.addProductAsync(product.id, quantityState);
+  };
   async function isVendor(s) {
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
   }
-
   useEffect(() => {
     const s = session;
     if (userState !== undefined) return;
+    if (cartState !== undefined) return;
     if (!s) return;
     isVendor(s).then(
       (data) => {
@@ -29,11 +46,17 @@ const ProductDetail = (prop: { product: Models.Tables.IProduct }) => {
         console.log(err.message);
       },
     );
-  }, [userState, setState, session]);
-  const handleClick = async () => {
-    const caller = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, session?.accessToken as string, session?.idToken as string);
-    const addProduct = await caller.addProductAsync(product.id, 1);
-  };
+    handleClick(s).then(
+      (data1) => {
+        setCartState(data1);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setState, session, cartState, setCartState]);
+  const { taxes } = category;
 
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
@@ -43,18 +66,43 @@ const ProductDetail = (prop: { product: Models.Tables.IProduct }) => {
         <Heading as="h2">
           {product.title}
         </Heading>
-        <p>
+        <Text>
           {product.description}
-        </p>
+        </Text>
       </VStack>
       <VStack ml={['0', '0', '10', '10']} alignSelf="center">
-        <p>
+        <Text textAlign='center'>
           Price:
-          {product.price}
-        </p>
-        <Button hidden={userState ? true : undefined} onClick={handleClick}>Add to Cart</Button>
+          {' '}
+          {product.price.toFixed(2)}
+          {' '}
+          €
+        </Text>
+        <Text textAlign='center'>
+          Taxes:
+          {' '}
+          { (product.price * (taxes / 100)).toFixed(2)}
+          {' '}
+          €
+        </Text>
+        <HStack>
+          <Text>
+            Quantity
+          </Text>
+          <NumberInput defaultValue={1} min={1} max={product.availabilityQta} w='5'>
+            <NumberInputField name='quantity' id='quantity' value={quantityState} onChange={handleChange} />
+          </NumberInput>
+        </HStack>
+        <Text>
+          Max Qty:
+          {' '}
+          {product.availabilityQta}
+        </Text>
+        <Link href='/cart'>
+          <Button hidden={userState ? true : undefined} onClick={handleClick}>Add to Cart</Button>
+        </Link>
         {/* TODO */}
-        <Link href=''>
+        <Link href='/'>
           <Button hidden={!userState ? true : undefined}>Edit product</Button>
         </Link>
       </VStack>
