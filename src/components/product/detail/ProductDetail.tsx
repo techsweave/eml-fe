@@ -9,6 +9,7 @@ import { Flex, Heading, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
+import AddToCart from '@components/product/AddToCart';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
@@ -17,17 +18,12 @@ const ProductDetail = (prop: {
   const { product, category } = prop;
   const session = useSession()[0];
   const [userState, setState] = useState<boolean>();
-  const [cartState, setCartState] = useState<Models.Tables.INewCart>();
   const [quantityState, setQuantityState] = useState(1);
 
   const handleChange = (e) => {
     setQuantityState(e.target.value);
   };
 
-  const handleClick = async (s) => {
-    const caller = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
-    return caller.addProductAsync(product.id, quantityState);
-  };
   async function isVendor(s) {
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
@@ -35,7 +31,6 @@ const ProductDetail = (prop: {
   useEffect(() => {
     const s = session;
     if (userState !== undefined) return;
-    if (cartState !== undefined) return;
     if (!s) return;
     isVendor(s).then(
       (data) => {
@@ -46,16 +41,7 @@ const ProductDetail = (prop: {
         console.log(err.message);
       },
     );
-    handleClick(s).then(
-      (data1) => {
-        setCartState(data1);
-      },
-    ).catch(
-      (err) => {
-        console.log(err.message);
-      },
-    );
-  }, [userState, setState, session, cartState, setCartState]);
+  }, [userState, setState, session]);
   const { taxes } = category;
 
   return (
@@ -89,7 +75,7 @@ const ProductDetail = (prop: {
           <Text>
             Quantity
           </Text>
-          <NumberInput defaultValue={1} min={1} max={product.availabilityQta} w='5'>
+          <NumberInput defaultValue={1} min={1} max={product.availabilityQta} w='20'>
             <NumberInputField name='quantity' id='quantity' value={quantityState} onChange={handleChange} />
           </NumberInput>
         </HStack>
@@ -98,9 +84,11 @@ const ProductDetail = (prop: {
           {' '}
           {product.availabilityQta}
         </Text>
-        <Link href='/cart'>
-          <Button hidden={userState ? true : undefined} onClick={handleClick}>Add to Cart</Button>
-        </Link>
+        <AddToCart
+          product={product.id}
+          quantity={quantityState}
+          hidden={userState ? true : undefined}
+        />
         {/* TODO */}
         <Link href='/'>
           <Button hidden={!userState ? true : undefined}>Edit product</Button>
