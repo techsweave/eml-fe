@@ -85,9 +85,8 @@ const ProductDetail = (prop: {
           {product.availabilityQta}
         </Text>
         <AddToCart
-          product={product.id}
+          productId={product.id}
           quantity={quantityState}
-          hidden={userState ? true : undefined}
         />
         {/* TODO */}
         <Link href='/'>
