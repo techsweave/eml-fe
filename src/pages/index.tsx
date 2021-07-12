@@ -19,8 +19,8 @@ const indexPage = (prop) => {
   );
 };
 export const getStaticProps: GetStaticProps = async () => {
-  let products: Models.Tables.IProduct[] = [];
-  let lessProducts: Models.Tables.IProduct[] = [];
+  let products;
+  let lessProducts;
 
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
 
@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async () => {
     object: 0,
   };
   try {
-    products = (await caller.scanAsync(6, undefined, undefined, undefined, filter)).data;
+    products = await caller.scanAsync(6, undefined, undefined, undefined, filter);
   } catch (error) {
     console.log(error);
   }
@@ -40,9 +40,19 @@ export const getStaticProps: GetStaticProps = async () => {
     object: 10,
   };
   try {
-    lessProducts = (await caller.scanAsync(6, undefined, undefined, undefined, filter2)).data;
+    lessProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter2);
   } catch (error) {
-    console.log(error);
+    //alert(error);
+  }
+  if (products.data) {
+    products = products.data;
+  } else {
+    products = [products];
+  }
+  if (lessProducts.data) {
+    lessProducts = lessProducts.data;
+  } else {
+    lessProducts = [lessProducts];
   }
   return {
     props: {
