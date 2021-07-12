@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     products = await caller.scanAsync(6, undefined, undefined, undefined, filter);
   } catch (error) {
-    //alert(error);
+    console.log(error);
   }
   const filter2: ConditionExpression = {
     type: 'LessThanOrEqualTo',
