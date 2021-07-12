@@ -2,7 +2,7 @@
 import { Models, Services } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
-  Flex, Stack, CircularProgress,
+  Flex, Stack, CircularProgress, useToast, Divider,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
@@ -24,6 +24,7 @@ const init: IState = {
   loading: true,
   data: [],
 };
+let changedProduct = 0;
 
 const CartList = () => {
   const [state, setState] = useState(init);
@@ -140,6 +141,8 @@ const CartList = () => {
     fetchedCart.forEach((x) => {
       if (!x.isChanged) {
         ids.push(x.productId);
+      } else {
+        changedProduct += 1;
       }
     });
 
@@ -253,6 +256,24 @@ const CartList = () => {
     }
   };
 
+  const toast = useToast();
+  // Show changed product
+  if (changedProduct > 0) {
+    let description = `${changedProduct} products are removed from your cart beause they changed`;
+    if (changedProduct === 1) {
+      description = 'One prodduct is removed from your cart beause it changed';
+    }
+
+    toast({
+      title: 'Attention',
+      description,
+      status: 'info',
+      duration: 10000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  }
+
   /**
    * Get the data when the component render
    */
@@ -310,13 +331,21 @@ const CartList = () => {
         width={['100%', '100%', '70%', '70%', '70%']}
         padding='0.5em'
       >
+        <Divider />
         {state.data.map((c) => (
-          <CartItem
-            cartItem={c}
-            addQuantity={addQuantity}
-            removeProduct={removeProduct}
-            key={c?.id}
-          />
+          <Stack
+            key={c?.id.concat('_stack')}
+          >
+            <CartItem
+              cartItem={c}
+              addQuantity={addQuantity}
+              removeProduct={removeProduct}
+              key={c?.id}
+            />
+            <Divider
+              key={c?.id.concat('_divider')}
+            />
+          </Stack>
         ))}
       </Stack>
       {/* Cart Item List */}

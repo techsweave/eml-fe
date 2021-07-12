@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models } from 'utilities-techsweave';
-import { FaPlus, FaMinus } from 'react-icons/fa'
+import { FaPlus, FaMinus, FaTrash } from 'react-icons/fa'
 
 type ICart = Models.Tables.ICart;
 type IProduct = Models.Tables.IProduct;
@@ -23,9 +23,10 @@ const CartItem = (prop: {
       padding='1em'
     >
       <Flex
-        width='40%'
+        width='20%'
         justifyContent='center'
         alignItems='center'
+        display={['none', 'none', 'flex', 'flex', 'flex']}
       >
         <Image
           boxSize='90%'
@@ -39,7 +40,7 @@ const CartItem = (prop: {
         direction='column'
         justifyContent='center'
         padding='1em'
-        width='60%'
+        width='50%'
       >
         <Text
           fontSize='xl'
@@ -76,7 +77,7 @@ const CartItem = (prop: {
       <Flex
         direction='row'
         alignItems='center'
-        width='30%'
+        width={['30%', '30%', '20%', '20%', '20%']}
       >
         <IconButton
           aria-label='remove one from quantity'
@@ -99,6 +100,26 @@ const CartItem = (prop: {
           borderRadius='50%'
           size='xs'
           padding='3px'
+        />
+      </Flex>
+      <Flex
+        direction='row'
+        alignItems='center'
+        width={['20%', '20%', '10%', '10%', '10%']}
+      >
+        <IconButton
+          aria-label='remove product from cart'
+          icon={<FaTrash />}
+          onClick={() => removeProduct(cartItem.id)}
+          borderRadius='50%'
+          size='md'
+          padding='5px'
+          color='red'
+          variant='outline'
+          _hover={{
+            backgroundColor: 'red',
+            color: 'white',
+          }}
         />
       </Flex>
     </Flex>

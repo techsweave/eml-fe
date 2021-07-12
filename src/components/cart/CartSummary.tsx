@@ -43,7 +43,11 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
       <Heading
         as='h3'
       >
-        {total}
+        {
+          total
+            .toString()
+            .replace('.', ',')
+        }
         €
       </Heading>
       <Text
@@ -51,7 +55,11 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         color='gray.500'
         fontSize='lg'
       >
-        {totalNoDiscount}
+        {
+          totalNoDiscount
+            .toString()
+            .replace('.', ',')
+        }
         €
       </Text>
       <Text
