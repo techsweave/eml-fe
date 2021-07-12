@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  Heading,
   Text,
   Center,
   Button,
-  useMediaQuery,
   Stack,
   Grid,
   GridItem,
-  HStack,
   Image,
   Flex,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import orderPage from '@pages/orders';
 
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
@@ -103,7 +93,7 @@ const OrderDetail = (prop) => {
                       <Text>
                         Price:
                         {' '}
-                        {productData.price}
+                        {productData.price.toFixed(2)}
                         {' '}
                         €
                       </Text>
@@ -118,7 +108,7 @@ const OrderDetail = (prop) => {
                   <Text mt='5' textAlign='center'>
                     Subtotal:
                     {' '}
-                    {productData.price * productData.quantity}
+                    {(productData.price * productData.quantity.toFixed(2))}
                     {' '}
                     €
                   </Text>

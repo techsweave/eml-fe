@@ -8,11 +8,11 @@ import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { Flex } from '@chakra-ui/react';
 
 export default function productDetailPage(prop) {
-  const { product, relatedProducts } = prop;
+  const { product, relatedProducts, ret } = prop;
   return (
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
-        <ProductDetail product={product} />
+        <ProductDetail product={product} category={ret} />
         <RelatedProduct product={relatedProducts} />
       </Flex>
     </Layout>
@@ -31,11 +31,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   let product;
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const categoriesCaller = new Services.Categories(caller, `${process.env.NEXT_PUBLIC_API_ID_CATEGORIES}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
     product = await caller.getAsync(context.params?.id as string);
   } catch (error) {
     alert(error);
   }
+  const ret = await categoriesCaller.getAsync(product.categorieId);
   const category = product.categorieId;
   const productId = product.id;
   const filter: ConditionExpression = {
@@ -64,11 +66,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   } catch (error) {
     console.log(error);
   }
-  console.log(relatedProducts);
   return {
     props: {
       product,
       relatedProducts,
+      ret,
     }, // will be passed to the page component as props
     revalidate: 600,
   };

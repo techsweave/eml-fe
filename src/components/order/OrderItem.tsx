@@ -127,7 +127,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                       <GridItem>
                         Price:
                         {' '}
-                        {item.price}
+                        {item.price.toFixed(2)}
                         €
                       </GridItem>
                       <GridItem>
@@ -139,7 +139,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   </Td>
                   <Td textAlign='center'>
                     Subtotal:
-                    {item.price * item.quantity}
+                    {(item.price * item.quantity.toFixed(2))}
                   </Td>
                 </Tr>
               ))}
