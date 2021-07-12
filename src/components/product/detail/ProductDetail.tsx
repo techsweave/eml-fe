@@ -42,7 +42,6 @@ const ProductDetail = (prop: {
       },
     );
   }, [userState, setState, session]);
-  const { taxes } = category;
 
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
@@ -67,7 +66,7 @@ const ProductDetail = (prop: {
         <Text textAlign='center'>
           Taxes:
           {' '}
-          { (product.price * (taxes / 100)).toFixed(2)}
+          { (product.price * (category.taxes / 100)).toFixed(2)}
           {' '}
           €
         </Text>
