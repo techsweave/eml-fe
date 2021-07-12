@@ -7,6 +7,8 @@ import { AiOutlineShoppingCart, AiOutlineForm, AiOutlineUser } from 'react-icons
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
 import { BiShoppingBag } from 'react-icons/bi';
 import { BsBook } from 'react-icons/bs'
+import logout from '@pages/api/auth/logout';
+
 const MenuItem = ({ children, to = '/', ...rest }) => (
   <Link href={to}>
     <Text display="block" {...rest}>
@@ -82,7 +84,10 @@ const MenuLinks = ({ isOpen, isVendor }) => {
           <Button
             hidden={!session ? true : undefined}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
-            onClick={() => signOut()}
+            onClick={(e) => {
+                  e.preventDefault()
+                  signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/logout` })
+                }}
             leftIcon={<IoExitOutline size={20} />}
           >
             Sign out
