@@ -9,7 +9,7 @@ import { Flex, Heading, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
-import AddToCart from '@components/product/AddToCart';
+import AddToCart from '@components/cart/AddToCart';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
@@ -59,14 +59,14 @@ const ProductDetail = (prop: {
         <Text textAlign='center'>
           Price:
           {' '}
-          {product.price.toFixed(2)}
+          {product.price.toFixed(2)!}
           {' '}
           €
         </Text>
         <Text textAlign='center'>
           Taxes:
           {' '}
-          { (product.price * (category.taxes / 100)).toFixed(2)}
+          { (product.price! * (category.taxes! / 100)).toFixed(2)}
           {' '}
           €
         </Text>
