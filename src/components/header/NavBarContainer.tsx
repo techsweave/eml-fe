@@ -12,7 +12,7 @@ const NavBarContainer = ({ children, ...props }:Props) => (
     as="nav"
     align="center"
     justify="space-between"
-    wrap={['wrap', 'wrap', 'wrap', 'wrap']}
+    wrap={['wrap', 'wrap', 'wrap', 'nowrap']}
     w="100%"
     pl='8'
     pr='8'
