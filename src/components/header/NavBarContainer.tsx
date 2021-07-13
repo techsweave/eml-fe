@@ -6,13 +6,13 @@ type Props = {
 };
 const NavBarContainer = ({ children, ...props }:Props) => (
   <Flex
-    h={['full', 'full', '20', '20']}
+    h={['full', 'full', 'full', '20']}
     borderBottomWidth={1}
-    borderBottomColor="red"
+    borderBottomColor="red.500"
     as="nav"
     align="center"
     justify="space-between"
-    wrap={['wrap', 'wrap', 'nowrap', 'nowrap']}
+    wrap={['wrap', 'wrap', 'wrap', 'wrap']}
     w="100%"
     pl='8'
     pr='8'

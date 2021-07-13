@@ -48,21 +48,21 @@ const NavBar = (props) => {
   const toggle = () => setIsOpen(!isOpen);
   return (
     <NavBarContainer {...props}>
-      <Box as="a" href="/" ml="2" minW="200"><Image src="/images/EML.svg" alt="EmporioLambda" w={['200px', '200px', '300', '300']} h={['100', '100', '300', '300']} /></Box>
-      <Link href="/products" display={['none', 'none', 'inherit', 'inherit']}>
+      <Box as="a" href="/" ml="2" minW="200" mt={['0','0','5','5']} mb={['0','0','5','5']}><Image src="/images/EML.svg" alt="EmporioLambda" w={['200', '200', '100', '300']} h={['100', '100', '50', '100']} /></Box>
+      <Link href="/products" display={['none', 'none', 'none', 'inherit']}>
         <Text display="block">
           <Button bg='gray.100' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </Text>
       </Link>
       <Link href="/orders"  hidden={userState ? undefined : true}>
         <Text display="block">
-          <Button  display={['none', 'none', 'inherit', 'inherit']} bg='gray.100' ml='10' leftIcon={<BsBook size={20} />}>Orders</Button>
+          <Button  display={['none', 'none', 'none', 'inherit']} bg='gray.100' ml='10' leftIcon={<BsBook size={20} />}>Orders</Button>
         </Text>
       </Link>
-      <SearchBar display={['none', 'none', 'inherit', 'inherit']} ml='10' mr='10' />
+      <SearchBar display={['none', 'none', 'none', 'inherit']} ml='10' mr='10' />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} isVendor={userState} />
-      <SearchBar display={['inherit', 'inherit', 'none', 'none']} mb='5' />
+      <SearchBar display={['inherit', 'inherit', 'inherit', 'none']} mb='5' mt='5'/>
     </NavBarContainer>
   );
 };
