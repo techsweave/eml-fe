@@ -1,9 +1,14 @@
-import { Models } from 'utilities-techsweave';
+import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import {
   Flex, Text, Heading, Button,
 } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
+import { loadStripe } from '@stripe/stripe-js'
+import showError from '@libs/showError';
+import { useSession } from 'next-auth/client';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 type ICart = Models.Tables.ICart;
 type IProduct = Models.Tables.IProduct;
@@ -14,6 +19,36 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   let totalNoDiscount = 0;
   let total = 0;
 
+  const session = useSession()[0];
+
+  // For hook call
+  showError();
+
+  const goToChechOut = async () => {
+    const stripe = await stripePromise;
+
+    try {
+      const cartService = new Services.Carts(
+        process.env.NEXT_PUBLIC_API_ID_CART!,
+        process.env.NEXT_PUBLIC_API_REGION!,
+        process.env.NEXT_PUBLIC_API_STAGE!,
+        session?.accessToken as string,
+        session?.idToken as string,
+      );
+
+      const stripeSession = await cartService.goToCheckoutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
+      console.log(stripeSession)
+
+      // When the customer clicks on the button, redirect them to Checkout.
+      const result = await stripe?.redirectToCheckout({
+        sessionId: stripeSession.id
+      })
+    }
+    catch (error) {
+      showError(error);
+    }
+  }
+
   cart.forEach((x) => {
     let price = x.price ? x.price : 0;
     totalNoDiscount += price * x.quantity;
@@ -22,11 +57,6 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
     }
     total += price * x.quantity;
   });
-
-  const goToChechOut = async () => {
-    // TODO
-    alert("Magikarp used splash! But nothing appened!")
-  }
 
   return (
     <Flex
