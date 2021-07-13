@@ -6,7 +6,7 @@ import { Box, Image, Stack } from '@chakra-ui/react';
 
 const CarouselItem = (prop: { product: Models.Tables.IProduct }) => {
   const { product } = prop;
-  const DiscountPrice = (product.price * (product.discount! / 100)).toFixed(2);
+  const DiscountPrice = (product.price * ((100 - product.discount!) / 100)).toFixed(2);
   return (
     <Box as="button" w='100%'>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
