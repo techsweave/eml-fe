@@ -48,7 +48,7 @@ const NavBar = (props) => {
   const toggle = () => setIsOpen(!isOpen);
   return (
     <NavBarContainer {...props}>
-      <Box as="a" href="/" ml="2" minW="200" mt={['0','0','5','5']} mb={['0','0','5','5']}><Image src="/images/EML.svg" alt="EmporioLambda" w={['200', '200', '100', '300']} h={['100', '100', '50', '100']} /></Box>
+      <Box as="a" href="/" ml="2" minW="200" mt={['0','0','5','5']} mb={['0','0','5','5']}><Image src="/images/EML.svg" alt="EmporioLambda" w={['200px', '200px', '100', '300']} h={['100', '100', '50', '100']} /></Box>
       <Link href="/products" display={['none', 'none', 'none', 'inherit']}>
         <Text display="block">
           <Button bg='gray.100' ml='10' leftIcon={<BiShoppingBag size={20} />}>Products</Button>
