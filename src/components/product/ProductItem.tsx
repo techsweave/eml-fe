@@ -15,7 +15,7 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
             <Text fontWeight='bold' fontSize='1.5em' overflow='hidden'>{product.title}</Text>
             <Text>
               price:
-              {product.price}
+              {product.price.toFixed(2)}
               €
             </Text>
           </Stack>

@@ -7,7 +7,6 @@ import { Models } from 'utilities-techsweave';
 
 const RelatedProducts = (prop:{ product:Models.Tables.IProduct[] }) => {
   const { product } = prop;
-  console.log('lenght:', product.length);
   return (
     <Box>
       <Heading textAlign='center' m='10'>Related Product</Heading>

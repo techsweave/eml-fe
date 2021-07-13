@@ -22,22 +22,22 @@ const MenuLinks = ({ isOpen, isVendor }) => {
   return (
 
     <Box
-      display={{ base: isOpen ? 'block' : 'none', md: 'block' }}
-      flexBasis={{ base: '100%', md: 'auto' }}
+      display={{ base: isOpen ? 'block' : 'none', md: isOpen ? 'block' : 'none', lg: 'block' }}
+      flexBasis={{ base: '100%', md: '100%' , lg: 'auto'}}
     >
       <Stack
         align="center"
-        justify={['center', 'center', 'flex-end', 'flex-end']}
-        direction={['column', 'column', 'row', 'row']}
+        justify={['center', 'center', 'center', 'flex-end']}
+        direction={['column', 'column', 'column', 'row']}
         pt={[4, 4, 0, 0]}
         mb={['5', '5', '0', '0']}
         mt={['-10', '-10', '0', '0']}
         color='black'
       >
-        <MenuItem to="/products" display={['inherit', 'inherit', 'none', 'none']}>
+        <MenuItem to="/products" display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </MenuItem>
-        <MenuItem to="/orders" hidden={isVendor ?  undefined : true} display={['inherit', 'inherit', 'none', 'none']}>
+        <MenuItem to="/orders" hidden={isVendor ?  undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BsBook size={20} />}>Orders</Button>
         </MenuItem>
         <MenuItem to="/cart">
