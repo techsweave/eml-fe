@@ -89,7 +89,7 @@ return    (
             <Tooltip label="Settings" placement="right">
                 <Button
                     as="a"
-                    href="/profile/client/profileSettings"
+                    href="/profile/profileSettings"
                     leftIcon={<IoSettingsOutline size={20} />}
                 >
                     Edit profile

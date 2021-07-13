@@ -62,7 +62,7 @@ const NavigationSmartphone = () => (
             />
         <Button
             as="a"
-            href="/profile/client/profileSettings"
+            href="/profile/profileSettings"
             leftIcon={<IoSettingsOutline size={20} />}
             display={['none','flex']}
       >
@@ -70,7 +70,7 @@ const NavigationSmartphone = () => (
             </Button>
             <IconButton
                 as="a"
-                href="/profile/client/profileSettings"
+                href="/profile/profileSettings"
                 aria-label="Orders"
                 icon={<IoSettingsOutline size={30} />}
                 display={['flex', 'none']}
