@@ -1,7 +1,7 @@
-import ProductItem from '@components/product/ProductItem';
 import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Grid, GridItem, Box } from '@chakra-ui/react';
+import ProductItem from './ProductItem';
 
 const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   const { productList } = prop;

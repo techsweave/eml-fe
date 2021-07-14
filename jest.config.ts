@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /*
  * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
@@ -136,7 +137,7 @@ export default {
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
-  //The test environment that will be used for testing
+  // The test environment that will be used for testing
   testEnvironment: 'jest-environment-jsdom',
 
   // Options that will be passed to the testEnvironment

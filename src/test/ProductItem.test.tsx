@@ -1,36 +1,24 @@
-import { Models } from 'utilities-techsweave';
-import { Product } from 'aws-sdk/clients/ssm';
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import ProductItem from '../components/product/ProductItem';
+import productMock from './ProductMock';
 
 describe('ProductItem', () => {
   let expectedProd;
-  // let container;
 
-  beforeEach(() => {
-    expectedProd = {
-      id: 123456789,
-      title: 'pentola',
-      image: '',
-      description: 'acciaio 18/10',
-      price: 8,
-      quantity: 2,
-    };
+  beforeAll(() => {
+    // eslint-disable-next-line prefer-destructuring
+    expectedProd = productMock[0];
   });
 
-  //  container = document.createElement('div');
-  //  document.body.appendChild(container);
-  //   afterEach(() => {
-  //   // cleanup on exiting
-  //   unmountComponentAtNode(container);
-  //   container.remove();
-  //   container = null;
-  // });
-
-  test('test product item name', () => {
+  test('test product item title', () => {
     render(<ProductItem product={expectedProd} key={expectedProd.id} />);
-    expect(screen.getByText('pentola')).toBeVisible();
+    expect(screen.getByText(expectedProd.title, { exact: false })).toBeVisible();
+  });
+
+  test('test product item price', () => {
+    render(<ProductItem product={expectedProd} key={expectedProd.id} />);
+    expect(screen.getByText(expectedProd.price, { exact: false })).toBeVisible();
   });
 });
