@@ -11,7 +11,7 @@ export default {
   // bail: 0,
 
   // The directory where Jest should store its cached dependency information
-  cacheDirectory: "C:\\Users\\titop\\AppData\\Local\\Temp\\jest",
+  cacheDirectory: 'C:\\Users\\titop\\AppData\\Local\\Temp\\jest',
 
   // Automatically clear mock calls and instances between every test
   // clearMocks: false,
@@ -72,12 +72,12 @@ export default {
 
   // An array of file extensions your modules use
   moduleFileExtensions: [
-    "js",
-    "jsx",
-    "ts",
-    "tsx",
-    "json",
-    "node"
+    'js',
+    'jsx',
+    'ts',
+    'tsx',
+    'json',
+    'node',
   ],
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
@@ -136,8 +136,8 @@ export default {
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
 
-  // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  //The test environment that will be used for testing
+  testEnvironment: 'jest-environment-jsdom',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -147,8 +147,8 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/__tests__/**/*.[jt]s?(x)",
-    "**/?(*.)+(spec|test).[tj]s?(x)"
+    '**/__tests__/**/*.[jt]s?(x)',
+    '**/?(*.)+(spec|test).[tj]s?(x)',
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
