@@ -11,12 +11,14 @@ import {
   NumberInputField,
   Checkbox,
   Stack,
+  Box,
+  Text
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
 // const fs = require('fs');
-import * as fs from 'fs';
+const fs = require('fs');
 
 interface Item {
   label: string;
@@ -34,7 +36,8 @@ function CreateNew() {
 
   const [state, setState] = useState<Models.Tables.ICategory[]>();
   const session = useSession()[0];
-  let categories: Array<Item> = [];
+  let categories: Array<Item> = new Array();
+  const [category, setCategory] = useState<Models.Tables.ICategory>();
 
   async function scanCategories(s) {
     const productService = new Services.Products(
@@ -55,41 +58,86 @@ function CreateNew() {
     return caller.scanAsync(1000);
   }
 
-  useEffect(() => {
-    if (state !== undefined) return;
-    const s = session;
-
-    scanCategories(s).then(
-      (data) => {
-        categories = data.data.map((item) => ({
-          value: item.name,
-          label: item.id,
-        }));
-        setState(data.data);
-      },
-    ).catch(
-      (err) => {
-        console.log(err.message);
-      },
-    );
-  }, [state, setState, session, categories]);
-
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<Models.Tables.INewProduct>({
     title: '',
     price: 0,
     description: '',
-    category: '',
-    availability: 0,
-    image: '',
+    categorieId: '',
+    availabilityQta: 0,
     isSalable: false,
+    customSpecs: undefined,
+    discount: 0,
+    imageURL: '',
+    notes: '',
+    tags: new Array()
   });
 
+  useEffect(() => {
+    const s = session;
+    //if (state !== undefined && category !== undefined) return;
+
+    if (!state)
+      scanCategories(s).then(
+        (data) => {
+          categories = data.data.map((item) => ({
+            value: item.name,
+            label: item.id,
+          }));
+          setState(data.data);
+        },
+      ).catch(
+        (err) => {
+          console.log(err.message);
+        },
+      );
+
+    state?.forEach((item) => {
+      if (item.name == formState.categorieId) {
+        setCategory(item);
+        if (formState.customSpecs?.length != item.customSpecTemplates?.length)
+          item?.customSpecTemplates?.forEach((item) => {
+            formState.customSpecs?.push({
+              fieldName: item.fieldName,
+              unitMisure: item.unitMisure,
+              value: ''
+            });
+          })
+      }
+    })
+
+    if (!formState.customSpecs)
+      category?.customSpecTemplates?.forEach((item) => {
+        formState.customSpecs?.push({
+          fieldName: item.fieldName,
+          unitMisure: item.unitMisure,
+          value: ''
+        });
+      })
+    console.log(formState);
+  }, [state, setState, session, categories, category, setCategory]);
+
   const handleChange = (e) => {
-    formState[e.target.name] = e.target.name === 'isSalable' ? e.target.checked : e.target.value;
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.name === 'isSalable' ? e.target.checked : e.target.value,
-    });
+
+    if (e.target.name === 'availabilityQta' || e.target.name === 'price' || e.target.name === 'discount') {
+      formState[e.target.name] = +e.target.value
+    }
+
+    else if (e.target.name === 'categorieId') {
+      formState.categorieId = e.target.value;
+      formState.customSpecs = new Array();
+    }
+
+    else if (e.target.name === 'customSpecs')
+      //let specValue = formState.customSpecs?.find((x) => x.fieldName === e.target.key)
+      formState.customSpecs?.forEach((item, i) => {
+        if (item.fieldName === e.target.id)
+          item.value = e.target.value
+      })
+    else
+      formState[e.target.name] = e.target.name === 'isSalable' ? e.target.checked : e.target.value;
+
+
+    setFormState({ ...formState });
   };
 
   const s3 = new AWS.S3();
@@ -121,7 +169,7 @@ function CreateNew() {
     );
     await productService.createAsync(formState);
 
-    uploadFile(formState.image).then(
+    uploadFile(formState.imageURL).then(
       (data) => console.log(data),
     );
   };
@@ -141,24 +189,47 @@ function CreateNew() {
         <Textarea name="description" id="description" placeholder="Product description" value={formState.description} onChange={handleChange} />
 
         <FormLabel mt="1%">Product category</FormLabel>
-        <Select id="category" name="category" placeholder="Select a category" value={formState.category} onChange={handleChange}>
-          {state?.map((item) => (<option key={item.id}>{item.name}</option>))}
+        <Select id="categorieId" name="categorieId" placeholder="Select a category" value={formState.categorieId} onChange={handleChange}>
+          {state?.map((item) => (<option key={item.id} >{item.name}</option>))}
         </Select>
 
-        <FormLabel mt="1%" value={formState.availability}>Product availability  </FormLabel>
+        <Box hidden={category ? false : true}>
+          <FormLabel mt="1%">Product specs</FormLabel>
+          {
+            category?.customSpecTemplates?.map((item, i) => (
+              <Box>
+                <FormLabel mt="1%">{item.fieldName} :</FormLabel>
+                <Text key={item.fieldName}>
+                  <Input name="customSpecs" key={item.fieldName} id={item.fieldName} placeholder="ciao" value={formState.customSpecs?.find((x) => x.fieldName === item.fieldName)?.value} onChange={handleChange} />
+                  {item.unitMisure}
+                </Text>
+              </Box>
+            ))
+          }
+          <FormLabel mt="1%">Product taxes: {category?.taxes}</FormLabel>
+        </Box>
+
+        <FormLabel mt="1%">Product discount</FormLabel>
         <NumberInput>
-          <NumberInputField id="availability" name="availability" min={1} value={formState.availability} onChange={handleChange} />
+          <NumberInputField name="discount" id="discount" precision={2} min={0} value={formState.discount} onChange={handleChange} />
+        </NumberInput>
+
+        <FormLabel mt="1%" value={formState.availabilityQta}>Product availability  </FormLabel>
+        <NumberInput>
+          <NumberInputField id="availabilityQta" name="availabilityQta" min={0} value={formState.availabilityQta} onChange={handleChange} />
         </NumberInput>
 
         <FormLabel mt="1%" >Product image</FormLabel>
-        <Input type="file" accept="image/*"
-          margin-top="1%" name="image" value={formState.image} onInput={handleChange} />
+        <Input type="file" accept="image/*" margin-top="1%" name="image" value={formState.imageURL} onInput={handleChange} />
 
         <Stack spacing={10} direction="row">
           <Checkbox name="isSalable" id="isSalable" colorScheme="green" checked={formState.isSalable} onChange={handleChange}>
             <FormLabel mt="1%">Product salable (visible to customers)</FormLabel>
           </Checkbox>
         </Stack>
+
+        <FormLabel mt="1%">Add some notes..</FormLabel>
+        <Textarea name="notes" id="notes" placeholder="Product notes" value={formState.notes} onChange={handleChange} />
 
       </FormControl>
 
