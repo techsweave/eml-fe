@@ -17,6 +17,7 @@ const CartItem = (prop: {
   removeProduct: (id: string) => Promise<void>
 }) => {
   const { cartItem, addQuantity, removeProduct } = prop;
+  const qty = cartItem.quantity >= cartItem.availabilityQta! ? cartItem.availabilityQta! : cartItem.quantity;
   return (
     <Flex
       direction='row'
@@ -91,7 +92,7 @@ const CartItem = (prop: {
           fontSize='xl'
           padding='8px'
         >
-          {cartItem.quantity}
+          {qty}
         </Text>
         <IconButton
           aria-label='add one to quantity'

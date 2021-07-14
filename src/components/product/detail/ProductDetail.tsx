@@ -21,7 +21,7 @@ const ProductDetail = (prop: {
   const [quantityState, setQuantityState] = useState(1);
 
   const handleChange = (e) => {
-    setQuantityState(e.target.value);
+    setQuantityState(+e.target.value);
   };
 
   async function isVendor(s) {
@@ -84,7 +84,7 @@ const ProductDetail = (prop: {
           {product.availabilityQta}
         </Text>
         <AddToCart
-          productId={product.id}
+          product={product}
           quantity={quantityState}
         />
         {/* TODO */}
