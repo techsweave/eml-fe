@@ -77,11 +77,10 @@ export default function productPage({ record }) {
         } else if (!minFilter && maxFilter) {
             filter = maxFilter
         }
-        const ret = await caller.scanAsync(25, undefined, undefined, undefined, minFilter || maxFilter || searchFilter ? filter! : undefined)
-        if (ret.data)
-            return ret.data;
-        else
-            return [ret];
+        let fetchedProducts: Array<Models.Tables.IProduct> = new Array();
+        const scanResult = await caller.scanAsync(25, undefined, undefined, undefined, minFilter || maxFilter || searchFilter ? filter! : undefined)
+        fetchedProducts = fetchedProducts.concat(scanResult.count ? scanResult.data : scanResult as any);
+        return fetchedProducts;
     }
 
     useEffect(() => {
@@ -117,6 +116,3 @@ export default function productPage({ record }) {
         </Flex>)
 
 }
-
-
-// --data '"body":{"limit": 10,"filter": {"type": "And","conditions": [{"type": "GratherThanOrEqualTo","subject": "price","object": 2}]}}'
