@@ -9,7 +9,7 @@ import { Flex, Heading, HStack } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
-import AddToCart from '@components/cart/AddToCart';
+import AddToCart from '../../cart/AddToCart';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
