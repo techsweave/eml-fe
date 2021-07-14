@@ -71,7 +71,7 @@ const PersonalInfo = () => {
       <Text textAlign='center' fontWeight='bold' fontSize='3xl'>
         <p>Personal informations</p>
       </Text>
-      <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={10} alignSelf='center'>
+      <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']} gap={10} alignSelf='center'>
         <GridItem>
           <FormControl>
             <FormLabel>Name</FormLabel>
@@ -84,6 +84,20 @@ const PersonalInfo = () => {
           <FormControl>
             <FormLabel>Username</FormLabel>
             <Input variant='outline' size='sm' placeholder={state.username} rounded='md' onChange={handleChange} />
+          </FormControl>
+        </GridItem>
+        <GridItem>
+          <FormControl>
+            <FormLabel>Old assword</FormLabel>
+            <Input variant='outline' size='sm' placeholder='old password' rounded='md' onChange={handleChange} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>New password</FormLabel>
+            <Input variant='outline' size='sm' placeholder='new password' rounded='md' onChange={handleChange} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Confirm new password</FormLabel>
+            <Input variant='outline' size='sm' placeholder='confirm new password' rounded='md' onChange={handleChange} />
           </FormControl>
         </GridItem>
         <GridItem>
