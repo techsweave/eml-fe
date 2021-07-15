@@ -66,7 +66,7 @@ export function getProductById() {
   }));
 }
 
-export async function getProductsData(id: string) {
+export function getProductsData(id: string) {
   let product: Models.Tables.IProduct;
   let products: any;
   for (let i = 0; i < productMock.length; i += 1) {
@@ -75,9 +75,10 @@ export async function getProductsData(id: string) {
   product = products;
   return product;
 }
-/* export async function getProductsArrayData(id: string[]) {
+
+export async function getProductsArrayData(id: string[]) {
   let product: Models.Tables.IProduct[];
-  const products: any[];
+  const products: any[] = [];
   for (let j = 0; j < id.length; j += 1) {
     for (let i = 0; i < productMock.length; i += 1) {
       if (productMock[i].id === id[j]) {
@@ -87,4 +88,4 @@ export async function getProductsData(id: string) {
   }
   product = products;
   return product;
-} */
+}

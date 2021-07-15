@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Text } from '@chakra-ui/layout';
 import { Box, Image, Stack } from '@chakra-ui/react';
 
-const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
+const ProductItem = (prop) => {
   const { product } = prop;
   return (
     <Box as="button" w='100%'>
