@@ -84,4 +84,11 @@ const cartItemDetailMock: ICartItemDetail[] = [
     isChanged: false,
   },
 ];
+
+
+
 export default cartItemDetailMock;
+
+
+
+
