@@ -66,7 +66,7 @@ const NavigationSmartphone = () => (
             leftIcon={<IoSettingsOutline size={20} />}
             display={['none','flex']}
       >
-        Edit pprofile
+        Edit profile
             </Button>
             <IconButton
                 as="a"

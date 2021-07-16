@@ -24,7 +24,7 @@ const PersonalInfo = () => {
     name: '',
     familyName: '',
     telephone: '',
-    brithdate: '',
+    birthdate: '',
     address: '',
 
   });
@@ -37,7 +37,7 @@ const PersonalInfo = () => {
       name: await user.getName(),
       familyName: await user.getFamilyName(),
       telephone: await user.getPhoneNumber(),
-      brithdate: await user.getBirthdate(),
+      birthdate: await user.getBirthdate(),
       address: await user.getAddress(),
     };
   }
@@ -86,7 +86,7 @@ const PersonalInfo = () => {
         <p>
           Birthdate:
           {' '}
-          {state.brithdate}
+          {state.birthdate}
         </p>
         <p>
           Telephone:

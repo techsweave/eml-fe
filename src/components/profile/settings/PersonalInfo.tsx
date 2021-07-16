@@ -18,7 +18,7 @@ const PersonalInfo = () => {
     name: '',
     familyName: '',
     telephone: '',
-    brithdate: '',
+    birthdate: '',
     address: '',
 
   });
@@ -31,7 +31,7 @@ const PersonalInfo = () => {
       name: await user.getName(),
       familyName: await user.getFamilyName(),
       telephone: await user.getPhoneNumber(),
-      brithdate: await user.getBirthdate(),
+      birthdate: await user.getBirthdate(),
       address: await user.getAddress(),
     };
   }
@@ -54,8 +54,7 @@ const PersonalInfo = () => {
   const [formState, setFormState] = useState({
     name: '',
     familyName: '',
-    username: '',
-    adress: '',
+    address: '',
     birthdate: '',
     telephone: '',
   });
@@ -64,26 +63,27 @@ const PersonalInfo = () => {
     setFormState({
       ...formState,
     });
+    console.log(formState);
   };
-  const submitForm = () => { };
+  const submitForm = async () => {
+    const user = await AuthenticatedUser.fromToken(session?.accessToken as string);
+    console.log(user);
+    await user.setName(formState.name, process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string);
+  };
   return (
     <Box alignSelf='center'>
       <Text textAlign='center' fontWeight='bold' fontSize='3xl'>
-        <p>Personal informations</p>
+        Personal informations
       </Text>
       <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']} gap={10} alignSelf='center'>
         <GridItem>
           <FormControl>
             <FormLabel>Name</FormLabel>
-            <Input variant='outline' size='sm' placeholder={state.name} rounded='md' onChange={handleChange} />
+            <Input variant='outline' size='sm' name='name' placeholder={state.name} value={formState.name} rounded='md' onChange={handleChange} />
           </FormControl>
           <FormControl>
             <FormLabel>Surname</FormLabel>
-            <Input variant='outline' size='sm' placeholder={state.familyName} rounded='md' onChange={handleChange} />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Username</FormLabel>
-            <Input variant='outline' size='sm' placeholder={state.username} rounded='md' onChange={handleChange} />
+            <Input variant='outline' size='sm' name='familyName' placeholder={state.familyName} value={formState.familyName} rounded='md' onChange={handleChange} />
           </FormControl>
         </GridItem>
         <GridItem>
@@ -103,11 +103,11 @@ const PersonalInfo = () => {
         <GridItem>
           <FormControl>
             <FormLabel>Address</FormLabel>
-            <Input variant='outline' size='sm' placeholder={state.address} rounded='md' onChange={handleChange} />
+            <Input variant='outline' size='sm' name='address' placeholder={state.address} value={formState.address} rounded='md' onChange={handleChange} />
           </FormControl>
           <FormControl>
             <FormLabel>Birthdate</FormLabel>
-            <Input variant='outline' size='sm' placeholder={state.brithdate} rounded='md' onChange={handleChange} />
+            <Input variant='outline' size='sm' name='birthdate' placeholder={state.birthdate} value={formState.birthdate} rounded='md' onChange={handleChange} />
           </FormControl>
           <FormControl>
             <FormLabel>Telephone</FormLabel>
@@ -115,12 +115,12 @@ const PersonalInfo = () => {
               <InputLeftElement>
                 <PhoneIcon color='gray.300' />
               </InputLeftElement>
-              <Input placeholder={state.telephone} variant='outline' rounded='md' onChange={handleChange} />
+              <Input placeholder={state.telephone} name='telephone' value={formState.telephone} variant='outline' rounded='md' onChange={handleChange} />
             </InputGroup>
           </FormControl>
         </GridItem>
       </Grid>
-      <Center><Button mt='5' type='button' name='button' onClick={submitForm}> Submit</Button></Center>
+      <Center><Button mt='5' type='button' name='button' onClick={submitForm}>Submit</Button></Center>
     </Box>
   );
 };
