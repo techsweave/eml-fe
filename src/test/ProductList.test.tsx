@@ -18,6 +18,13 @@ describe('ProductList', () => {
     expect(screen.getByText(expectedProd[2].title)).toBeVisible();
   });
 
+  test('test product item image', () => {
+    render(<ProductList productList={expectedProd} key={expectedProd.id} />);
+    expect(screen.getByAltText(expectedProd[0].title)).toBeVisible();
+    expect(screen.getByAltText(expectedProd[1].title)).toBeVisible();
+    expect(screen.getByAltText(expectedProd[2].title)).toBeVisible();
+  });
+
   test('test title visible list', () => {
     render(<ProductList productList={expectedProd} />);
     expect(screen.getByText(expectedProd[0].price, { exact: false })).toBeVisible();

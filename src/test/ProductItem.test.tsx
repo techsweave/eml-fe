@@ -17,6 +17,11 @@ describe('ProductItem', () => {
     expect(screen.getByText(expectedProd.title, { exact: false })).toBeVisible();
   });
 
+  test('test product item image', () => {
+    render(<ProductItem product={expectedProd} key={expectedProd.id} />);
+    expect(screen.getByAltText(expectedProd.title, { exact: false })).toBeVisible();
+  });
+
   test('test product item price', () => {
     render(<ProductItem product={expectedProd} key={expectedProd.id} />);
     expect(screen.getByText(expectedProd.price, { exact: false })).toBeVisible();
