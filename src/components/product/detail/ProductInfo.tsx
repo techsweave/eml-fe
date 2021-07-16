@@ -10,7 +10,7 @@ const productInfo = (prop: { product: Models.Tables.IProduct }) => {
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)']} gap={5}>
       {
         product.customSpecs?.map((item) => (
-          <GridItem key={item.fieldName} borderBottom='1px' borderTop='1px' p='2' borderBottomColor='gray.300' borderTopColor='gray.300'>
+          <GridItem key={item.fieldName}>
             <HStack>
               <Text fontWeight='bold'>
                 {item.fieldName}
