@@ -63,11 +63,9 @@ const PersonalInfo = () => {
     setFormState({
       ...formState,
     });
-    console.log(formState);
   };
   const submitForm = async () => {
     const user = await AuthenticatedUser.fromToken(session?.accessToken as string);
-    console.log(user);
     await user.setName(formState.name, process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string);
   };
   return (
