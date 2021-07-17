@@ -20,10 +20,6 @@ export default function productDetailPage(prop) {
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
         <ProductDetail product={product} category={ret} />
-        <Stack alignSelf='center' mt='5' display={['none', 'none', 'inherit', 'inherit']}>
-          <Text textAlign='center' fontWeight='bold' fontSize='4xl' mb='5'>Product&apos;s details</Text>
-          <ProductInfo product={product} />
-        </Stack>
         <Box display={['inherit', 'inherit', 'none', 'none']} alignSelf='center' mt='5'>
           <Popover>
             <PopoverTrigger>
