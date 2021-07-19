@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import CartSummary from '../components/cart/CartSummary';
+import CartSummary from '../src/components/cart/CartSummary';
 import productMock from './ProductMock';
 import cartItemDetailMock from './cartItemDetailMock';
 import getTotalMock from './getTotalMock';

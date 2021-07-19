@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import ProductList from '../components/product/ProductList';
+import ProductList from '../src/components/product/ProductList';
 import productMock from './ProductMock';
 
 describe('ProductList', () => {
