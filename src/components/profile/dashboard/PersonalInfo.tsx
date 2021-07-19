@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { AuthenticatedUser } from 'utilities-techsweave';
 import * as AWS from 'aws-sdk';
+import showError from '@libs/showError';
 
 const initLoading = true;
 
@@ -55,6 +56,7 @@ const PersonalInfo = () => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
+  showError(error);
   return (
     <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={3}>
       <Box
