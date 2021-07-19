@@ -119,7 +119,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                 </Td>
               </Tr>
               {state.map((item) => (
-                <Tr>
+                <Tr key={item.title}>
                   <Td><Image fallbackSrc="/images/fallback.png" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
                   <Td>{item.title}</Td>
                   <Td>
@@ -127,7 +127,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                       <GridItem>
                         Price:
                         {' '}
-                        {item.price}
+                        {item.price.toFixed(2)}
                         €
                       </GridItem>
                       <GridItem>
@@ -139,7 +139,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   </Td>
                   <Td textAlign='center'>
                     Subtotal:
-                    {item.price * item.quantity}
+                    {(item.price * item.quantity.toFixed(2))}
                   </Td>
                 </Tr>
               ))}

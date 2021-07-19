@@ -5,16 +5,33 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArticles';
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import { Flex } from '@chakra-ui/react';
-import productMock from '@test/ProductMock';
+import {
+  Box, Flex, Text, Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody, Button, Stack,
+} from '@chakra-ui/react';
+import ProductInfo from '@components/product/detail/ProductInfo';
 
 export default function productDetailPage(prop) {
-  const { product } = prop;
+  const { product, relatedProducts, ret } = prop;
   return (
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
-        <ProductDetail product={product} />
-        <RelatedProduct product={productMock} />
+        <ProductDetail product={product} category={ret} />
+        <Box display={['inherit', 'inherit', 'none', 'none']} alignSelf='center' mt='5'>
+          <Popover>
+            <PopoverTrigger>
+              <Button>Product&apos;s details</Button>
+            </PopoverTrigger>
+            <PopoverContent mb='5'>
+              <PopoverHeader textAlign='center' fontWeight='bold' fontSize='4xl'>Product&apos;s details</PopoverHeader>
+              <PopoverBody><ProductInfo product={product} /></PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Box>
+        <RelatedProduct product={relatedProducts} />
       </Flex>
     </Layout>
   );
@@ -32,14 +49,46 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   let product;
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const categoriesCaller = new Services.Categories(caller, `${process.env.NEXT_PUBLIC_API_ID_CATEGORIES}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
     product = await caller.getAsync(context.params?.id as string);
   } catch (error) {
     alert(error);
   }
+  const ret = await categoriesCaller.getAsync(product.categorieId);
+  const category = product.categorieId;
+  const productId = product.id;
+  const filter: ConditionExpression = {
+    type: 'And',
+    conditions: [
+      {
+        type: 'Equals',
+        subject: 'categorieId',
+        object: category,
+      },
+      {
+        type: 'NotEquals',
+        subject: 'id',
+        object: productId,
+      },
+    ],
+  };
+  let relatedProducts;
+  try {
+    relatedProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter);
+    if (relatedProducts.data) {
+      relatedProducts = relatedProducts.data;
+    } else {
+      relatedProducts = [relatedProducts];
+    }
+  } catch (error) {
+    console.log(error);
+  }
   return {
     props: {
       product,
+      relatedProducts,
+      ret,
     }, // will be passed to the page component as props
     revalidate: 600,
   };

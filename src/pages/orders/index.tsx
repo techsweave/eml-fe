@@ -2,9 +2,10 @@ import Layout from '@components/Layout';
 import OrderList from '@components/order/OrderList';
 import { Models, Services, AuthenticatedUser } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
-import { Stack } from '@chakra-ui/layout';
+import { Flex, Stack } from '@chakra-ui/layout';
 import * as AWS from 'aws-sdk';
 import { useSession } from 'next-auth/client';
+import { CircularProgress } from '@chakra-ui/react';
 
 export default function orderPage() {
   AWS.config.update({
@@ -20,7 +21,6 @@ export default function orderPage() {
   const [state, setState] = useState<Array<Models.Tables.IOrder>>();
   const [isLoading, setLoading] = useState(true);
 
-
   async function isVendor(s, l) {
     if (!l) return userState;
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
@@ -31,14 +31,12 @@ export default function orderPage() {
     if (!l) return;
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     const caller = new Services.Orders(`${process.env.NEXT_PUBLIC_API_ID_ORDERS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
-    if (await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string))
-      return (await caller.scanAsync(25, undefined, undefined, undefined, undefined)).data;
-    else
-      return (await caller.scanAsync(25, undefined, undefined, undefined, {
-        type: 'Equals',
-        subject: 'userId',
-        object: await user.getUserId()
-      })).data;
+    if (await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string)) return (await caller.scanAsync(25, undefined, undefined, undefined, undefined)).data;
+    return (await caller.scanAsync(25, undefined, undefined, undefined, {
+      type: 'Equals',
+      subject: 'userId',
+      object: await user.getUserId(),
+    })).data;
   }
 
   useEffect(() => {
@@ -63,7 +61,6 @@ export default function orderPage() {
     }
   }, [session, state, setState, userState, setUserState, isLoading, setLoading]);
 
-
   if (!isLoading) {
     return (
       <Layout title="Order-page">
@@ -72,6 +69,13 @@ export default function orderPage() {
         </Stack>
       </Layout>
     );
-  } else
-    return (<h1></h1>)
+  } return (
+    <Flex justifyContent='center'>
+      <CircularProgress
+        isIndeterminate
+        color='red.300'
+        size='3em'
+      />
+    </Flex>
+  );
 }

@@ -36,7 +36,7 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
           </GridItem>
         ))}
       </Grid>
-      <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='lg'>
+      <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='md'>
         <TableCaption>Orders</TableCaption>
         <Thead>
           <Tr>
@@ -55,24 +55,18 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
               });
             return (
 
-              <Tr _hover={{ backgroundColor: 'blue.100' }}>
+              <Tr _hover={{ backgroundColor: 'blue.100' }} key={orders.id}>
                 <Td>{orders.id}</Td>
 
                 {/* <Td>{orders.date.getDate()}-{orders.date.getMonth() + 1}-{orders.date.getFullYear()}</Td> */}
                 <Td>
-                  Date:
-                  {' '}
                   {JSON.stringify(orders.date).split('T')[0].split('"')[1]}
-                  {'\n'}
-                  Time:
-                  {' '}
-                  {JSON.stringify(orders.date).split('T')[1].split('.')[0]}
                 </Td>
                 <Td>
                   {total}
                 </Td>
                 <Td>
-                  <Link href={{ pathname: '/profile/client/orders/[id]', query: { id: orders.id } }}>
+                  <Link href={{ pathname: 'orders/detail/[id]', query: { id: orders.id } }}>
                     <IconButton
                       size="sm"
                       rounded="md"
