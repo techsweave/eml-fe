@@ -4,7 +4,7 @@ import Carousel from '@components/home/Carousel/Carousel';
 import RecentProduct from '@components/home/RecentProduct';
 import { Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
-import { Models, Services } from 'utilities-techsweave';
+import { Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 
 const indexPage = (prop) => {
