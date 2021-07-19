@@ -48,6 +48,7 @@ const ProductDetail = (prop: {
       },
     );
   }, [userState, setState, session]);
+  const discountedPrice = (product.price * ((100 - product.discount!) / 100));
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Grid row='2' column='1'>
@@ -64,17 +65,32 @@ const ProductDetail = (prop: {
               </Text>
             </VStack>
             <VStack ml={['0', '0', '10', '10']} alignSelf="center">
-              <Text textAlign='center'>
-                Price:
-                {' '}
-                {product.price.toFixed(2)!}
-                {' '}
-                €
+              <Text
+                color='gray.700'
+                fontSize='xl'
+              >
+                {(product.discount ? discountedPrice : product.price)?.toFixed(2).toString().concat(' €')}
+              </Text>
+              <Text
+                color='gray.500'
+              >
+                <Text
+                  as='del'
+                >
+                  {product.discount ? product.price?.toFixed(2).toString().concat('€') : undefined}
+                </Text>
+
+                {' '.concat(
+                  product.discount
+                    ? product.discount?.toString().concat('%')
+                    : '',
+                )}
               </Text>
               <Text textAlign='center'>
                 Taxes:
                 {' '}
-                { (product.price! * (category.taxes! / 100)).toFixed(2)}
+                {product.discount ? (discountedPrice * (category.taxes! / 100)).toFixed(2)
+                  : (product.price! * (category.taxes! / 100)).toFixed(2)}
                 {' '}
                 €
               </Text>
