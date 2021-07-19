@@ -1,7 +1,7 @@
 import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import {
-  Flex, Text, Heading, Button,
+  Flex, Text, Heading, Button, useToast,
 } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
 import { loadStripe } from '@stripe/stripe-js'
@@ -22,12 +22,12 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   const session = useSession()[0];
 
   // For hook call
-  showError();
+  const toast = useToast();
 
   const goToChechOut = async () => {
-    const stripe = await stripePromise;
-
     try {
+      const stripe = await stripePromise;
+
       const cartService = new Services.Carts(
         process.env.NEXT_PUBLIC_API_ID_CART!,
         process.env.NEXT_PUBLIC_API_REGION!,
@@ -36,16 +36,25 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         session?.idToken as string,
       );
 
-      const stripeSession = await cartService.goToCheckoutAsync("https://eml-fe.vercel.app", "https://eml-fe.vercel.app/cart")
-      console.log(stripeSession)
+      const stripeSession = await cartService.goToCheckoutAsync(`${process.env.NEXT_PUBLIC_SITE_URL}checkout/success`, `${process.env.NEXT_PUBLIC_SITE_URL}cart`);
+      console.log(stripeSession);
 
       // When the customer clicks on the button, redirect them to Checkout.
-      const result = await stripe?.redirectToCheckout({
-        sessionId: stripeSession.id
+      await stripe?.redirectToCheckout({
+        sessionId: stripeSession.id,
+
       })
     }
     catch (error) {
-      showError(error);
+      console.log(error);
+      toast({
+        title: error.name,
+        description: error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
   }
 

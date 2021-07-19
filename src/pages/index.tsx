@@ -4,7 +4,7 @@ import Carousel from '@components/home/Carousel/Carousel';
 import RecentProduct from '@components/home/RecentProduct';
 import { Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
-import { Models, Services } from 'utilities-techsweave';
+import { Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 
 const indexPage = (prop) => {
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     lessProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter2);
   } catch (error) {
-    //alert(error);
+    // alert(error);
   }
   if (products.data) {
     products = products.data;

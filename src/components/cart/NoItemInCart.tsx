@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Flex, Icon, Text, Spacer, Button, LinkOverlay,
+  Flex, Icon, Text, Button,
 } from '@chakra-ui/react';
 import { FaShoppingBag, FaShoppingCart } from 'react-icons/fa';
 

@@ -227,6 +227,8 @@ const CartList = () => {
     }
   };
 
+  const toast = useToast();
+
   /**
    * Add quantity to a specific item and store it
    * @param id Cart id
@@ -256,7 +258,6 @@ const CartList = () => {
     }
   };
 
-  const toast = useToast();
   // Show changed product
   if (changedProduct > 0) {
     let description = `${changedProduct} products are removed from your cart beause they changed`;
