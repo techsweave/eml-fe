@@ -1,7 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import ProductItem from '../components/product/ProductItem';
+import ProductItem from '../src/components/product/ProductItem';
 import productMock from './ProductMock';
 
 describe('ProductItem', () => {
@@ -15,6 +15,11 @@ describe('ProductItem', () => {
   test('test product item title', () => {
     render(<ProductItem product={expectedProd} key={expectedProd.id} />);
     expect(screen.getByText(expectedProd.title, { exact: false })).toBeVisible();
+  });
+
+  test('test product item image', () => {
+    render(<ProductItem product={expectedProd} key={expectedProd.id} />);
+    expect(screen.getByAltText(expectedProd.title, { exact: false })).toBeVisible();
   });
 
   test('test product item price', () => {
