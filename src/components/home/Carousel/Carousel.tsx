@@ -19,7 +19,7 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
         wrapperTag="ul"
         autoplay={{
           delay: 5000,
-          disableOnInteraction: false,
+          disableOnInteraction: true,
         }}
         pagination={{ clickable: true }}
         spaceBetween={0}

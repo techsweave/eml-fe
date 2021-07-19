@@ -5,7 +5,14 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArticles';
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import { Flex } from '@chakra-ui/react';
+import {
+  Box, Flex, Text, Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody, Button, Stack,
+} from '@chakra-ui/react';
+import ProductInfo from '@components/product/detail/ProductInfo';
 
 export default function productDetailPage(prop) {
   const { product, relatedProducts, ret } = prop;
@@ -13,6 +20,17 @@ export default function productDetailPage(prop) {
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
         <ProductDetail product={product} category={ret} />
+        <Box display={['inherit', 'inherit', 'none', 'none']} alignSelf='center' mt='5'>
+          <Popover>
+            <PopoverTrigger>
+              <Button>Product&apos;s details</Button>
+            </PopoverTrigger>
+            <PopoverContent mb='5'>
+              <PopoverHeader textAlign='center' fontWeight='bold' fontSize='4xl'>Product&apos;s details</PopoverHeader>
+              <PopoverBody><ProductInfo product={product} /></PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </Box>
         <RelatedProduct product={relatedProducts} />
       </Flex>
     </Layout>

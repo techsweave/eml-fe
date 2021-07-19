@@ -83,7 +83,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         as='h3'
       >
         {
-          total
+          total.toFixed(2)
             .toString()
             .replace('.', ',')
         }
@@ -95,7 +95,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         fontSize='lg'
       >
         {
-          totalNoDiscount
+          totalNoDiscount.toFixed(2)
             .toString()
             .replace('.', ',')
         }

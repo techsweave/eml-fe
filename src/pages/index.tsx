@@ -42,7 +42,8 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     lessProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter2);
   } catch (error) {
-    // alert(error);
+    console.log(error);
+    //alert(error);
   }
   if (products.data) {
     products = products.data;

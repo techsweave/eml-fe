@@ -8,8 +8,8 @@ import { Models } from 'utilities-techsweave';
 const RelatedProducts = (prop:{ product:Models.Tables.IProduct[] }) => {
   const { product } = prop;
   return (
-    <Box>
-      <Heading textAlign='center' m='10'>Related Product</Heading>
+    <Box mt='5'>
+      <Heading m='10'>Related Product</Heading>
       {product.length === undefined && (
       <Grid>
 
