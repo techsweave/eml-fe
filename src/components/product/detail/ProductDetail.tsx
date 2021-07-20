@@ -3,19 +3,15 @@ import React, { useState, useEffect } from 'react';
 import {
   Image, VStack, Link,
   NumberInput, NumberInputField,
-  Text,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Text, Flex, Grid, GridItem, Heading, HStack, Stack,
+
 } from '@chakra-ui/react';
-import {
-  Box, Flex, Grid, GridItem, Heading, HStack, Stack,
-} from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
 import AddToCart from '@components/cart/AddToCart';
-import ProductInfo from './ProductInfo';
+import showError from '@libs/showError';
+import ProductInfo from '@components/product/detail/ProductInfo';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
@@ -44,10 +40,11 @@ const ProductDetail = (prop: {
       },
     ).catch(
       (err) => {
-        console.log(err.message);
+        showError(err.message);
       },
     );
   }, [userState, setState, session]);
+  const discountedPrice = (product.price * ((100 - product.discount!) / 100));
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Grid row='2' column='1'>
@@ -64,17 +61,32 @@ const ProductDetail = (prop: {
               </Text>
             </VStack>
             <VStack ml={['0', '0', '10', '10']} alignSelf="center">
-              <Text textAlign='center'>
-                Price:
-                {' '}
-                {product.price.toFixed(2)!}
-                {' '}
-                €
+              <Text
+                color='gray.700'
+                fontSize='xl'
+              >
+                {(product.discount ? discountedPrice : product.price)?.toFixed(2).toString().concat(' €')}
+              </Text>
+              <Text
+                color='gray.500'
+              >
+                <Text
+                  as='del'
+                >
+                  {product.discount ? product.price?.toFixed(2).toString().concat('€') : undefined}
+                </Text>
+
+                {' '.concat(
+                  product.discount
+                    ? product.discount?.toString().concat('%')
+                    : '',
+                )}
               </Text>
               <Text textAlign='center'>
                 Taxes:
                 {' '}
-                { (product.price! * (category.taxes! / 100)).toFixed(2)}
+                {product.discount ? (discountedPrice * (category.taxes! / 100)).toFixed(2)
+                  : (product.price! * (category.taxes! / 100)).toFixed(2)}
                 {' '}
                 €
               </Text>
@@ -82,8 +94,8 @@ const ProductDetail = (prop: {
                 <Text>
                   Quantity
                 </Text>
-                <NumberInput defaultValue={1} min={1} max={product.availabilityQta} w='15'>
-                  <NumberInputField name='quantity' id='quantity' value={quantityState} onChange={handleChange} pl='7,5' pr='7,5' />
+                <NumberInput defaultValue={1} min={1} max={product.availabilityQta}>
+                  <NumberInputField name='quantity' id='quantity' value={quantityState} onChange={handleChange} w='20' />
                 </NumberInput>
               </HStack>
               <Text>

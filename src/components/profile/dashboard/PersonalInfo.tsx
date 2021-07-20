@@ -5,6 +5,7 @@ import {
 import { useSession } from 'next-auth/client';
 import { AuthenticatedUser } from 'utilities-techsweave';
 import * as AWS from 'aws-sdk';
+import showError from '@libs/showError';
 
 const initLoading = true;
 
@@ -57,6 +58,7 @@ const PersonalInfo = () => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
+  showError(error);
   return (
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={5}>
       <GridItem gap={2}>

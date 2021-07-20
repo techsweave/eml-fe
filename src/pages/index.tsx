@@ -6,6 +6,7 @@ import { Box } from '@chakra-ui/react';
 import { GetStaticProps } from 'next';
 import { Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
+import showError from '@libs/showError';
 
 const indexPage = (prop) => {
   const { products, lessProducts } = prop;
@@ -32,7 +33,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     products = await caller.scanAsync(6, undefined, undefined, undefined, filter);
   } catch (error) {
-    console.log(error);
+    showError(error);
   }
   const filter2: ConditionExpression = {
     type: 'LessThanOrEqualTo',
@@ -42,8 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
   try {
     lessProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter2);
   } catch (error) {
-    console.log(error);
-    //alert(error);
+    showError(error);
   }
   if (products.data) {
     products = products.data;
