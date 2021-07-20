@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import {
+  Box, Grid, GridItem, Text,
+} from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { AuthenticatedUser } from 'utilities-techsweave';
 import * as AWS from 'aws-sdk';
@@ -22,7 +24,7 @@ const PersonalInfo = () => {
     name: '',
     familyName: '',
     telephone: '',
-    brithdate: '',
+    birthdate: '',
     address: '',
 
   });
@@ -35,7 +37,7 @@ const PersonalInfo = () => {
       name: await user.getName(),
       familyName: await user.getFamilyName(),
       telephone: await user.getPhoneNumber(),
-      brithdate: await user.getBirthdate(),
+      birthdate: await user.getBirthdate(),
       address: await user.getAddress(),
     };
   }
@@ -56,48 +58,48 @@ const PersonalInfo = () => {
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
   return (
-    <Box rounded="lg" borderWidth={1} borderColor="gray.900" bg="gray.100" pl={5} pr={5} pt={3} pb={3}>
-      <Box
-        fontWeight="bold"
-        letterSpacing="wide"
-        fontSize="2xl"
-      >
-        <p>Personal informations</p>
-      </Box>
-      <Box mt={3}>
-        <p>
-          Name:&nbsp;
-          {state.name}
-
-        </p>
-        <p>
-          Surname: &nbsp;
-          {state.familyName}
-        </p>
-        <p>
-          Birthdate: &nbsp;
-          {state.brithdate}
-        </p>
+    <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={5}>
+      <GridItem gap={2}>
         <p>
           Email:
-          &nbsp;
+          {' '}
           {state.email}
         </p>
         <p>
           Username:
-        &nbsp;
+          {' '}
           {state.username}
         </p>
+      </GridItem>
+      <GridItem>
         <p>
-          Telephone: &nbsp;
+          Name:
+          {' '}
+          {state.name}
+
+        </p>
+        <p>
+          Surname:
+          {' '}
+          {state.familyName}
+        </p>
+        <p>
+          Birthdate:
+          {' '}
+          {state.birthdate}
+        </p>
+        <p>
+          Telephone:
+          {' '}
           {state.telephone}
         </p>
         <p>
-          Address: &nbsp;
+          Address:
+          {' '}
           {state.address}
         </p>
-      </Box>
-    </Box>
+      </GridItem>
+    </Grid>
   );
 };
 
