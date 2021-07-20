@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/client';
 import {
   useToast, Box, Center, Button, Text,
 } from '@chakra-ui/react';
-import showError from '@libs/showError';
+import showError from '../../libs/showError';
 
 const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) => {
   const toast = useToast();

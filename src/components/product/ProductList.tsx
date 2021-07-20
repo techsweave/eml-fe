@@ -1,4 +1,4 @@
-import ProductItem from '@components/product/ProductItem';
+import ProductItem from './ProductItem';
 import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Grid, GridItem, Box, Heading } from '@chakra-ui/react';
