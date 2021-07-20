@@ -12,7 +12,7 @@ const Carousel = (prop: { product: Models.Tables.IProduct[] }) => {
   const { product } = prop;
   return (
     <div>
-      <Heading textAlign='center' m='5'>Offer products</Heading>
+      <Heading textAlign='center' m='5'>Products on sale!</Heading>
       <Swiper
         key='main'
         tag="section"
