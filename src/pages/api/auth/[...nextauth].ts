@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
 import Cookies from 'cookies';
 
-async function refreshAccessToken(token) {
+async function refreshAccessToken(token, req, res) {
   try {
     const params = new URLSearchParams({
       client_id: process.env.COGNITO_CLIENT_ID as string,
@@ -25,10 +25,13 @@ async function refreshAccessToken(token) {
       throw refreshedTokens;
     }
 
+    const cookies = new Cookies(req, res);
+    cookies.set('idToken', refreshedTokens.id_token);
+
     return {
       ...token,
       accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in!,
       // Fall back to old refresh token
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
     };
@@ -61,7 +64,7 @@ const getOptions = (req, res) => ({
         // Max 4096 bytes
         return {
           accessToken: account.accessToken,
-          accessTokenExpires: Date.now() + account.expires_in! * 1000,
+          accessTokenExpires: Date.now() + account.expires_in!,
           refreshToken: account.refresh_token,
         };
       }
@@ -72,7 +75,7 @@ const getOptions = (req, res) => ({
       }
 
       // Access token has expired, try to update it
-      return refreshAccessToken(token);
+      return refreshAccessToken(token, req, res);
     },
     async session(session, token) {
       const cookies = new Cookies(req, res);

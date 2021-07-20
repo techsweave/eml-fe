@@ -7,8 +7,8 @@ type Props = {
   isOpen
 };
 const MenuToggle = ({ toggle, isOpen }:Props) => (
-  <Box display={{ base: 'block', md: 'none' }} onClick={toggle}>
-    {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+  <Box display={{ base: 'block', md: 'block', lg: 'none' }} onClick={toggle}>
+    {isOpen ? <CloseIcon w={19} h={19} /> : <HamburgerIcon w={30} h={30} />}
   </Box>
 );
 export default MenuToggle;
