@@ -7,7 +7,6 @@ import { SearchIcon } from '@chakra-ui/icons';
 const SearchBar = ({ ...props }) => {
   const [state, setState] = useState<string>('');
   const handleChange = async (e) => {
-    console.log(e.target.value);
     setState(e.target.value)
   }
   return (

@@ -8,6 +8,7 @@ import Filter from '@components/filter/Filter';
 import { useRouter } from 'next/router'
 import { ConditionExpression, ExpressionAttributes, FunctionExpression, AttributePath } from '@aws/dynamodb-expressions';
 import { CircularProgress } from '@chakra-ui/react';
+import showError from '@libs/showError';
 
 export default function productPage({ record }) {
 
@@ -51,7 +52,6 @@ export default function productPage({ record }) {
 
     let filter: ConditionExpression | undefined;
     if (search != '') {
-      console.log(searchFilter)
       filter = searchFilter
     }
     else if (minFilter && maxFilter) {
@@ -85,7 +85,7 @@ export default function productPage({ record }) {
       }
     ).catch(
       (err) => {
-        console.log(err.message);
+        showError(err);
       }
     )
   }, [state, setState, isLoading, setLoading])
