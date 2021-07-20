@@ -80,8 +80,8 @@ const PersonalInfo = () => {
         position: 'top',
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
-            <Text alignSelf='center'>Update successfully done</Text>
-            <Text alignSelf='center'>Click button to continue</Text>
+            <Text textAlign='center'>Update successfully done</Text>
+            <Text textAlign='center'>Click button to continue</Text>
             <Center>
               <Button color='black' as='a' href='/profile'>Close</Button>
             </Center>
@@ -122,8 +122,8 @@ const PersonalInfo = () => {
             position: 'top',
             render: () => (
               <Box color='white' p={3} bg='green.500' borderRadius='15px'>
-                <Text alignSelf='center'>Update successfully done</Text>
-                <Text alignSelf='center'>Click button to continue</Text>
+                <Text textAlign='center'>Update successfully done</Text>
+                <Text textAlign='center'>Click button to continue</Text>
                 <Center>
                   <Button color='black' as='a' href='/profile'>Close</Button>
                 </Center>
