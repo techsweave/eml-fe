@@ -53,9 +53,7 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
     );
   }, [userState, setState, session]);
   return (
-    <Link href='/cart' hidden={userState || !session ? true : undefined}>
-      <Button onClick={handleClick}>Add to Cart</Button>
-    </Link>
+      <Button hidden={userState || !session ? true : undefined} onClick={handleClick}>Add to Cart</Button>
   );
 };
 export default addCart;
