@@ -4,11 +4,9 @@ import { Flex } from '@chakra-ui/layout';
 type Props = {
   children: ReactNode
 };
-const NavBarContainer = ({ children, ...props }:Props) => (
+const NavBarContainer = ({ children, ...props }: Props) => (
   <Flex
     h={['full', 'full', 'full', '20']}
-    borderBottomWidth={1}
-    borderBottomColor="red.500"
     as="nav"
     align="center"
     justify="space-between"

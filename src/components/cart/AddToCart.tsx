@@ -53,7 +53,7 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
     );
   }, [userState, setState, session]);
   return (
-    <Button onClick={handleClick}>Add to Cart</Button>
+      <Button hidden={userState || !session ? true : undefined} onClick={handleClick}>Add to Cart</Button>
   );
 };
 export default addCart;

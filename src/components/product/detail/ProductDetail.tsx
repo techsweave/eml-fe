@@ -1,7 +1,7 @@
 import { Models, AuthenticatedUser } from 'utilities-techsweave';
 import React, { useState, useEffect } from 'react';
 import {
-  Image, VStack, Link,
+  Image, VStack,
   NumberInput, NumberInputField,
   Text, Flex, Grid, GridItem, Heading, HStack, Stack,
 
@@ -10,6 +10,7 @@ import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
 import AddToCart from '@components/cart/AddToCart';
+import Link from 'next/link'
 import showError from '@libs/showError';
 import ProductInfo from '@components/product/detail/ProductInfo';
 
@@ -90,7 +91,7 @@ const ProductDetail = (prop: {
                 {' '}
                 €
               </Text>
-              <HStack>
+              <HStack hidden={userState || !session}>
                 <Text>
                   Quantity
                 </Text>
@@ -108,7 +109,7 @@ const ProductDetail = (prop: {
                 quantity={quantityState}
               />
               {/* TODO */}
-              <Link href='/'>
+              <Link href={{ pathname: '/editProduct/[id]', query: { id: prop.product.id } }}>
                 <Button hidden={!userState ? true : undefined}>Edit product</Button>
               </Link>
             </VStack>
