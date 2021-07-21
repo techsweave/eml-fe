@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/client';
 import { Button } from '@chakra-ui/button';
 import { Link } from '@chakra-ui/layout';
 
-const addCart = (prop:{ product: Models.Tables.IProduct, quantity: number }) => {
+const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) => {
   const { product, quantity } = prop;
   const session = useSession()[0];
   const qty = quantity >= product.availabilityQta! ? product.availabilityQta! : quantity;
@@ -32,7 +32,7 @@ const addCart = (prop:{ product: Models.Tables.IProduct, quantity: number }) => 
     );
   }, [userState, setState, session]);
   return (
-    <Link href='/cart' hidden={userState ? true : undefined}>
+    <Link href='/cart' hidden={userState || !session ? true : undefined}>
       <Button onClick={handleClick}>Add to Cart</Button>
     </Link>
   );

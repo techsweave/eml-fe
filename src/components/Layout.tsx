@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 // import { signIn, signOut, useSession } from 'next-auth/client';
-import { Stack, Flex } from '@chakra-ui/layout';
+import { Stack, Flex, Divider } from '@chakra-ui/react';
 import Header from '@components/header/Header';
-import Footer from '@components/Footer';
+import Footer from '@components/footer/Footer';
 
 type Props = {
   children: ReactNode
@@ -18,10 +18,12 @@ const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
       <title>{title}</title>
     </Head>
     <Header />
+    <Divider mb='10' />
     <Flex
       as="main"
       justifyContent='center'
       justifySelf='stretch'
+      mb='10vh'
     >
       {children}
     </Flex>
