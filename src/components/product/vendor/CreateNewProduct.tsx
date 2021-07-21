@@ -193,9 +193,6 @@ function CreateNew() {
     console.log('formState');
     console.log(formState);
     const createdProduct: Models.Tables.IProduct = await productService.createAsync(formState);
-    console.log('---------------');
-    console.log('createdProduct');
-    console.log(createdProduct);
 
     if (formState.imageURL !== '') {
       try {
@@ -210,9 +207,6 @@ function CreateNew() {
         await uploadFile(formState.imageURL as any, await image.getKey());
         formState.imageURL = createdProduct.imageURL;
 
-        console.log('---------------');
-        console.log('createdProductAfterImage');
-        console.log(createdProduct);
         await productService.updateAsync(createdProduct);
       } catch (err) {
         showError(err.message);

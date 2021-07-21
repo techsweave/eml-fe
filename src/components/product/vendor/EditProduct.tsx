@@ -84,7 +84,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
     };
 
     // Uploading files to the bucket
-    return s3.upload(S3params).promise();
+    await s3.upload(S3params).promise();
   };
 
 
