@@ -6,6 +6,7 @@ import { Flex, Stack } from '@chakra-ui/layout';
 import * as AWS from 'aws-sdk';
 import { useSession } from 'next-auth/client';
 import { CircularProgress } from '@chakra-ui/react';
+import showError from '@libs/showError';
 
 export default function orderPage() {
   AWS.config.update({
@@ -48,7 +49,7 @@ export default function orderPage() {
       (data) => {
         setUserState(data);
       },
-    ).catch((err) => console.log(err));
+    ).catch((err) => showError(err));
     const v = userState;
 
     if (s) {
@@ -57,7 +58,7 @@ export default function orderPage() {
           setState(data);
           setLoading(false);
         },
-      ).catch((err) => console.log(err));
+      ).catch((err) => showError(err));
     }
   }, [session, state, setState, userState, setUserState, isLoading, setLoading]);
 

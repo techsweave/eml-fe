@@ -19,6 +19,7 @@ import {
   useMediaQuery
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
+import showError from '@libs/showError';
 
 const init: any[] = [];
 
@@ -72,7 +73,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       },
     ).catch(
       (err) => {
-        console.log(err.message);
+        showError(err);
       },
     );
   }, [state, setState, isLoading, setLoading]);

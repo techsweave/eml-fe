@@ -13,6 +13,7 @@ import {
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
+import showError from '@libs/showError';
 
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
@@ -59,6 +60,7 @@ const OrderDetail = (prop) => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading]);
+  showError(error);
   let total = 0;
   state.forEach((item) => {
     total += item.price * item.quantity;

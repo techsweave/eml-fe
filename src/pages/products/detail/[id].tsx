@@ -13,6 +13,7 @@ import {
   PopoverBody, Button, Stack,
 } from '@chakra-ui/react';
 import ProductInfo from '@components/product/detail/ProductInfo';
+import showError from '@libs/showError';
 
 export default function productDetailPage(prop) {
   const { product, relatedProducts, ret } = prop;
@@ -53,9 +54,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     product = await caller.getAsync(context.params?.id as string);
   } catch (error) {
-    alert(error);
+    showError(error);
   }
-  const ret = await categoriesCaller.getAsync(product.categorieId);
+  let ret;
+  try { ret = await categoriesCaller.getAsync(product.categorieId); } catch (error) {
+    showError(error);
+  }
   const category = product.categorieId;
   const productId = product.id;
   const filter: ConditionExpression = {
@@ -82,7 +86,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       relatedProducts = [relatedProducts];
     }
   } catch (error) {
-    console.log(error);
+    showError(error);
   }
   return {
     props: {
