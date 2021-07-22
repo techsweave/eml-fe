@@ -22,7 +22,5 @@ describe('order detail test', () => {
     test('order detail visibility', () => {
         render(<OrderDetail products={expectedOrderedProducts} order={expectedOrder} />);
         expect(screen.getByText(expectedOrder.id)).toBeVisible();
-        //TODO probabilmente segna 0 perchè passa item con state mentre qui calcolo su OrderedProductsMock
-        //expect(screen.getByText(total, { exact: false })).toBeVisible();
     });
 });
