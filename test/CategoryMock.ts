@@ -6,6 +6,5 @@ const categoryMock: Models.Tables.ICategory = {
   macroCategorieId: '987654321',
   description: 'street ready shoes',
   taxes: 22,
-  // customSpecTemplates?: ISpecTemplate[]; what
 };
 export default categoryMock;
