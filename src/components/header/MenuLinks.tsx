@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, Text } from '@chakra-ui/layout';
 import { Button } from '@chakra-ui/button';
-import { Stack, Box } from '@chakra-ui/react';
+import { Stack, Box, Menu, MenuButton, MenuList } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons'
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { AiOutlineShoppingCart, AiOutlineForm, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
@@ -23,7 +24,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
 
     <Box
       display={{ base: isOpen ? 'block' : 'none', md: isOpen ? 'block' : 'none', lg: 'block' }}
-      flexBasis={{ base: '100%', md: '100%' , lg: 'auto'}}
+      flexBasis={{ base: '100%', md: '100%', lg: 'auto' }}
     >
       <Stack
         align="center"
@@ -37,7 +38,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
         <MenuItem to="/products" display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </MenuItem>
-        <MenuItem to="/orders" hidden={isVendor ?  undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
+        <MenuItem to="/orders" hidden={isVendor ? undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BsBook size={20} />}>Orders</Button>
         </MenuItem>
         <MenuItem to="/cart">
@@ -49,18 +50,18 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             Cart
           </Button>
         </MenuItem>
-        <MenuItem to="/createNewProduct">
+        <MenuItem to="/manageShop">
           <Button
             hidden={!isVendor ? true : undefined}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
             leftIcon={<AiOutlineForm size={20} />}
           >
-            Create New Product
+            Manage shop
           </Button>
         </MenuItem>
         <MenuItem to="/profile">
           <Button
-            hidden={!session ? true : undefined}
+            hidden={session && !isVendor ? undefined : true}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
             leftIcon={<AiOutlineUser size={20} />}
           >
@@ -85,9 +86,9 @@ const MenuLinks = ({ isOpen, isVendor }) => {
             hidden={!session ? true : undefined}
             bg={['transparent', 'transparent', 'gray.100', 'gray.100']}
             onClick={(e) => {
-                  e.preventDefault()
-                  signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/logout` })
-                }}
+              e.preventDefault()
+              signOut({ callbackUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/logout` })
+            }}
             leftIcon={<IoExitOutline size={20} />}
           >
             Sign out
