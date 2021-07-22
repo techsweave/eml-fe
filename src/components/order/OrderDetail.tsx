@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import showError from '@libs/showError';
+import showError from '../../libs/showError';
 
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];

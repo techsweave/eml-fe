@@ -3,8 +3,8 @@ import OrderedProductsMock from './OrderedProductsMock';
 
 const OrderMock: Models.Tables.IOrder[] = [
   {
-    id: 'ordine1',
-    userId: '',
+    id: 'order1',
+    userId: 'Jerry',
     date: new Date('2021-06-10'),
     status: '',
     products: OrderedProductsMock,
