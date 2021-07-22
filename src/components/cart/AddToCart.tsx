@@ -21,6 +21,7 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
     if (result.productId === product.id) {
       toast({
         position: 'top',
+        duration: null,
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
             <Text textAlign='center'>Product added successfully</Text>
@@ -53,7 +54,12 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
     );
   }, [userState, setState, session]);
   return (
-      <Button hidden={userState || !session ? true : undefined} onClick={handleClick}>Add to Cart</Button>
+    <Button
+      hidden={userState || !session ? true : undefined}
+      onClick={handleClick}
+    >
+      Add to Cart
+    </Button>
   );
 };
 export default addCart;

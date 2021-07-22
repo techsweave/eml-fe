@@ -1,4 +1,4 @@
-import { Models, Services } from 'utilities-techsweave';
+import { Services } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -6,11 +6,11 @@ import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArt
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import {
-  Box, Flex, Text, Popover,
+  Box, Flex, Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
-  PopoverBody, Button, Stack,
+  PopoverBody, Button,
 } from '@chakra-ui/react';
 import ProductInfo from '@components/product/detail/ProductInfo';
 import showError from '@libs/showError';

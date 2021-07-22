@@ -29,27 +29,34 @@ export default function orderPage() {
   }
 
   async function scanOrders(s, v, l): Promise<any> {
-    if (!l) return;
+    let ret : Models.IMultipleDataBody<Models.Tables.IOrder>;
+    let orderList: Models.Tables.IOrder[] = [];
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
     const caller = new Services.Orders(`${process.env.NEXT_PUBLIC_API_ID_ORDERS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, s?.accessToken as string, s?.idToken as string);
-    if (await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string)) return (await caller.scanAsync(25, undefined, undefined, undefined, undefined)).data;
-    return (await caller.scanAsync(25, undefined, undefined, undefined, {
-      type: 'Equals',
-      subject: 'userId',
-      object: await user.getUserId(),
-    })).data;
+    if (await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string)) {
+      ret = await caller.scanAsync(25, undefined, undefined, undefined, undefined);
+    } else {
+      ret = await caller.scanAsync(25, undefined, undefined, undefined, {
+        type: 'Equals',
+        subject: 'userId',
+        object: await user.getUserId(),
+      });
+    }
+    orderList = orderList.concat(ret.count ? ret.data : ret as any);
+    return orderList;
   }
 
   useEffect(() => {
     const s = session;
     const l = isLoading;
+    if (!l) return;
     if (state !== undefined) return;
     if (s === undefined) return;
     isVendor(s, l).then(
       (data) => {
         setUserState(data);
       },
-    ).catch((err) => showError(err));
+    ).catch((err) => console.log(err));
     const v = userState;
 
     if (s) {
@@ -58,7 +65,7 @@ export default function orderPage() {
           setState(data);
           setLoading(false);
         },
-      ).catch((err) => showError(err));
+      ).catch((err) => console.log(err));
     }
   }, [session, state, setState, userState, setUserState, isLoading, setLoading]);
 

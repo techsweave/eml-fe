@@ -25,7 +25,7 @@ const init: any[] = [];
 
 const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
   const { order } = prop;
-
+  console.log(order);
   const [state, setState] = useState(init);
   const [isLoading, setLoading] = useState(true);
 
@@ -49,13 +49,14 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       process.env.NEXT_PUBLIC_API_REGION as string,
       process.env.NEXT_PUBLIC_API_STAGE as string,
     );
-    const products: Array<Models.Tables.IProduct> = (
-      await productService.scanAsync(25, undefined, undefined, undefined, {
+    let products: Models.Tables.IProduct[]=[];
+    const ret =  await productService.scanAsync(25, undefined, undefined, undefined, {
         type: 'Membership',
         subject: 'id',
         values: ids,
       })
-    ).data;
+      ;
+    products = products.concat(ret.count ? ret.data : ret as any);
 
     return (order?.products as Array<Models.Tables.IOrderedProduct>).map((subject) => {
       const otherSubject = products.find((element) => element.id === subject.productId);
@@ -73,7 +74,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       },
     ).catch(
       (err) => {
-        showError(err);
+        console.log(err);
       },
     );
   }, [state, setState, isLoading, setLoading]);

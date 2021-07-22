@@ -78,6 +78,7 @@ const PersonalInfo = () => {
     if (!result.$response.error) {
       toast({
         position: 'top',
+        duration: null,
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
             <Text textAlign='center'>Update successfully done</Text>
@@ -100,7 +101,7 @@ const PersonalInfo = () => {
           title: 'Password Error',
           description: 'New password is the same of old password',
           status: 'error',
-          duration: 10000,
+          duration: null,
           isClosable: true,
           position: 'top-right',
         });
@@ -109,7 +110,7 @@ const PersonalInfo = () => {
           title: 'Password Error',
           description: 'New password and confirm password isn&#8217;t the same',
           status: 'error',
-          duration: 10000,
+          duration: null,
           isClosable: true,
           position: 'top-right',
         });
@@ -120,6 +121,7 @@ const PersonalInfo = () => {
         if (!result.$response.error) {
           toast({
             position: 'top',
+            duration: null,
             render: () => (
               <Box color='white' p={3} bg='green.500' borderRadius='15px'>
                 <Text textAlign='center'>Update successfully done</Text>

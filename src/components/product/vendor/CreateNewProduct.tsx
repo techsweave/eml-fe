@@ -9,8 +9,6 @@ import {
   Select,
   NumberInput,
   NumberInputField,
-  Checkbox,
-  Stack,
   Box,
   Text,
   HStack,
@@ -86,8 +84,6 @@ function CreateNew() {
     return caller.scanAsync(1000);
   }
 
-
-
   useEffect(() => {
     const s = session;
 
@@ -102,7 +98,7 @@ function CreateNew() {
         },
       ).catch(
         (err) => {
-          console.log(err.message);
+          showError(err.error);
         },
       );
     }
@@ -152,7 +148,6 @@ function CreateNew() {
     } else {
       formState[e.target.name] = e.target.value;
     }
-    console.log(formState)
     setFormState({ ...formState });
   };
 
@@ -168,16 +163,12 @@ function CreateNew() {
       ContentType: 'image',
     };
 
-
     // Uploading files to the bucket
     await s3.upload(S3params).promise();
   };
 
   const submitForm = async (isSalable: boolean) => {
     formState.isSalable = isSalable;
-    console.log('---------------');
-    console.log('formState');
-    console.log(formState);
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
       process.env.NEXT_PUBLIC_API_REGION as string,
@@ -189,9 +180,6 @@ function CreateNew() {
       const categoryToPush = state?.find((x) => x.name === formState.categorieId);
       formState.categorieId = categoryToPush?.id;
     }
-    console.log('22222222222 ');
-    console.log('formState');
-    console.log(formState);
     const createdProduct: Models.Tables.IProduct = await productService.createAsync(formState);
 
     if (formState.imageURL !== '') {
@@ -221,7 +209,7 @@ function CreateNew() {
           <Text textAlign='center'>Creation successfully done</Text>
           <Text textAlign='center'>Click button to continue</Text>
           <Center>
-            <Button color='black' as='a' href={'/products'}>Close</Button>
+            <Button color='black' as='a' href="/products">Close</Button>
           </Center>
         </Box>
       ),
@@ -229,14 +217,14 @@ function CreateNew() {
   };
 
   const submitPrivateForm = async () => {
-    onClose()
+    onClose();
     await submitForm(false);
-  }
+  };
 
   const submitPublicForm = async () => {
-    onClose()
+    onClose();
     await submitForm(true);
-  }
+  };
 
   return (
     <form>
@@ -264,7 +252,7 @@ function CreateNew() {
               <NumberInputField id="availabilityQta" name="availabilityQta" min={0} value={formState.availabilityQta} onChange={handleChange} />
             </NumberInput>
 
-            <FormLabel mt="1%" >Product image</FormLabel>
+            <FormLabel mt="1%">Product image</FormLabel>
             <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} />
 
             <FormLabel mt="1%">Add some notes..</FormLabel>
