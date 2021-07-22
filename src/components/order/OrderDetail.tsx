@@ -38,7 +38,8 @@ const OrderDetail = (prop) => {
       subject: 'id',
       values: filterId,
     };
-    fetchedData = (await caller.scanAsync(25, undefined, undefined, undefined, filter)).data;
+    const ret = await caller.scanAsync(25, undefined, undefined, undefined, filter);
+    fetchedData = fetchedData.concat(ret.count ? ret.data : ret as any);
     const mergedCartProducts = products.map(((subject) => {
       const otherSubject = fetchedData.find((element) => element.id === subject.productId);
       return { ...subject, ...otherSubject };

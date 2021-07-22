@@ -21,7 +21,7 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
           </Stack>
         </Stack>
       </Link>
-    </Box >
+    </Box>
   );
 };
 export default ProductItem;

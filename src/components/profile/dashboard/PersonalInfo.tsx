@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Grid, GridItem, Text,
+  Grid, GridItem,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { AuthenticatedUser } from 'utilities-techsweave';

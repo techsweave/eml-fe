@@ -143,6 +143,7 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                     Subtotal:
                     {(item.price * item.quantity.toFixed(2))}
                   </Td>
+                  <Td>State: {order.status}</Td>
                 </Tr>
               ))}
             </Tbody>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  SimpleGrid, Heading, Box, Center,
+  Heading, Box, Center,
 } from '@chakra-ui/react';
 import PersonalInfo from '@components/profile/settings/PersonalInfo';
 

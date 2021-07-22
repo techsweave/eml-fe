@@ -20,7 +20,7 @@ import Link from 'next/link';
 
 const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
   const { orderList } = prop;
-  if (orderList.length === 1) {
+  if (!orderList[0].id) {
     return (
       <Text fontWeight='bold' fontSize='4xl' mt='5'>No order found, please continue with <Link href='/products'><Text as='u' color='blue' cursor='pointer'>shopping</Text></Link></Text>)
   } else {
@@ -32,11 +32,14 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
           {orderList.map((orders) => (
             <GridItem
               key={orders.id}
-            >
-              <OrderItem
+            >{orders.status === 'IN PROGRESS' && (
+                      <Text>Order is still in progress</Text>
+                    )}
+                    {orders.status !== 'IN PROGRESS' && (<OrderItem
                 order={orders}
                 key={orders.id}
-              />
+              />)}
+              
             </GridItem>
           ))}
         </Grid>
@@ -70,13 +73,16 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
                     {total}
                   </Td>
                   <Td>
-                    <Link href={{ pathname: 'orders/detail/[id]', query: { id: orders.id } }}>
+                    {orders.status === 'IN PROGRESS' && (
+                      <Text>Order is still in progress</Text>
+                    )}
+                    {orders.status !== 'IN PROGRESS' && (<Link href={{ pathname: 'orders/detail/[id]', query: { id: orders.id } }}>
                       <IconButton
                         size="sm"
                         rounded="md"
                         aria-label="Order detail"
                         icon={<VscChevronRight />} />
-                    </Link>
+                    </Link>)}
                   </Td>
                 </Tr>
               )

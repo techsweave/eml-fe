@@ -1,8 +1,13 @@
-import { Text, TextProps } from '@chakra-ui/layout'
-import * as React from 'react'
+import { Text, TextProps } from '@chakra-ui/layout';
+import * as React from 'react';
 
-export const Copyright = (props: TextProps) => (
+const Copyright = (props: TextProps) => (
   <Text fontSize="sm" {...props}>
-    &copy; {new Date().getFullYear()} TechSWEave, All rights reserved.
+    &copy;
+    {' '}
+    {new Date().getFullYear()}
+    {' '}
+    TechSWEave, All rights reserved.
   </Text>
-)
+);
+export default Copyright;

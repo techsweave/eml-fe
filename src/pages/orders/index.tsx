@@ -28,7 +28,7 @@ export default function orderPage() {
     return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
   }
 
-  async function scanOrders(s, v, l): Promise<any> {
+  async function scanOrders(s): Promise<any> {
     let ret : Models.IMultipleDataBody<Models.Tables.IOrder>;
     let orderList: Models.Tables.IOrder[] = [];
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
@@ -57,10 +57,9 @@ export default function orderPage() {
         setUserState(data);
       },
     ).catch((err) => console.log(err));
-    const v = userState;
 
     if (s) {
-      scanOrders(s, v, l).then(
+      scanOrders(s).then(
         (data) => {
           setState(data);
           setLoading(false);

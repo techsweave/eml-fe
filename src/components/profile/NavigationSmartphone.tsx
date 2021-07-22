@@ -82,10 +82,7 @@ const NavigationSmartphone = () => (
             alignItems="center"
             justifyContent="space-between"
         >
-        <Avatar name="Name Surname" bg="gray.100" size="lg" borderWidth={1} borderColor="gray.400" />
-        <VStack>
-          <Heading size="sm" mt={2}>Hi, Name Surname</Heading>
-        </VStack>
+          <Heading size="sm" textAlign='center' mt={2}>Hi, Name Surname</Heading>
       </Flex>
         </VStack>
     

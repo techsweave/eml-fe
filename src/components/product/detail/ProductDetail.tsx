@@ -10,7 +10,7 @@ import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
 import AddToCart from '@components/cart/AddToCart';
-import Link from 'next/link'
+import Link from 'next/link';
 import showError from '@libs/showError';
 import ProductInfo from '@components/product/detail/ProductInfo';
 
@@ -109,7 +109,7 @@ const ProductDetail = (prop: {
                 quantity={quantityState}
               />
               {/* TODO */}
-              <Link href={{ pathname: '/editProduct/[id]', query: { id: prop.product.id } }}>
+              <Link href={{ pathname: '/editProduct/[id]', query: { id: product.id } }}>
                 <Button hidden={!userState ? true : undefined}>Edit product</Button>
               </Link>
             </VStack>

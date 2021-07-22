@@ -9,7 +9,7 @@ import {
 import { VscChevronDown } from 'react-icons/vsc';
 
 const Filter = (prop: { minProp: string, maxProp: string }) => {
-    let minProp: number = +prop.minProp / 5;
+    let minProp: number = prop.minProp ? +prop.minProp / 5 : 0;
     let maxProp: number = +prop.maxProp / 10;
     const [min, setMin] = React.useState<string>(minProp.toString());
     const [max, setMax] = React.useState<string>(maxProp.toString());
@@ -22,7 +22,7 @@ const Filter = (prop: { minProp: string, maxProp: string }) => {
             <FormControl h='100%' flexBasis='20%' p='5' bg='gray.100' borderRadius='15px' alignItems='center'>
                 <Flex id='min'>
                     <Text fontWeight='bold' mr='5'>Min Price</Text>
-                    <Slider flex="1" focusThumbOnChange={false} value={minValue ? minValue / 5 : undefined} onChange={handleMinChange}>
+            <Slider flex="1" focusThumbOnChange={false} value={minValue ? minValue / 5 : 0}  onChange={handleMinChange}>
                         <SliderTrack >
                             <SliderFilledTrack bg='#e06771' />
                         </SliderTrack>
@@ -31,7 +31,7 @@ const Filter = (prop: { minProp: string, maxProp: string }) => {
                 </Flex>
                 <Flex id='max' mt='2'>
                     <Text fontWeight='bold' mr='5'>Max Price</Text>
-                    <Slider flex="1" focusThumbOnChange={false} value={maxValue ? maxValue / 10 : undefined} onChange={handleMaxChange}>
+            <Slider flex="1" focusThumbOnChange={false} value={maxValue ? maxValue / 10 : undefined} min={minValue ? minValue! /10 : 100} onChange={handleMaxChange}>
                         <SliderTrack>
                             <SliderFilledTrack bg='#e06771' />
                         </SliderTrack>

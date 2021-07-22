@@ -1,15 +1,11 @@
 import { useSession } from 'next-auth/client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   FormControl,
   FormLabel,
   Input,
   Textarea,
-  Select,
-  NumberInput,
-  NumberInputField,
-  Checkbox,
   Stack,
   Box,
   Text,
@@ -21,13 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
-import { Services, Models, Image } from 'utilities-techsweave';
+import { Services, Models } from 'utilities-techsweave';
 import showError from '@libs/showError';
-
-interface Item {
-  label: string;
-  value: string;
-}
 
 function CreateNew() {
   AWS.config.update({
@@ -44,7 +35,7 @@ function CreateNew() {
     customSpecTemplates: new Array<Models.Tables.ISpecTemplate>(),
     description: '',
     taxes: 22,
-    macroCategorieId: ''
+    macroCategorieId: '',
   });
   const toast = useToast();
 
@@ -76,7 +67,7 @@ function CreateNew() {
           <Text textAlign='center'>Creation successfully done</Text>
           <Text textAlign='center'>Click button to continue</Text>
           <Center>
-            <Button color='black' as='a' href={`/manageShop`}>Close</Button>
+            <Button color='black' as='a' href="/manageShop">Close</Button>
           </Center>
         </Box>
 
@@ -87,50 +78,47 @@ function CreateNew() {
   const handleChange = (e) => {
     console.log(category);
     let position: number;
-    //const specs: Array<Models.Tables.ISpecTemplate> = ;
+    // const specs: Array<Models.Tables.ISpecTemplate> = ;
     if (e.target.name.includes('spec') || e.target.name.includes('misure')) {
       position = +e.target.name.substr(e.target.name.length - 1);
 
       if (!category.customSpecTemplates![position]) {
         category.customSpecTemplates![position] = {
           fieldName: '',
-          unitMisure: ''
-        }
+          unitMisure: '',
+        };
       } else if (e.target.name.includes('spec')) {
         category.customSpecTemplates![position].fieldName = e.target.value;
-      }
-      else if (e.target.name.includes('misure')) {
+      } else if (e.target.name.includes('misure')) {
         category.customSpecTemplates![position].unitMisure = e.target.value;
       }
-    }
-    else if (e.target.name === 'taxes') {
+    } else if (e.target.name === 'taxes') {
       category.taxes = +e.target.value;
-    }
-    else {
+    } else {
       category[e.target.name] = e.target.value;
     }
     setCategory({ ...category });
-  }
+  };
 
-  const [inputList, setInputList] = useState(new Array());
-  const onAddBtnClick = event => {
+  const [inputList, setInputList] = useState([]);
+  const onAddBtnClick = (event) => {
     if (inputList.length < 15) {
       setInputList(inputList.concat(
         <HStack w='100%' mb='5' key={inputList.length}>
           <Stack w='100%' mr='5'>
-            <FormLabel  >Spec name</FormLabel>
-            <Input name={'spec' + inputList.length} placeholder='Spec name' onChange={handleChange} />
+            <FormLabel>Spec name</FormLabel>
+            <Input name={`spec${inputList.length}`} placeholder='Spec name' onChange={handleChange} />
           </Stack>
           <Stack w='100%'>
             <FormLabel placeholder='Unit misure'>Unit misure</FormLabel>
-            <Input name={'misure' + inputList.length} placeholder='Unit misure' onChange={handleChange} />
+            <Input name={`misure${inputList.length}`} placeholder='Unit misure' onChange={handleChange} />
           </Stack>
-        </HStack>
+        </HStack>,
       ));
     } else {
       setInputList(inputList.concat(
-        <Text>The maximum number of specs for a category is 15</Text>
-      ))
+        <Text>The maximum number of specs for a category is 15</Text>,
+      ));
     }
   };
   return (
@@ -150,7 +138,9 @@ function CreateNew() {
           </GridItem>
           <GridItem>
             {inputList}
-            <Button onClick={onAddBtnClick} hidden={inputList.length <= 15 ? false : true}>Add new template specification</Button>
+            <Button onClick={onAddBtnClick} hidden={!(inputList.length <= 15)}>
+              Add new template specification
+            </Button>
           </GridItem>
         </Grid>
       </FormControl>
