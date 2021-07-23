@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import NoItemInCart from '@components/cart/NoItemInCart';
+import NoItemInCart from './NoItemInCart';
 import showError from '@libs/showError';
 import CartSummary from './CartSummary';
 import CartItem from './CartItem';
