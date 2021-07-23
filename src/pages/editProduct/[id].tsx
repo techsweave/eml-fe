@@ -2,15 +2,14 @@ import React from 'react';
 import Layout from '@components/Layout';
 import EditProduct from '@components/product/vendor/EditProduct';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import { Services, Models } from 'utilities-techsweave'
-import { ConditionExpression } from '@aws/dynamodb-expressions';
+import { Services, Models } from 'utilities-techsweave';
 import showError from '@libs/showError';
 
-export default function editProduct(prop) {
-  const { product, category } = prop;
+export default function editProduct(prop:{ product : Models.Tables.IProduct }) {
+  const { product } = prop;
   return (
     <Layout title="Edit-product">
-      <EditProduct product={product}/>
+      <EditProduct product={product} />
     </Layout>
   );
 }
@@ -20,13 +19,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
     product = await caller.getAsync(context.params?.id as string);
-    } catch (error) {
+  } catch (error) {
     showError(error);
   }
 
   return {
     props: {
-      product
+      product,
     }, // will be passed to the page component as props
     revalidate: 600,
   };
