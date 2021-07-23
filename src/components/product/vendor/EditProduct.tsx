@@ -64,7 +64,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
     // Setting up S3 upload parameters
     const S3params: AWS.S3.PutObjectRequest = {
-      Bucket: process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,,
+      Bucket: process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
       Key: key, // File name you want to save as in S3
       Body: file,
       ACL: 'public-read',

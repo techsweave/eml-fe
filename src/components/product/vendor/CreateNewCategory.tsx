@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/client';
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -100,8 +100,8 @@ function CreateNew() {
     setCategory({ ...category });
   };
 
-  const [inputList, setInputList] = useState([]);
-  const onAddBtnClick = (event) => {
+  const [inputList, setInputList] = useState<Array<ReactElement<any, any>>>([]);
+  const onAddBtnClick = () => {
     if (inputList.length < 15) {
       setInputList(inputList.concat(
         <HStack w='100%' mb='5' key={inputList.length}>
