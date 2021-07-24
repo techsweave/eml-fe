@@ -9,10 +9,10 @@ import {
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
-import AddToCart from '@components/cart/AddToCart';
+import AddToCart from '../../cart/AddToCart';
+import showError from '../../../libs/showError';
+import ProductInfo from './ProductInfo';
 import Link from 'next/link';
-import showError from '@libs/showError';
-import ProductInfo from '@components/product/detail/ProductInfo';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,

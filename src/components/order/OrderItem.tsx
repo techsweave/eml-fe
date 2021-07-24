@@ -19,7 +19,7 @@ import {
   useMediaQuery
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
-import showError from '@libs/showError';
+import showError from '../../libs/showError';
 
 const init: any[] = [];
 

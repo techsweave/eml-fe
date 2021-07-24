@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Box, Grid, GridItem, Heading, Text,
 } from '@chakra-ui/react';
-import RelatedItem from '@components/product/detail/RelatedProduct/RelatedItem';
+import RelatedItem from './RelatedItem';
 import { Models } from 'utilities-techsweave';
 
 const RelatedProducts = (prop:{ product:Models.Tables.IProduct[] }) => {

@@ -1,4 +1,4 @@
-import OrderItem from '@components/order/OrderItem';
+import OrderItem from './OrderItem';
 import { Models } from 'utilities-techsweave';
 import React from 'react';
 import {
