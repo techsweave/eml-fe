@@ -100,12 +100,14 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   {' '}
                   {order.userId}
                 </Th>
-                <Th colSpan={2} />
+                <Th colSpan={1} />
                 <Th textAlign='center'>
                   Order:
                   {' '}
                   {order.id}
                 </Th>
+                  <Th>State: {order.status}</Th>
+
               </Tr>
             </Thead>
             <Tbody>
@@ -143,7 +145,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                     Subtotal:
                     {(item.price * item.quantity.toFixed(2))}
                   </Td>
-                  <Td>State: {order.status}</Td>
                 </Tr>
               ))}
             </Tbody>

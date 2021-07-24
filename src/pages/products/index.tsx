@@ -69,12 +69,12 @@ export default function productPage() {
     let fetchedProducts: Array<Models.Tables.IProduct> = [];
     const scanResult = await caller.scanAsync(25, undefined, undefined,
       undefined, minFilter || maxFilter || searchFilter ? filter! : undefined);
-    if (scanResult.data.length === 0) {
-      return [];
-    }
     fetchedProducts = fetchedProducts.concat(
       scanResult.count ? scanResult.data : scanResult as any,
     );
+    if (scanResult.data && scanResult.data.length === 0) {
+      return [];
+    }
     return fetchedProducts;
   }
 
@@ -87,11 +87,10 @@ export default function productPage() {
       },
     ).catch(
       (err) => {
-        showError(err);
+        console.log(err);
       },
     );
   }, [state, setState, isLoading, setLoading]);
-
   if (!isLoading) {
     return (
       <Layout title="Product-page">

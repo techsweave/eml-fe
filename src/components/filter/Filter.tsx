@@ -16,7 +16,13 @@ const Filter = (prop: { minProp: string, maxProp: string }) => {
     const minValue: number | undefined = +min ? +min * 5 : undefined;
     const maxValue: number | undefined = +max ? +max * 10 : undefined;
     const handleMinChange = (value) => setMin(value)
-    const handleMaxChange = (value) => setMax(value)
+    const handleMaxChange = (value) => {
+    if (value <= +min / 2) {
+      setMax((+min / 2 + 1).toString())
+    } else {
+      setMax(value)
+    }
+  }
     return (
         <Box>
             <FormControl h='100%' flexBasis='20%' p='5' bg='gray.100' borderRadius='15px' alignItems='center'>
@@ -31,7 +37,7 @@ const Filter = (prop: { minProp: string, maxProp: string }) => {
                 </Flex>
                 <Flex id='max' mt='2'>
                     <Text fontWeight='bold' mr='5'>Max Price</Text>
-            <Slider flex="1" focusThumbOnChange={false} value={maxValue ? maxValue / 10 : undefined} min={minValue ? minValue! /10 : 100} onChange={handleMaxChange}>
+            <Slider flex="1" focusThumbOnChange={false} value={maxValue ? maxValue / 10 : undefined} onChange={handleMaxChange}>
                         <SliderTrack>
                             <SliderFilledTrack bg='#e06771' />
                         </SliderTrack>

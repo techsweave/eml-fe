@@ -19,7 +19,10 @@ type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
 const initLoading = true;
 
-const OrderDetail = (prop) => {
+const OrderDetail = (prop: {
+  products: Models.Tables.IOrderedProduct[],
+  order: Models.Tables.IOrder
+}) => {
   const { products, order } = prop;
   const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
@@ -67,19 +70,26 @@ const OrderDetail = (prop) => {
     total += item.price * item.quantity;
   });
   return (
-    <Box minW="95%">
+    <Box w="90%">
       <Flex justifyContent='space-between' mt='5'>
         <Text fontWeight='bold'>
           {order.id}
         </Text>
         <Text fontWeight='bold'>
           Total:
-          {' '}
+          <br />
           {total}
           {' '}
           €
         </Text>
       </Flex>
+      <Center>
+        <Text fontWeight='bold'>
+          Order status:
+
+          {order.status}
+        </Text>
+      </Center>
       <Grid templateColumns='repeat(1, 1fr)'>
 
         {state.map((productData) => (
@@ -90,9 +100,9 @@ const OrderDetail = (prop) => {
               <Link href={{ pathname: '/products/detail/[id]', query: { id: productData.id } }}>
                 <div>
                   <Text fontWeight='bold' textAlign='center' mb='5'>{productData.title}</Text>
-                  <Flex justifyContent='space-between' alignItems='center'>
+                  <Flex justifyContent='space-evenly' alignItems='center'>
                     <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="cover" />
-                    <Stack ml='10'>
+                    <Stack>
                       <Text>
                         Price:
                         {' '}
@@ -121,6 +131,7 @@ const OrderDetail = (prop) => {
           </GridItem>
         ))}
       </Grid>
+      <Center />
       <Center><Button as="a" href="/orders" w={['full', 'full', '600px', '900px']} m="10">Back</Button></Center>
     </Box>
   );
