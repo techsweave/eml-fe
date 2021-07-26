@@ -3,7 +3,6 @@ import Layout from '@components/Layout';
 import EditProduct from '@components/product/vendor/EditProduct';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { Services, Models } from 'utilities-techsweave';
-import showError from '@libs/showError';
 
 export default function editProduct(prop:{ product : Models.Tables.IProduct }) {
   const { product } = prop;
@@ -20,7 +19,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     product = await caller.getAsync(context.params?.id as string);
   } catch (error) {
-    showError(error);
+    console.log(error);
   }
 
   return {

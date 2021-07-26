@@ -31,11 +31,10 @@ import {
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
-import showError from '@libs/showError';
 
 function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const { product } = prop;
-  
+
   const [formState, setFormState] = useState(product);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isOpenDelete, setIsOpenDelete] = useState(false);
@@ -46,7 +45,6 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const s3 = new AWS.S3();
 
   const handleChange = (e) => {
-    console.log(formState);
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
     } else if (e.target.name === 'discount') {
@@ -101,8 +99,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
           (formState.imageURL as any).name,
           product.id,
         );
-        if (product.imageURL)
-          await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
+        if (product.imageURL) await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
         await uploadFile(formState.imageURL as any, await image.getKey());
         formState.imageURL = await image.getBucketLink(
           process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
@@ -111,7 +108,14 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
       }
       updatedProduct = await productService.updateAsync(formState);
     } catch (error) {
-      showError(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
     toast({
       position: 'top',
@@ -141,7 +145,14 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
       await productService.deleteAsync(product.id);
       if (product.imageURL) await s3.deleteBucket({ Bucket: product.imageURL }).promise();
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
     onCloseDelete();
     toast({

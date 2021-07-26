@@ -18,7 +18,6 @@ import {
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models } from 'utilities-techsweave';
-import showError from '@libs/showError';
 
 function CreateNew() {
   AWS.config.update({
@@ -28,7 +27,7 @@ function CreateNew() {
       secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
     },
   });
-
+  const toast = useToast();
   const session = useSession()[0];
   const [category, setCategory] = useState<Models.Tables.INewCategory>({
     name: '',
@@ -37,7 +36,6 @@ function CreateNew() {
     taxes: 22,
     macroCategorieId: '',
   });
-  const toast = useToast();
 
   const submitForm = async () => {
     const productService = new Services.Products(
@@ -58,7 +56,14 @@ function CreateNew() {
     try {
       await categoriesService.createAsync(category);
     } catch (error) {
-      showError(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
     toast({
       position: 'top',
@@ -76,7 +81,6 @@ function CreateNew() {
   };
 
   const handleChange = (e) => {
-    console.log(category);
     let position: number;
     // const specs: Array<Models.Tables.ISpecTemplate> = ;
     if (e.target.name.includes('spec') || e.target.name.includes('misure')) {

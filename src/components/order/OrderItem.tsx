@@ -15,8 +15,7 @@ import {
   CircularProgress,
   Grid,
   GridItem,
-  IconButton,
-  useMediaQuery
+  useToast
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import showError from '../../libs/showError';
@@ -25,7 +24,7 @@ const init: any[] = [];
 
 const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
   const { order } = prop;
-  console.log(order);
+    const toast = useToast();
   const [state, setState] = useState(init);
   const [isLoading, setLoading] = useState(true);
 
@@ -74,7 +73,14 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       },
     ).catch(
       (err) => {
-        console.log(err);
+        toast({
+    title: err.error.name,
+    description: err.error.message,
+    status: 'error',
+    duration: 10000,
+    isClosable: true,
+    position: 'top-right',
+  });
       },
     );
   }, [state, setState, isLoading, setLoading]);

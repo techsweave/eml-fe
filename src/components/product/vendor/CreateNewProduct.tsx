@@ -28,7 +28,6 @@ import {
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
-import showError from '@libs/showError';
 
 interface Item {
   label: string;
@@ -98,7 +97,14 @@ function CreateNew() {
         },
       ).catch(
         (err) => {
-          showError(err.error);
+          toast({
+            title: err.error.name,
+            description: err.error.message,
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+            position: 'top-right',
+          });
         },
       );
     }
@@ -130,7 +136,6 @@ function CreateNew() {
   }, [state, setState, session, categories, category, setCategory]);
 
   const handleChange = (e) => {
-    console.log(formState)
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
     } else if (e.target.name === 'discount') {
@@ -169,7 +174,6 @@ function CreateNew() {
   };
 
   const submitForm = async (isSalable: boolean) => {
-    console.log(formState);
     formState.isSalable = isSalable;
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
@@ -199,7 +203,14 @@ function CreateNew() {
 
         await productService.updateAsync(createdProduct);
       } catch (err) {
-        showError(err.message);
+        toast({
+          title: error.error.name,
+          description: error.error.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+          position: 'top-right',
+        });
         await productService.deleteAsync(createdProduct.id);
       }
     }
@@ -220,11 +231,11 @@ function CreateNew() {
 
   const preSubmitForm = async () => {
     if (
-      formState.title === '' ||
-      formState.price === 0 ||
-      formState.categorieId === '' ||
-      formState.imageURL === '' ||
-      formState.availabilityQta === 0
+      formState.title === ''
+      || formState.price === 0
+      || formState.categorieId === ''
+      || formState.imageURL === ''
+      || formState.availabilityQta === 0
     ) {
       toast({
         position: 'top',
@@ -237,7 +248,7 @@ function CreateNew() {
     } else {
       onOpen();
     }
-  }
+  };
 
   const submitPrivateForm = async () => {
     onClose();

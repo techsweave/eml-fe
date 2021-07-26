@@ -5,8 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Flex, Stack } from '@chakra-ui/layout';
 import * as AWS from 'aws-sdk';
 import { useSession } from 'next-auth/client';
-import { CircularProgress } from '@chakra-ui/react';
-import showError from '@libs/showError';
+import { CircularProgress, useToast } from '@chakra-ui/react';
 
 export default function orderPage() {
   AWS.config.update({
@@ -16,7 +15,7 @@ export default function orderPage() {
       secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
     },
   });
-
+  const toast = useToast();
   const session = useSession()[0];
   const [userState, setUserState] = useState<boolean>();
   const [state, setState] = useState<Array<Models.Tables.IOrder>>();
@@ -56,7 +55,16 @@ export default function orderPage() {
       (data) => {
         setUserState(data);
       },
-    ).catch((err) => console.log(err));
+    ).catch((err) => {
+      toast({
+        title: err.error.name,
+        description: err.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    });
 
     if (s) {
       scanOrders(s).then(

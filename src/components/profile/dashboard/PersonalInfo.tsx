@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Grid, GridItem,
+  Grid, GridItem, useToast,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { AuthenticatedUser } from 'utilities-techsweave';
 import * as AWS from 'aws-sdk';
-import showError from '@libs/showError';
 
 const initLoading = true;
 
@@ -17,6 +16,7 @@ const PersonalInfo = () => {
       secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
     },
   });
+  const toast = useToast();
   const session = useSession()[0];
   const [error, setError] = useState<Error>();
   const [state, setState] = useState({
@@ -58,7 +58,16 @@ const PersonalInfo = () => {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading, fetchData]);
-  showError(error);
+  if (error) {
+    toast({
+      title: error.name,
+      description: error.message,
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  }
   return (
     <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={5}>
       <GridItem gap={2}>

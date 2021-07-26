@@ -6,7 +6,6 @@ import {
 import { PhoneIcon } from '@chakra-ui/icons';
 import { AuthenticatedUser } from 'utilities-techsweave';
 import { useSession } from 'next-auth/client';
-import showError from '@libs/showError';
 
 const initLoading = true;
 
@@ -91,7 +90,14 @@ const PersonalInfo = () => {
         ),
       });
     } else {
-      showError(result.$response.error);
+      toast({
+        title: result.$response.error.name,
+        description: result.$response.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
   };
   const changePwd = async () => {
@@ -134,7 +140,14 @@ const PersonalInfo = () => {
             ),
           });
         } else {
-          showError(result.$response.error);
+          toast({
+            title: result.$response.error.name,
+            description: result.$response.error.message,
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+            position: 'top-right',
+          });
         }
       }
     }

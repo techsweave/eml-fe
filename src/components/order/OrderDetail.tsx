@@ -9,11 +9,11 @@ import {
   GridItem,
   Image,
   Flex,
+  useToast,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
-import showError from '../../libs/showError';
 
 type IProduct = Models.Tables.IProduct;
 const init: any[] = [];
@@ -23,6 +23,7 @@ const OrderDetail = (prop: {
   products: Models.Tables.IOrderedProduct[],
   order: Models.Tables.IOrder
 }) => {
+  const toast = useToast();
   const { products, order } = prop;
   const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
@@ -64,7 +65,16 @@ const OrderDetail = (prop: {
         setError(err.error);
       });
   }, [state, setState, error, setError, loading, setLoading]);
-  showError(error);
+  if (error) {
+    toast({
+      title: error.name,
+      description: error.message,
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top-right',
+    });
+  }
   let total = 0;
   state.forEach((item) => {
     total += item.price * item.quantity;
