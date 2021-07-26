@@ -1,4 +1,4 @@
-import { Services, Models } from 'utilities-techsweave';
+import { Services } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -13,8 +13,6 @@ import {
   PopoverBody, Button,
 } from '@chakra-ui/react';
 import ProductInfo from '@components/product/detail/ProductInfo';
-import showError from '@libs/showError';
-import { useSession } from 'next-auth/client';
 
 export default function productDetailPage(prop) {
   const { product, relatedProducts, ret } = prop;
@@ -42,7 +40,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const caller = new Services.Products(
     process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
     process.env.NEXT_PUBLIC_API_REGION as string,
-    process.env.NEXT_PUBLIC_API_STAGE as string
+    process.env.NEXT_PUBLIC_API_STAGE as string,
   );
   const id = (await caller.scanAsync(25)).data;
   const paths = id.map((idPath) => ({ params: { id: idPath.id } }));
@@ -63,7 +61,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   let ret;
   try {
-      ret = await categoriesCaller.getAsync(product.categorieId);
+    ret = await categoriesCaller.getAsync(product.categorieId);
   } catch (error) {
     console.log(error);
   }

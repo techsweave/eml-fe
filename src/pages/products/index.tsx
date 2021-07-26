@@ -8,8 +8,7 @@ import { useRouter } from 'next/router';
 import {
   ConditionExpression,
 } from '@aws/dynamodb-expressions';
-import { CircularProgress } from '@chakra-ui/react';
-import showError from '@libs/showError';
+import { CircularProgress, useToast } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { GetStaticProps } from 'next';
 import * as AWS from 'aws-sdk';
@@ -23,6 +22,7 @@ export default function productPage(prop) {
     },
   });
   const { products } = prop;
+  const toast = useToast();
   const session = useSession()[0];
   const [state, setState] = useState<Models.Tables.IProduct[]>(products);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -65,7 +65,7 @@ export default function productPage(prop) {
       process.env.NEXT_PUBLIC_API_REGION as string,
       process.env.NEXT_PUBLIC_API_STAGE as string,
       s?.accessToken as string,
-      s?.idToken as string
+      s?.idToken as string,
     );
 
     let filter: ConditionExpression | undefined;
@@ -107,7 +107,14 @@ export default function productPage(prop) {
       },
     ).catch(
       (err) => {
-        console.log(err);
+        toast({
+          title: err.error.name,
+          description: err.error.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+          position: 'top-right',
+        });
       },
     );
   }, [state, setState, isLoading, setLoading, session]);
@@ -139,7 +146,7 @@ export default function productPage(prop) {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   console.log(context);
-  let products: Models.Tables.IProduct[] = new Array();
+  let products: Models.Tables.IProduct[] = [];
   let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
     data: [],
     count: 0,
@@ -147,20 +154,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const caller = new Services.Products(
     process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
     process.env.NEXT_PUBLIC_API_REGION as string,
-    process.env.NEXT_PUBLIC_API_STAGE as string
+    process.env.NEXT_PUBLIC_API_STAGE as string,
   );
   try {
     do {
       scanResult = await caller.scanAsync(50, scanResult?.lastEvaluatedKey?.id);
       products = products.concat(scanResult.count ? scanResult.data : scanResult as any);
-    } while (scanResult?.lastEvaluatedKey)
+    } while (scanResult?.lastEvaluatedKey);
   } catch (error) {
     console.log(error);
   }
 
   return {
     props: {
-      products
-    }
-  }
-}
+      products,
+    },
+  };
+};
