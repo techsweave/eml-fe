@@ -41,7 +41,7 @@ const ProductDetail = (prop: {
       },
     ).catch(
       (err) => {
-        showError(err.message);
+        console.log(err.message);
       },
     );
   }, [userState, setState, session]);

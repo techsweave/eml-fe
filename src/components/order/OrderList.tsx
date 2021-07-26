@@ -27,19 +27,18 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
     return (
       <Box justifyContent='center' >
         <Grid
-          templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)']} gap={30}
-          display={['none', 'none', 'grid', 'grid']}>
+          gap={30}
+          display={['none', 'none', 'inherit', 'inherit']}>
           {orderList.map((orders) => (
             <GridItem
+              mb='14'
               key={orders.id}
-            >{orders.status === 'IN PROGRESS' && (
-                      <Text>Order is still in progress</Text>
-                    )}
-                    {orders.status !== 'IN PROGRESS' && (<OrderItem
+            >
+              <OrderItem
                 order={orders}
                 key={orders.id}
-              />)}
-              
+              />
+
             </GridItem>
           ))}
         </Grid>

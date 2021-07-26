@@ -24,7 +24,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   // For hook call
   const toast = useToast();
 
-  const goToChechOut = async () => {
+  const goToCheckOut = async () => {
     try {
       const stripe = await stripePromise;
 
@@ -123,7 +123,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         _hover={{
           backgroundColor: 'red.500',
         }}
-        onClick={goToChechOut}
+        onClick={goToCheckOut}
       >
         <Text
           fontSize='xl'

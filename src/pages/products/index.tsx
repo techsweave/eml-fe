@@ -12,8 +12,16 @@ import { CircularProgress } from '@chakra-ui/react';
 import showError from '@libs/showError';
 import { useSession } from 'next-auth/client';
 import { GetStaticProps } from 'next';
+import * as AWS from 'aws-sdk';
 
 export default function productPage(prop) {
+  AWS.config.update({
+    region: 'eu-central-1',
+    credentials: {
+      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY as string,
+      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
+    },
+  });
   const { products } = prop;
   const session = useSession()[0];
   const [state, setState] = useState<Models.Tables.IProduct[]>(products);
@@ -99,7 +107,7 @@ export default function productPage(prop) {
       },
     ).catch(
       (err) => {
-        showError(err);
+        console.log(err);
       },
     );
   }, [state, setState, isLoading, setLoading, session]);
@@ -147,7 +155,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       products = products.concat(scanResult.count ? scanResult.data : scanResult as any);
     } while (scanResult?.lastEvaluatedKey)
   } catch (error) {
-    showError(error);
+    console.log(error);
   }
 
   return {

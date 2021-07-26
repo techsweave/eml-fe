@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -21,6 +21,12 @@ import {
   ModalCloseButton,
   useDisclosure,
   useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
@@ -29,14 +35,18 @@ import showError from '@libs/showError';
 
 function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const { product } = prop;
-
+  
   const [formState, setFormState] = useState(product);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const onCloseDelete = () => setIsOpenDelete(false);
+  const cancelRef = useRef();
   const session = useSession()[0];
   const toast = useToast();
   const s3 = new AWS.S3();
 
   const handleChange = (e) => {
+    console.log(formState);
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
     } else if (e.target.name === 'discount') {
@@ -91,8 +101,13 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
           (formState.imageURL as any).name,
           product.id,
         );
-        await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
-        await uploadFile(product.imageURL as any, await image.getKey());
+        if (product.imageURL)
+          await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
+        await uploadFile(formState.imageURL as any, await image.getKey());
+        formState.imageURL = await image.getBucketLink(
+          process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
+          process.env.NEXT_PUBLIC_S3_UPLOAD_REGION as string,
+        );
       }
       updatedProduct = await productService.updateAsync(formState);
     } catch (error) {
@@ -126,17 +141,18 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
       await productService.deleteAsync(product.id);
       if (product.imageURL) await s3.deleteBucket({ Bucket: product.imageURL }).promise();
     } catch (error) {
-      showError(error);
+      console.log(error);
     }
-    onClose();
+    onCloseDelete();
     toast({
       position: 'top',
       render: () => (
         <Box color='white' p={3} bg='green.500' borderRadius='15px'>
-          <Text textAlign='center'>Delete successfully done</Text>
+          <Text textAlign='center'>Product successfully deleted</Text>
+          <Text> </Text>
           <Text textAlign='center'>Click button to continue</Text>
           <Center>
-            <Button color='black' as='a' href='/products'>Close</Button>
+            <Button color='black' as='a' href='/products/vendor'>Close</Button>
           </Center>
         </Box>
 
@@ -195,35 +211,41 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
             }
 
             <Center>
-              <Button mt='16' onClick={onOpen} colorScheme='red' size='lg'>DELETE PRODUCT</Button>
+              <Button mt='16' onClick={() => setIsOpenDelete(true)} colorScheme='red' size='lg'>DELETE PRODUCT</Button>
             </Center>
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>
-                  Delete
-                  {product.title}
-                </ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Text>Are you sure to delete this product?</Text>
-                </ModalBody>
+            <AlertDialog
+              isOpen={isOpenDelete}
+              leastDestructiveRef={cancelRef as any}
+              onClose={onCloseDelete}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    Delete Product
+                  </AlertDialogHeader>
 
-                <ModalFooter>
-                  <Button colorScheme="red" mr={3} onClick={deleteProduct}>
-                    Delete
-                  </Button>
-                  <Button colorScheme="green" onClick={onClose}>Back</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                  <AlertDialogBody>
+                    Are you sure? You can't undo this action afterwards.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef as any} onClick={onCloseDelete}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme="red" onClick={deleteProduct} ml={3}>
+                      Delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
           </GridItem>
         </Grid>
       </FormControl>
       <Center>
-        <Button mt="1%" type="button" name="button" onClick={onOpen} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
+        <Button mt="1%" type="button" name="button" onClick={onOpen} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> SUBMIT</Button>
       </Center>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal id='salable' isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Make product salable?</ModalHeader>

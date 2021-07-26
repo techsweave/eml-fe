@@ -7,7 +7,7 @@ import ProductItem from './ProductItem';
 
 const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   const { productList } = prop;
-  if (productList.length !== 0) {
+  if (productList[0].id !== undefined) {
     return (
       <Box p='5'>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={10}>
@@ -27,7 +27,7 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   }
   return (
     <Box alignContent='center' p='5'>
-      <Heading textAlign='center'>No products found with the filters selected</Heading>
+      <Heading textAlign='center'>No products found</Heading>
     </Box>
   );
 };

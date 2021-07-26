@@ -1,4 +1,4 @@
-import { Services } from 'utilities-techsweave';
+import { Services, Models } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -59,11 +59,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     product = await caller.getAsync(context.params?.id as string);
   } catch (error) {
-    showError(error);
+    console.log(error);
   }
   let ret;
-  try { ret = await categoriesCaller.getAsync(product.categorieId); } catch (error) {
-    showError(error);
+  try {
+      ret = await categoriesCaller.getAsync(product.categorieId);
+  } catch (error) {
+    console.log(error);
   }
   const category = product.categorieId;
   const productId = product.id;
@@ -91,7 +93,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       relatedProducts = [relatedProducts];
     }
   } catch (error) {
-    showError(error);
+    console.log(error);
   }
   return {
     props: {

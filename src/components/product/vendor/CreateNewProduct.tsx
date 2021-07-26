@@ -130,6 +130,7 @@ function CreateNew() {
   }, [state, setState, session, categories, category, setCategory]);
 
   const handleChange = (e) => {
+    console.log(formState)
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
     } else if (e.target.name === 'discount') {
@@ -168,6 +169,7 @@ function CreateNew() {
   };
 
   const submitForm = async (isSalable: boolean) => {
+    console.log(formState);
     formState.isSalable = isSalable;
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
@@ -215,6 +217,27 @@ function CreateNew() {
       ),
     });
   };
+
+  const preSubmitForm = async () => {
+    if (
+      formState.title === '' ||
+      formState.price === 0 ||
+      formState.categorieId === '' ||
+      formState.imageURL === '' ||
+      formState.availabilityQta === 0
+    ) {
+      toast({
+        position: 'top',
+        duration: 5000,
+        isClosable: true,
+        title: 'Missing required fields',
+        description: 'Fields with * are required',
+        status: 'error',
+      });
+    } else {
+      onOpen();
+    }
+  }
 
   const submitPrivateForm = async () => {
     onClose();
@@ -290,7 +313,7 @@ function CreateNew() {
         </Grid>
       </FormControl>
 
-      <Button mt="1%" type="button" name="button" onClick={onOpen} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
+      <Button mt="1%" type="button" name="button" onClick={preSubmitForm} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

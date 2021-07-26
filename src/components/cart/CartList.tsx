@@ -186,7 +186,7 @@ const CartList = () => {
   /**
    * Add quantity to a specific item and store it
    * @param id Cart id
-   * @param quantity Quantitu to add
+   * @param quantity Quantity to add
    * @returns Void
    */
   const addQuantity = async (id: string, quantity: number): Promise<void> => {
@@ -196,7 +196,7 @@ const CartList = () => {
     if (item.quantity + quantity > (item.availabilityQta ? item.availabilityQta : 0)) {
       setState(setError(state, {
         name: 'Add quantity operation denied',
-        message: 'Cannot add more of the avaiability', // TODO Clear message
+        message: 'Cannot add more of the availability', // TODO Clear message
       }));
       return;
     }
