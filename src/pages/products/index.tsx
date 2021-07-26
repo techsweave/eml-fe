@@ -10,9 +10,13 @@ import {
 } from '@aws/dynamodb-expressions';
 import { CircularProgress } from '@chakra-ui/react';
 import showError from '@libs/showError';
+import { useSession } from 'next-auth/client';
+import { GetStaticProps } from 'next';
 
-export default function productPage() {
-  const [state, setState] = useState<Models.Tables.IProduct[]>([]);
+export default function productPage(prop) {
+  const { products } = prop;
+  const session = useSession()[0];
+  const [state, setState] = useState<Models.Tables.IProduct[]>(products);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
@@ -23,7 +27,7 @@ export default function productPage() {
   let maxFilter: ConditionExpression;
   let searchFilter: ConditionExpression;
 
-  async function scanProducts() {
+  async function scanProducts(s) {
     if (router.query.filterMin) {
       minPrice = +router.query.filterMin;
       minFilter = {
@@ -48,7 +52,13 @@ export default function productPage() {
         object: search,
       };
     }
-    const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+    const caller = new Services.Products(
+      process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
+      process.env.NEXT_PUBLIC_API_REGION as string,
+      process.env.NEXT_PUBLIC_API_STAGE as string,
+      s?.accessToken as string,
+      s?.idToken as string
+    );
 
     let filter: ConditionExpression | undefined;
     if (search !== '') {
@@ -79,18 +89,20 @@ export default function productPage() {
   }
 
   useEffect(() => {
+    const s = session;
+    if (s === undefined) return;
     if (!isLoading) return;
-    scanProducts().then(
+    scanProducts(s).then(
       (data) => {
         setState(data);
         setLoading(false);
       },
     ).catch(
       (err) => {
-        console.log(err);
+        showError(err);
       },
     );
-  }, [state, setState, isLoading, setLoading]);
+  }, [state, setState, isLoading, setLoading, session]);
   if (!isLoading) {
     return (
       <Layout title="Product-page">
@@ -102,12 +114,45 @@ export default function productPage() {
     );
   }
   return (
-    <Flex justifyContent='center'>
-      <CircularProgress
-        isIndeterminate
-        color='red.300'
-        size='3em'
-      />
-    </Flex>
+    <Layout title="Product-page">
+      <Flex justifyContent='center'>
+        <Stack w='95%'>
+          <CircularProgress
+            isIndeterminate
+            color='red.300'
+            size='3em'
+          />
+          <ProductList productList={products} />
+        </Stack>
+      </Flex>
+    </Layout>
   );
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  console.log(context);
+  let products: Models.Tables.IProduct[] = new Array();
+  let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
+    data: [],
+    count: 0,
+  };
+  const caller = new Services.Products(
+    process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
+    process.env.NEXT_PUBLIC_API_REGION as string,
+    process.env.NEXT_PUBLIC_API_STAGE as string
+  );
+  try {
+    do {
+      scanResult = await caller.scanAsync(50, scanResult?.lastEvaluatedKey?.id);
+      products = products.concat(scanResult.count ? scanResult.data : scanResult as any);
+    } while (scanResult?.lastEvaluatedKey)
+  } catch (error) {
+    showError(error);
+  }
+
+  return {
+    props: {
+      products
+    }
+  }
 }

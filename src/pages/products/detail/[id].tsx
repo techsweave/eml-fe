@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import ProductInfo from '@components/product/detail/ProductInfo';
 import showError from '@libs/showError';
+import { useSession } from 'next-auth/client';
 
 export default function productDetailPage(prop) {
   const { product, relatedProducts, ret } = prop;
@@ -38,7 +39,11 @@ export default function productDetailPage(prop) {
   );
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const caller = new Services.Products(
+    process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
+    process.env.NEXT_PUBLIC_API_REGION as string,
+    process.env.NEXT_PUBLIC_API_STAGE as string
+  );
   const id = (await caller.scanAsync(25)).data;
   const paths = id.map((idPath) => ({ params: { id: idPath.id } }));
   return {

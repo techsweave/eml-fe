@@ -35,7 +35,7 @@ const MenuLinks = ({ isOpen, isVendor }) => {
         mt={['-10', '-10', '0', '0']}
         color='black'
       >
-        <MenuItem to="/products" display={['inherit', 'inherit', 'inherit', 'none']}>
+        <MenuItem to={isVendor ? '/products/vendor' : '/products'} display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiShoppingBag size={20} />}>Products</Button>
         </MenuItem>
         <MenuItem to="/orders" hidden={isVendor ? undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
