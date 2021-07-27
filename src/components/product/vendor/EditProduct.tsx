@@ -1,22 +1,16 @@
 import { useSession } from 'next-auth/client';
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Button,
   FormControl,
   FormLabel,
   Input,
   Textarea,
-  Select,
-  NumberInput,
-  NumberInputField,
-  Checkbox,
-  Stack,
   Box,
   Text,
   HStack,
   Grid,
   GridItem,
-  Divider,
   Center,
   Modal,
   ModalOverlay,
@@ -26,23 +20,26 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  useToast
+  useToast,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
-import showError from '@libs/showError';
-
-interface Item {
-  label: string;
-  value: string;
-}
 
 function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const { product } = prop;
 
   const [formState, setFormState] = useState(product);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
+  const onCloseDelete = () => setIsOpenDelete(false);
+  const cancelRef = useRef();
   const session = useSession()[0];
   const toast = useToast();
   const s3 = new AWS.S3();
@@ -66,9 +63,8 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
     } else {
       formState[e.target.name] = e.target.name === 'isSalable' ? e.target.checked : e.target.value;
     }
-    console.log(formState)
     setFormState({ ...formState });
-  }
+  };
 
   const uploadFile = async (file: Blob, key: string) => {
     const fileReader = new FileReader();
@@ -76,7 +72,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
     // Setting up S3 upload parameters
     const S3params: AWS.S3.PutObjectRequest = {
-      Bucket: 'techsweave-images-bucket',
+      Bucket: process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
       Key: key, // File name you want to save as in S3
       Body: file,
       ACL: 'public-read',
@@ -87,8 +83,8 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
     await s3.upload(S3params).promise();
   };
 
-
-  const submitForm = async () => {
+  const submitForm = async (isSalable: boolean) => {
+    formState.isSalable = isSalable;
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
       process.env.NEXT_PUBLIC_API_REGION as string,
@@ -103,12 +99,27 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
           (formState.imageURL as any).name,
           product.id,
         );
-        await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
-        await uploadFile(product.imageURL as any, await image.getKey());
+        if (product.imageURL) {
+          await s3.deleteBucket(
+            { Bucket: product.imageURL as string },
+          ).promise();
+        }
+        await uploadFile(formState.imageURL as any, await image.getKey());
+        formState.imageURL = await image.getBucketLink(
+          process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
+          process.env.NEXT_PUBLIC_S3_UPLOAD_REGION as string,
+        );
       }
       updatedProduct = await productService.updateAsync(formState);
     } catch (error) {
-      showError(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
     toast({
       position: 'top',
@@ -123,7 +134,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
       ),
     });
-  }
+  };
 
   const deleteProduct = async () => {
     const productService = new Services.Products(
@@ -136,26 +147,42 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
     try {
       await productService.deleteAsync(product.id);
-      if (product.imageURL)
-        await s3.deleteBucket({ Bucket: product.imageURL }).promise();
+      if (product.imageURL) await s3.deleteBucket({ Bucket: product.imageURL }).promise();
     } catch (error) {
-      showError(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
-    onClose();
+    onCloseDelete();
     toast({
       position: 'top',
       render: () => (
         <Box color='white' p={3} bg='green.500' borderRadius='15px'>
-          <Text textAlign='center'>Delete successfully done</Text>
+          <Text textAlign='center'>Product successfully deleted</Text>
+          <Text> </Text>
           <Text textAlign='center'>Click button to continue</Text>
           <Center>
-            <Button color='black' as='a' href='/products'>Close</Button>
+            <Button color='black' as='a' href='/products/vendor'>Close</Button>
           </Center>
         </Box>
 
       ),
     });
-  }
+  };
+  const submitPrivateForm = async () => {
+    onClose();
+    await submitForm(false);
+  };
+
+  const submitPublicForm = async () => {
+    onClose();
+    await submitForm(true);
+  };
   return (
     <form>
       <FormControl>
@@ -176,15 +203,8 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
             <FormLabel mt="1%" value={formState.availabilityQta}>Product availability  </FormLabel>
             <Input type='number' name="availabilityQta" id="availabilityQta" min={0} precision={0} value={formState.availabilityQta} onChange={handleChange} />
 
-
-            <FormLabel mt="1%" >Product image</FormLabel>
+            <FormLabel mt="1%">Product image</FormLabel>
             <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} />
-
-            <Stack spacing={10} direction="row">
-              <Checkbox name="isSalable" id="isSalable" colorScheme="green" checked={formState.isSalable} onChange={handleChange}>
-                <FormLabel mt="1%">Product salable (visible to customers)</FormLabel>
-              </Checkbox>
-            </Stack>
 
             <FormLabel mt="1%">Add some notes..</FormLabel>
             <Textarea name="notes" id="notes" placeholder="Product notes" value={formState.notes} onChange={handleChange} />
@@ -205,33 +225,56 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
               ))
             }
 
-
             <Center>
-              <Button mt='16' onClick={onOpen} colorScheme='red' size='lg'>DELETE PRODUCT</Button>
+              <Button mt='16' onClick={() => setIsOpenDelete(true)} colorScheme='red' size='lg'>DELETE PRODUCT</Button>
             </Center>
-            <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Delete {product.title}</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <Text>Are you sure to delete this product?</Text>
-                </ModalBody>
+            <AlertDialog
+              isOpen={isOpenDelete}
+              leastDestructiveRef={cancelRef as any}
+              onClose={onCloseDelete}
+            >
+              <AlertDialogOverlay>
+                <AlertDialogContent>
+                  <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                    Delete Product
+                  </AlertDialogHeader>
 
-                <ModalFooter>
-                  <Button colorScheme="red" mr={3} onClick={deleteProduct}>
-                    Delete
-                  </Button>
-                  <Button colorScheme="green" onClick={onClose}>Back</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+                  <AlertDialogBody>
+                    Are you sure? You can&apos;t undo this action afterwards.
+                  </AlertDialogBody>
+
+                  <AlertDialogFooter>
+                    <Button ref={cancelRef as any} onClick={onCloseDelete}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme="red" onClick={deleteProduct} ml={3}>
+                      Delete
+                    </Button>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialogOverlay>
+            </AlertDialog>
           </GridItem>
         </Grid>
       </FormControl>
       <Center>
-        <Button mt="1%" type="button" name="button" onClick={submitForm} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
+        <Button mt="1%" type="button" name="button" onClick={onOpen} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> SUBMIT</Button>
       </Center>
+      <Modal id='salable' isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Make product salable?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Will the product be public for customers?</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={submitPrivateForm}>Make private</Button>
+            <Button colorScheme="green" onClick={submitPublicForm}>Publish product</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </form>
   );
 }

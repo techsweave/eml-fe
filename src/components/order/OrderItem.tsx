@@ -15,8 +15,7 @@ import {
   CircularProgress,
   Grid,
   GridItem,
-  IconButton,
-  useMediaQuery
+  useToast
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import showError from '../../libs/showError';
@@ -25,7 +24,7 @@ const init: any[] = [];
 
 const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
   const { order } = prop;
-
+    const toast = useToast();
   const [state, setState] = useState(init);
   const [isLoading, setLoading] = useState(true);
 
@@ -49,13 +48,14 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       process.env.NEXT_PUBLIC_API_REGION as string,
       process.env.NEXT_PUBLIC_API_STAGE as string,
     );
-    const products: Array<Models.Tables.IProduct> = (
-      await productService.scanAsync(25, undefined, undefined, undefined, {
-        type: 'Membership',
-        subject: 'id',
-        values: ids,
-      })
-    ).data;
+    let products: Models.Tables.IProduct[] = [];
+    const ret = await productService.scanAsync(25, undefined, undefined, undefined, {
+      type: 'Membership',
+      subject: 'id',
+      values: ids,
+    })
+      ;
+    products = products.concat(ret.count ? ret.data : ret as any);
 
     return (order?.products as Array<Models.Tables.IOrderedProduct>).map((subject) => {
       const otherSubject = products.find((element) => element.id === subject.productId);
@@ -73,25 +73,34 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
       },
     ).catch(
       (err) => {
-        showError(err);
+        toast({
+    title: err.error.name,
+    description: err.error.message,
+    status: 'error',
+    duration: 10000,
+    isClosable: true,
+    position: 'top-right',
+  });
       },
     );
   }, [state, setState, isLoading, setLoading]);
 
- 
+
 
   if (!isLoading) {
     return (
       <Box w='100%' border='1px' borderColor='var(--chakra-colors-gray-100)' borderRadius='15px'>
         <Stack position='relative'>
           <Table variant='striped' alignContent='center'>
-            <TableCaption>
-              Total:
-              {' '}
-              {total}
-              {' '}
-              €
-            </TableCaption>
+            {order.status !== 'IN PROGRESS' && (
+              <TableCaption fontSize='2xl'>
+                Total:
+                {' '}
+                {total}
+                {' '}
+                €
+              </TableCaption>
+            )}
             <Thead>
               <Tr>
                 <Th textAlign='center'>
@@ -99,52 +108,57 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   {' '}
                   {order.userId}
                 </Th>
-                <Th colSpan={2} />
+                <Th colSpan={1} />
                 <Th textAlign='center'>
                   Order:
                   {' '}
                   {order.id}
                 </Th>
+                <Th>State: {order.status}</Th>
+
               </Tr>
             </Thead>
-            <Tbody>
-              <Tr>
-                <Td textAlign='center' colSpan={4} textStyle='bold'>
-                  Date:
-                  {' '}
-                  {JSON.stringify(order.date).split('T')[0].split('"')[1]}
-                  {' '}
-                  Time:
-                  {' '}
-                  {JSON.stringify(order.date).split('T')[1].split('.')[0]}
-                </Td>
-              </Tr>
-              {state.map((item) => (
-                <Tr key={item.title}>
-                  <Td><Image fallbackSrc="/images/fallback.png" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
-                  <Td>{item.title}</Td>
-                  <Td>
-                    <Grid>
-                      <GridItem>
-                        Price:
-                        {' '}
-                        {item.price.toFixed(2)}
-                        €
-                      </GridItem>
-                      <GridItem>
-                        Quantity:
-                        {' '}
-                        {item.quantity}
-                      </GridItem>
-                    </Grid>
-                  </Td>
-                  <Td textAlign='center'>
-                    Subtotal:
-                    {(item.price * item.quantity.toFixed(2))}
+            {order.status !== 'IN PROGRESS' && (
+              <Tbody>
+                <Tr>
+                  <Td textAlign='center' colSpan={4} textStyle='bold'>
+                    Date:
+                    {' '}
+                    {JSON.stringify(order.date).split('T')[0].split('"')[1]}
+                    {' '}
+                    Time:
+                    {' '}
+                    {JSON.stringify(order.date).split('T')[1].split('.')[0]}
                   </Td>
                 </Tr>
-              ))}
-            </Tbody>
+                {state.map((item) => (
+                  <Tr key={item.title}>
+                    <Td><Image fallbackSrc="/images/fallback.png" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
+                    <Td>{item.title}</Td>
+                    <Td>
+                      <Grid>
+                        <GridItem>
+                          Price:
+                          {' '}
+                          {item.price.toFixed(2)}
+                          €
+                        </GridItem>
+                        <GridItem>
+                          Quantity:
+                          {' '}
+                          {item.quantity}
+                        </GridItem>
+                      </Grid>
+                    </Td>
+                    <Td textAlign='center'>
+                      Subtotal:
+                      {' '}
+                      {(item.price * item.quantity.toFixed(2))}
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            )}
           </Table>
         </Stack >
       </Box >

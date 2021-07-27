@@ -1,4 +1,4 @@
-import { Models, Services } from 'utilities-techsweave';
+import { Services, Models } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -6,14 +6,13 @@ import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArt
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import {
-  Box, Flex, Text, Popover,
+  Box, Flex, Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
-  PopoverBody, Button, Stack,
+  PopoverBody, Button,
 } from '@chakra-ui/react';
 import ProductInfo from '@components/product/detail/ProductInfo';
-import showError from '@libs/showError';
 
 export default function productDetailPage(prop) {
   const { product, relatedProducts, ret } = prop;
@@ -38,7 +37,11 @@ export default function productDetailPage(prop) {
   );
 }
 export const getStaticPaths: GetStaticPaths = async () => {
-  const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
+  const caller = new Services.Products(
+    process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
+    process.env.NEXT_PUBLIC_API_REGION as string,
+    process.env.NEXT_PUBLIC_API_STAGE as string,
+  );
   const id = (await caller.scanAsync(25)).data;
   const paths = id.map((idPath) => ({ params: { id: idPath.id } }));
   return {
@@ -49,45 +52,42 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let product;
+  let relatedProducts: Models.Tables.IProduct[] = [];
+  let ret;
+  let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
+    data: [],
+    count: 0,
+  };
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   const categoriesCaller = new Services.Categories(caller, `${process.env.NEXT_PUBLIC_API_ID_CATEGORIES}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
     product = await caller.getAsync(context.params?.id as string);
+    ret = await categoriesCaller.getAsync(product.categorieId);
+    const category = product.categorieId;
+    const productId = product.id;
+    const filter: ConditionExpression = {
+      type: 'And',
+      conditions: [
+        {
+          type: 'Equals',
+          subject: 'categorieId',
+          object: category,
+        },
+        {
+          type: 'NotEquals',
+          subject: 'id',
+          object: productId,
+        },
+      ],
+    };
+    scanResult = await caller.scanAsync(6, undefined, undefined, undefined, filter);
+    relatedProducts = relatedProducts.concat(
+      scanResult.count ? scanResult.data : scanResult as any,
+    );
   } catch (error) {
-    showError(error);
+    console.log(error);
   }
-  let ret;
-  try { ret = await categoriesCaller.getAsync(product.categorieId); } catch (error) {
-    showError(error);
-  }
-  const category = product.categorieId;
-  const productId = product.id;
-  const filter: ConditionExpression = {
-    type: 'And',
-    conditions: [
-      {
-        type: 'Equals',
-        subject: 'categorieId',
-        object: category,
-      },
-      {
-        type: 'NotEquals',
-        subject: 'id',
-        object: productId,
-      },
-    ],
-  };
-  let relatedProducts;
-  try {
-    relatedProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter);
-    if (relatedProducts.data) {
-      relatedProducts = relatedProducts.data;
-    } else {
-      relatedProducts = [relatedProducts];
-    }
-  } catch (error) {
-    showError(error);
-  }
+
   return {
     props: {
       product,

@@ -2,7 +2,9 @@ import React from 'react';
 import CreateNewProduct from '@components/product/vendor/CreateNewProduct';
 import CreateNewCategory from '@components/product/vendor/CreateNewCategory';
 import Layout from '@components/Layout';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
+import {
+  Tabs, TabList, Tab, TabPanels, TabPanel,
+} from '@chakra-ui/react';
 
 export default function manageShop() {
   return (

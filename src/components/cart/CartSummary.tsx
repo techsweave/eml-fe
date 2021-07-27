@@ -24,7 +24,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   // For hook call
   const toast = useToast();
 
-  const goToChechOut = async () => {
+  const goToCheckOut = async () => {
     try {
       const stripe = await stripePromise;
 
@@ -36,7 +36,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         session?.idToken as string,
       );
 
-      const stripeSession = await cartService.goToCheckoutAsync(`${process.env.NEXT_PUBLIC_SITE_URL}checkout/success`, `${process.env.NEXT_PUBLIC_SITE_URL}cart`);
+      const stripeSession = await cartService.goToCheckoutAsync(`${process.env.NEXT_PUBLIC_SITE_URL}/checkout/success`, `${process.env.NEXT_PUBLIC_SITE_URL}/cart`);
       console.log(stripeSession);
 
       // When the customer clicks on the button, redirect them to Checkout.
@@ -46,10 +46,9 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
       })
     }
     catch (error) {
-      console.log(error);
       toast({
-        title: error.name,
-        description: error.message,
+        title: error.error.name,
+        description: error.error.message,
         status: 'error',
         duration: 10000,
         isClosable: true,
@@ -124,7 +123,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         _hover={{
           backgroundColor: 'red.500',
         }}
-        onClick={goToChechOut}
+        onClick={goToCheckOut}
       >
         <Text
           fontSize='xl'
