@@ -1,0 +1,15 @@
+#swiper-color, .swiper-button-next, .swiper-button-prev {
+  color: black;
+}
+
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: 10px;
+    left: 10px;
+    width: auto;
+}
+.swiper-pagination-bullet-active {
+background: white;
+}
+.swiper-slide {
+    text-align: center;
+}

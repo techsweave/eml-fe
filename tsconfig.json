@@ -24,8 +24,9 @@
     "include": [
         "next-env.d.ts",
         "**/*.ts",
-        "**/*.tsx"
-    ],
+        "**/*.tsx",
+        ".eslintrc.js"
+, "next.config.js"    ],
     "exclude": [
         "node_modules"
     ]
