@@ -204,8 +204,8 @@ function CreateNew() {
         await productService.updateAsync(createdProduct);
       } catch (err) {
         toast({
-          title: error.error.name,
-          description: error.error.message,
+          title: err.error.name,
+          description: err.error.message,
           status: 'error',
           duration: 10000,
           isClosable: true,

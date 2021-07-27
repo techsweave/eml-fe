@@ -7,7 +7,7 @@ import ProductItem from './ProductItem';
 
 const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   const { productList } = prop;
-  if (productList[0].id !== undefined) {
+  if (productList.length !== 0) {
     return (
       <Box p='5'>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={10}>

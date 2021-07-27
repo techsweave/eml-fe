@@ -144,8 +144,7 @@ export default function productPage(prop) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-  console.log(context);
+export const getStaticProps: GetStaticProps = async () => {
   let products: Models.Tables.IProduct[] = [];
   let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
     data: [],

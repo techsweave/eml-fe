@@ -1,4 +1,4 @@
-import { Services } from 'utilities-techsweave';
+import { Services, Models } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
@@ -52,47 +52,42 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let product;
+  let relatedProducts: Models.Tables.IProduct[] = [];
+  let ret;
+  let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
+    data: [],
+    count: 0,
+  };
   const caller = new Services.Products(`${process.env.NEXT_PUBLIC_API_ID_PRODUCTS}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   const categoriesCaller = new Services.Categories(caller, `${process.env.NEXT_PUBLIC_API_ID_CATEGORIES}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`);
   try {
     product = await caller.getAsync(context.params?.id as string);
-  } catch (error) {
-    console.log(error);
-  }
-  let ret;
-  try {
     ret = await categoriesCaller.getAsync(product.categorieId);
+    const category = product.categorieId;
+    const productId = product.id;
+    const filter: ConditionExpression = {
+      type: 'And',
+      conditions: [
+        {
+          type: 'Equals',
+          subject: 'categorieId',
+          object: category,
+        },
+        {
+          type: 'NotEquals',
+          subject: 'id',
+          object: productId,
+        },
+      ],
+    };
+    scanResult = await caller.scanAsync(6, undefined, undefined, undefined, filter);
+    relatedProducts = relatedProducts.concat(
+      scanResult.count ? scanResult.data : scanResult as any,
+    );
   } catch (error) {
     console.log(error);
   }
-  const category = product.categorieId;
-  const productId = product.id;
-  const filter: ConditionExpression = {
-    type: 'And',
-    conditions: [
-      {
-        type: 'Equals',
-        subject: 'categorieId',
-        object: category,
-      },
-      {
-        type: 'NotEquals',
-        subject: 'id',
-        object: productId,
-      },
-    ],
-  };
-  let relatedProducts;
-  try {
-    relatedProducts = await caller.scanAsync(6, undefined, undefined, undefined, filter);
-    if (relatedProducts.data) {
-      relatedProducts = relatedProducts.data;
-    } else {
-      relatedProducts = [relatedProducts];
-    }
-  } catch (error) {
-    console.log(error);
-  }
+
   return {
     props: {
       product,

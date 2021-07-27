@@ -99,7 +99,11 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
           (formState.imageURL as any).name,
           product.id,
         );
-        if (product.imageURL) await s3.deleteBucket({ Bucket: product.imageURL as string }).promise();
+        if (product.imageURL) {
+          await s3.deleteBucket(
+            { Bucket: product.imageURL as string },
+          ).promise();
+        }
         await uploadFile(formState.imageURL as any, await image.getKey());
         formState.imageURL = await image.getBucketLink(
           process.env.NEXT_PUBLIC_S3_UPLOAD_BUCKET as string,
@@ -236,7 +240,7 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
                   </AlertDialogHeader>
 
                   <AlertDialogBody>
-                    Are you sure? You can't undo this action afterwards.
+                    Are you sure? You can&apos;t undo this action afterwards.
                   </AlertDialogBody>
 
                   <AlertDialogFooter>
