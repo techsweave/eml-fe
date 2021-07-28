@@ -58,7 +58,7 @@ const CartItem = (prop: {
           color='gray.700'
           fontSize='xl'
         >
-          {(cartItem.discount ? (cartItem.price! - (cartItem.price! * cartItem.discount! / 100)) : cartItem.price)?.toString().concat(' €')}
+          {(cartItem.discount ? (cartItem.price! - (cartItem.price! * cartItem.discount! / 100)) : cartItem.price)?.toFixed(2).toString().concat(' €')}
         </Text>
         <Text
           color='gray.500'
@@ -66,7 +66,7 @@ const CartItem = (prop: {
           <Text
             as='del'
           >
-            {cartItem.discount ? cartItem.price?.toString().concat('€') : undefined}
+            {cartItem.discount ? cartItem.price?.toFixed(2).toString().concat('€') : undefined}
           </Text>
 
           {' '.concat(
