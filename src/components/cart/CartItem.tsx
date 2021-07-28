@@ -31,7 +31,7 @@ const CartItem = (prop: {
       >
         <Image
           boxSize='90%'
-          objectFit='cover'
+          objectFit='scale-down'
           src={cartItem.imageURL}
           fallbackSrc="/images/fallback.png"
           borderRadius='10px'
