@@ -9,10 +9,9 @@ import {
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
-import AddToCart from '../../cart/AddToCart';
-import showError from '../../../libs/showError';
-import ProductInfo from './ProductInfo';
 import Link from 'next/link';
+import AddToCart from '../../cart/AddToCart';
+import ProductInfo from './ProductInfo';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
@@ -90,6 +89,10 @@ const ProductDetail = (prop: {
                   : (product.price! * (category.taxes! / 100)).toFixed(2)}
                 {' '}
                 €
+                -
+                {' '}
+                {category.taxes!}
+                %
               </Text>
               <HStack hidden={userState || !session}>
                 <Text>
