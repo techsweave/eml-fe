@@ -15,7 +15,8 @@ import {
   CircularProgress,
   Grid,
   GridItem,
-  useToast
+  useToast,
+  Text
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import showError from '../../libs/showError';
@@ -89,10 +90,9 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
 
   if (!isLoading) {
     return (
-      <Box w='100%' border='1px' borderColor='var(--chakra-colors-gray-100)' borderRadius='15px'>
+      <Box w='100%' border='1px' borderColor={order.status === 'IN PROGRESS' ? 'red' : 'var(--chakra-colors-gray-100)'} borderRadius='15px'>
         <Stack position='relative'>
           <Table variant='striped' alignContent='center'>
-            {order.status !== 'IN PROGRESS' && (
               <TableCaption fontSize='2xl'>
                 Total:
                 {' '}
@@ -100,7 +100,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                 {' '}
                 €
               </TableCaption>
-            )}
             <Thead>
               <Tr>
                 <Th textAlign='center'>
@@ -114,11 +113,10 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   {' '}
                   {order.id}
                 </Th>
-                <Th>State: {order.status}</Th>
+                <Th>State: <Text color={order.status === 'IN PROGRESS' ? 'red' : 'inherit'}>{order.status}</Text></Th>
 
               </Tr>
             </Thead>
-            {order.status !== 'IN PROGRESS' && (
               <Tbody>
                 <Tr>
                   <Td textAlign='center' colSpan={4} textStyle='bold'>
@@ -158,7 +156,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                   </Tr>
                 ))}
               </Tbody>
-            )}
           </Table>
         </Stack >
       </Box >

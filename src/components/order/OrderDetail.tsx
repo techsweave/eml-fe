@@ -10,6 +10,7 @@ import {
   Image,
   Flex,
   useToast,
+  HStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
@@ -96,8 +97,9 @@ const OrderDetail = (prop: {
       <Center>
         <Text fontWeight='bold'>
           Order status:
-
-          {order.status}
+          <Text color={order.status === 'IN PROGRESS' ? 'red' : 'inherit'}>
+            {order.status}
+          </Text>
         </Text>
       </Center>
       <Grid templateColumns='repeat(1, 1fr)'>
@@ -111,7 +113,7 @@ const OrderDetail = (prop: {
                 <div>
                   <Text fontWeight='bold' textAlign='center' mb='5'>{productData.title}</Text>
                   <Flex justifyContent='space-evenly' alignItems='center'>
-                    <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="cover" />
+                    <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="scale-down" />
                     <Stack>
                       <Text>
                         Price:

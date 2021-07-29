@@ -42,11 +42,11 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
             </GridItem>
           ))}
         </Grid>
-        <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='md'>
+        <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='sm'>
           <TableCaption>Orders</TableCaption>
           <Thead>
             <Tr>
-              <Th>Order ID</Th>
+              <Th>State</Th>
               <Th>Date</Th>
               <Th>Total</Th>
               <Th>Detail</Th>
@@ -62,9 +62,7 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
               return (
 
                 <Tr _hover={{ backgroundColor: 'blue.100' }} key={orders.id}>
-                  <Td>{orders.id}</Td>
-
-                  {/* <Td>{orders.date.getDate()}-{orders.date.getMonth() + 1}-{orders.date.getFullYear()}</Td> */}
+                  <Td color={orders.status === 'IN PROGRESS' ? 'red' : 'inherit'}>{orders.status}</Td>
                   <Td>
                     {JSON.stringify(orders.date).split('T')[0].split('"')[1]}
                   </Td>
@@ -72,16 +70,13 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
                     {total}
                   </Td>
                   <Td>
-                    {orders.status === 'IN PROGRESS' && (
-                      <Text>Order is still in progress</Text>
-                    )}
-                    {orders.status !== 'IN PROGRESS' && (<Link href={{ pathname: 'orders/detail/[id]', query: { id: orders.id } }}>
+                <Link href={{ pathname: 'orders/detail/[id]', query: { id: orders.id } }}>
                       <IconButton
                         size="sm"
                         rounded="md"
                         aria-label="Order detail"
                         icon={<VscChevronRight />} />
-                    </Link>)}
+                    </Link>
                   </Td>
                 </Tr>
               )

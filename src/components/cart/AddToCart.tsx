@@ -2,7 +2,7 @@ import { AuthenticatedUser, Services, Models } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import {
-  useToast, Box, Center, Button, Text, Stack,
+  useToast, Box, Button, Text, Stack,
 } from '@chakra-ui/react';
 import showError from '../../libs/showError';
 
@@ -32,7 +32,7 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
             <Text textAlign='center'>Product added successfully</Text>
-            <Text textAlign='center'>Click button to go to cart</Text>
+            <Text textAlign='center'>Click buttons to contiinue</Text>
             <Stack mt='2'>
               <Button color='black' as='a' href='/cart'>Go to cart</Button>
               <Button color='black' as='a' href='/products'>Continue with shopping</Button>
