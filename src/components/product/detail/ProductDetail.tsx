@@ -9,10 +9,9 @@ import {
 import { Button } from '@chakra-ui/button';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/client';
-import AddToCart from '../../cart/AddToCart';
-import showError from '../../../libs/showError';
-import ProductInfo from './ProductInfo';
 import Link from 'next/link';
+import AddToCart from '../../cart/AddToCart';
+import ProductInfo from './ProductInfo';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
@@ -52,7 +51,7 @@ const ProductDetail = (prop: {
         <Button as="a" href="/products" ml={['0', '0', '2,5', '2,5']} mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">
-            <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='cover' />
+            <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='scale-down' />
             <VStack flexBasis="50%" alignSelf="center" ml={['2', '2', '12', '12']} mr={['2', '2', '5', '5']} mb={['7', '7', '0', '0']}>
               <Heading as="h2" mb='3' mt='5'>
                 {product.title}
@@ -90,6 +89,10 @@ const ProductDetail = (prop: {
                   : (product.price! * (category.taxes! / 100)).toFixed(2)}
                 {' '}
                 €
+                -
+                {' '}
+                {category.taxes!}
+                %
               </Text>
               <HStack hidden={userState || !session}>
                 <Text>

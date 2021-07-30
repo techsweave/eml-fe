@@ -2,7 +2,7 @@ import { AuthenticatedUser, Services, Models } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import {
-  useToast, Box, Center, Button, Text,
+  useToast, Box, Button, Text, Stack,
 } from '@chakra-ui/react';
 import showError from '../../libs/showError';
 
@@ -16,7 +16,14 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
     const caller = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, session?.accessToken as string, session?.idToken as string);
     let result;
     try { result = await caller.addProductAsync(product.id, qty); } catch (error) {
-      showError(error);
+      toast({
+        title: error.error.name,
+        description: error.error.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+        position: 'top-right',
+      });
     }
     if (result.productId === product.id) {
       toast({
@@ -25,10 +32,11 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
             <Text textAlign='center'>Product added successfully</Text>
-            <Text textAlign='center'>Click button to go to cart</Text>
-            <Center>
+            <Text textAlign='center'>Click buttons to contiinue</Text>
+            <Stack mt='2'>
               <Button color='black' as='a' href='/cart'>Go to cart</Button>
-            </Center>
+              <Button color='black' as='a' href='/products'>Continue with shopping</Button>
+            </Stack>
           </Box>
 
         ),

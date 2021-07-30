@@ -11,7 +11,7 @@ const CarouselItem = (prop: { product: Models.Tables.IProduct }) => {
     <Box as="button" w='100%'>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack position='relative'>
-          <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="100%" h={['300px', '300px', '600px', '600px']} borderRadius="15px" fit="cover" />
+          <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="100%" h={['300px', '300px', '600px', '600px']} borderRadius="15px" fit="scale-down" />
           <Text position='absolute' top='0' right='5' fontWeight='bold' color='red.500' fontSize='4xl'>
             {product.discount}
             %

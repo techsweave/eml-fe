@@ -84,6 +84,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     relatedProducts = relatedProducts.concat(
       scanResult.count ? scanResult.data : scanResult as any,
     );
+    if (scanResult.data && scanResult.data.length === 0) {
+      relatedProducts = [];
+    }
   } catch (error) {
     console.log(error);
   }

@@ -19,7 +19,6 @@ const RelatedProducts = (prop:{ product:Models.Tables.IProduct[] }) => {
           >
             <RelatedItem
               product={products}
-              key={products.id}
             />
           </GridItem>
         ))}
