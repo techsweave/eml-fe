@@ -3,7 +3,7 @@ import { Models } from 'utilities-techsweave';
 import React from 'react';
 import { Text } from '@chakra-ui/layout';
 import {
-  Box, Image, Stack, Checkbox,
+  Box, Image, Stack,
 } from '@chakra-ui/react';
 
 const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
@@ -11,7 +11,6 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
   const discountedPrice = (product.price * ((100 - product.discount!) / 100));
   return (
     <Box as="button" w='100%' border='1px' borderColor='gray.100' borderRadius="15px">
-      <Checkbox value={product.id} borderColor='red.500' mr='55%' mt='2'>Select item</Checkbox>
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack position='relative'>
           <Image src={product.imageURL} fallbackSrc="/images/fallback.png" alt={product.title} w="100%" h='300px' borderRadius="15px" fit="scale-down" />
