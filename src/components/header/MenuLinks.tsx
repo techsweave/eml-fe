@@ -6,7 +6,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons'
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { AiOutlineShoppingCart, AiOutlineForm, AiOutlineUser } from 'react-icons/ai';
 import { IoExitOutline, IoEnterOutline } from 'react-icons/io5';
-import { BiShoppingBag } from 'react-icons/bi';
+import { BiShoppingBag, BiUser } from 'react-icons/bi';
 import { BsBook } from 'react-icons/bs'
 import logout from '@pages/api/auth/logout';
 
@@ -40,6 +40,9 @@ const MenuLinks = ({ isOpen, isVendor }) => {
         </MenuItem>
         <MenuItem to="/orders" hidden={isVendor ? undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
           <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BsBook size={20} />}>Orders</Button>
+        </MenuItem>
+        <MenuItem to="/usersList" hidden={isVendor ? undefined : true} display={['inherit', 'inherit', 'inherit', 'none']}>
+          <Button bg={['transparent', 'transparent', 'gray.100', 'gray.100']} leftIcon={<BiUser size={20} />}>Users</Button>
         </MenuItem>
         <MenuItem to="/cart">
           <Button
