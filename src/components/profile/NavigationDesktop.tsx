@@ -50,7 +50,8 @@ return    (
                     flexDirection="column"
                     alignItems="center"
                     justifyContent="flex-start"
-                >
+      >
+        <Avatar name={state.username} color='inherit' bg="gray.100" size="lg" borderWidth={1} borderColor="gray.400" />
                     <Heading textAlign='center' size="sm" mt={2}>Hi, {state.username}</Heading>
                 </Flex>
             </VStack>
