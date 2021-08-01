@@ -31,10 +31,9 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
       session?.accessToken as string,
       session?.idToken as string,
     );
-    let result;
     try {
       arrayID.forEach(async (x) => {
-        result = await cartService.addProductAsync(x, 1);
+        await cartService.addProductAsync(x, 1);
       });
     } catch (error) {
       toast({

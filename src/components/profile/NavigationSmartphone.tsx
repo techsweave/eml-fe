@@ -49,7 +49,6 @@ const NavigationSmartphone = () => {
           as="a"
           href="/profile"
           leftIcon={<RiDashboardLine size={20} />}
-          display={['none', 'flex']}
         >
           Dashboard
         </Button>
@@ -57,7 +56,6 @@ const NavigationSmartphone = () => {
           as="a"
           href="/cart"
           leftIcon={<AiOutlineShoppingCart size={20} />}
-          display={['none', 'flex']}
         >
           Cart
         </Button>
@@ -65,7 +63,6 @@ const NavigationSmartphone = () => {
           as="a"
           href="/orders"
           leftIcon={<FiTruck size={20} />}
-          display={['none', 'flex']}
         >
           Orders
         </Button>
@@ -73,7 +70,6 @@ const NavigationSmartphone = () => {
           as="a"
           href="/profile/profileSettings"
           leftIcon={<IoSettingsOutline size={20} />}
-          display={['none', 'flex']}
         >
           Edit profile
         </Button>

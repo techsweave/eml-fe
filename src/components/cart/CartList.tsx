@@ -7,7 +7,6 @@ import {
 import { useSession } from 'next-auth/client';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import NoItemInCart from './NoItemInCart';
-import showError from '@libs/showError';
 import CartSummary from './CartSummary';
 import CartItem from './CartItem';
 
@@ -296,10 +295,16 @@ const CartList = () => {
           error: err.error,
           data: [],
         });
+        toast({
+          title: err.name,
+          description: err.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+          position: 'top-right',
+        });
       });
   }, [state, setState]);
-
-  showError(state.error);
 
   if (state.loading) {
     return (
