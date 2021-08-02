@@ -12,6 +12,7 @@ import CartItem from './CartItem';
 
 type ICart = Models.Tables.ICart;
 type IProduct = Models.Tables.IProduct;
+type ICategory = Models.Tables.ICategory;
 type ICartItemDetail = ICart & Omit<IProduct, 'id'>;
 type IState = {
   loading: boolean,
@@ -111,6 +112,7 @@ const CartList = () => {
   const fetchData = async (): Promise<Array<ICartItemDetail>> => {
     let fetchedCart: Array<ICart> = [];
     let fetchedProducts: Array<IProduct> = [];
+    let fetchedCategory: Array<ICategory> = [];
     let scanResult: Models.IMultipleDataBody<IProduct> = {
       data: [],
       count: 0,
@@ -128,6 +130,14 @@ const CartList = () => {
 
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS!,
+      process.env.NEXT_PUBLIC_API_REGION!,
+      process.env.NEXT_PUBLIC_API_STAGE!,
+      session?.accessToken as string,
+      session?.idToken as string,
+    );
+    const categoryService = new Services.Categories(
+      productService,
+      process.env.NEXT_PUBLIC_API_ID_CATEGORIES!,
       process.env.NEXT_PUBLIC_API_REGION!,
       process.env.NEXT_PUBLIC_API_STAGE!,
       session?.accessToken as string,
@@ -167,15 +177,33 @@ const CartList = () => {
         ? scanResult.data : scanResult as any);
     } while (scanResult?.lastEvaluatedKey);
 
+    const categoryArray: string[] = [];
+    fetchedProducts.forEach((x) => (categoryArray.push(x.categorieId!)));
+    const filter2: ConditionExpression = {
+      type: 'Membership',
+      subject: 'id',
+      values: categoryArray,
+    };
+    const categoryRet = await categoryService.scanAsync(
+      fetchedProducts.length + 1,
+      undefined,
+      undefined,
+      undefined,
+      filter2,
+    );
+    fetchedCategory = fetchedCategory.concat(categoryRet.count ? categoryRet.data
+      : categoryRet as any);
     fetchedProducts.forEach((x) => {
       const prod: Omit<IProduct, 'id'> & { id?: string } = x;
       const cart: ICart = fetchedCart.find((y) => y.productId === x.id)!;
+      const category: ICategory = fetchedCategory.find((y) => y.id === x.categorieId)!;
 
       delete prod.id;
 
       newState.push({
         ...cart,
         ...prod,
+        ...category,
       });
     });
 

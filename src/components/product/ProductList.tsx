@@ -70,7 +70,7 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
             <GridItem
               key={products.id}
             >
-              <Checkbox m='2' value={products.id} onChange={handleChange} colorScheme="red" mr='55%' mt='2'>Select item</Checkbox>
+              <Checkbox m='2' value={products.id} onChange={handleChange} colorScheme="red" mr='55%' mt='2'>Select product</Checkbox>
               <ProductItem
                 product={products}
                 key={products.id}
