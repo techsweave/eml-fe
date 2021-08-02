@@ -44,7 +44,6 @@ const NavBar = (props) => {
       }
     )
   }, [userState, setState, session]);
-
   const toggle = () => setIsOpen(!isOpen);
   return (
     <NavBarContainer {...props}>
@@ -64,10 +63,10 @@ const NavBar = (props) => {
           <Button display={['none', 'none', 'none', 'inherit']} bg='gray.100' ml='5' leftIcon={<BiUser size={20} />}>Users</Button>
         </Text>
       </Link>
-      <SearchBar display={['none', 'none', 'none', 'inherit']} ml='10' mr='10' />
+      <SearchBar display={['none', 'none', 'none', 'inherit']} ml='10' mr='10' search={props.search} />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} isVendor={userState} />
-      <SearchBar display={['inherit', 'inherit', 'inherit', 'none']} mb='5' mt='5' />
+      <SearchBar display={['inherit', 'inherit', 'inherit', 'none']} mb='5' mt='5' search={props.search} />
     </NavBarContainer>
   );
 };

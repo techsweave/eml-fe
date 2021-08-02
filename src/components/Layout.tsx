@@ -7,15 +7,16 @@ import Footer from '@components/footer/Footer';
 type Props = {
   children: ReactNode
   title: string
+  search?: string
 };
 
-const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
+const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
   <Stack spacing="2">
     <Head>
       <link rel="icon" href="/favicon.ico" />
       <title>{title}</title>
     </Head>
-    <Header />
+    <Header search={search} />
     <Divider mb='10' />
     <Flex
       as="main"
@@ -28,4 +29,9 @@ const Layout = ({ children, title = 'EmporioLambda' }: Props) => (
     <Footer />
   </Stack>
 );
+
+Layout.defaultProps = {
+  search: undefined,
+};
+
 export default Layout;

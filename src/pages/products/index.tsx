@@ -33,7 +33,7 @@ export default function productPage(prop) {
   let search = '';
   let minFilter: ConditionExpression;
   let maxFilter: ConditionExpression;
-  let searchFilter: ConditionExpression;
+  let searchFilter: Models.CustomConditionExpression;
 
   async function scanProducts(s) {
     if (router.query.filterMin) {
@@ -55,7 +55,7 @@ export default function productPage(prop) {
     if (router.query.search) {
       search = router.query.search.toString();
       searchFilter = {
-        type: 'Equals',
+        type: 'Contains',
         subject: 'title',
         object: search,
       };
@@ -68,7 +68,7 @@ export default function productPage(prop) {
       s?.idToken as string,
     );
 
-    let filter: ConditionExpression | undefined;
+    let filter: Models.CustomConditionExpression | undefined;
     if (search !== '') {
       filter = searchFilter;
     } else if (minFilter && maxFilter) {
@@ -120,7 +120,7 @@ export default function productPage(prop) {
   }, [state, setState, isLoading, setLoading, session]);
   if (!isLoading) {
     return (
-      <Layout title="Product-page">
+      <Layout title="Product-page" search={router.query.search?.toString()}>
         <Stack w='95%'>
           <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} />
           <ProductList productList={state} />
@@ -129,7 +129,7 @@ export default function productPage(prop) {
     );
   }
   return (
-    <Layout title="Product-page">
+    <Layout title="Product-page" search={router.query.search?.toString()}>
       <Flex justifyContent='center'>
         <Stack w='95%'>
           <CircularProgress
