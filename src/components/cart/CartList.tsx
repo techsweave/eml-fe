@@ -5,7 +5,8 @@ import {
   Flex, Stack, CircularProgress, useToast, Divider,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
-import { ConditionExpression } from '@aws/dynamodb-expressions';
+import axios from 'axios';
+// import { Method } from 'axios';
 import NoItemInCart from './NoItemInCart';
 import CartSummary from './CartSummary';
 import CartItem from './CartItem';
@@ -110,108 +111,27 @@ const CartList = () => {
    * @returns Array of ICartItemDetail
    */
   const fetchData = async (): Promise<Array<ICartItemDetail>> => {
-    let fetchedCart: Array<ICart> = [];
-    let fetchedProducts: Array<IProduct> = [];
-    let fetchedCategory: Array<ICategory> = [];
-    let scanResult: Models.IMultipleDataBody<IProduct> = {
-      data: [],
-      count: 0,
-    };
-    const ids: Array<string> = [];
-    const newState: Array<ICartItemDetail> = [];
-
-    const cartService = new Services.Carts(
-      process.env.NEXT_PUBLIC_API_ID_CART!,
-      process.env.NEXT_PUBLIC_API_REGION!,
-      process.env.NEXT_PUBLIC_API_STAGE!,
-      session?.accessToken as string,
-      session?.idToken as string,
-    );
-    const productService = new Services.Products(
-      process.env.NEXT_PUBLIC_API_ID_PRODUCTS!,
-      process.env.NEXT_PUBLIC_API_REGION!,
-      process.env.NEXT_PUBLIC_API_STAGE!,
-      session?.accessToken as string,
-      session?.idToken as string,
-    );
-    const categoryService = new Services.Categories(
-      productService,
-      process.env.NEXT_PUBLIC_API_ID_CATEGORIES!,
-      process.env.NEXT_PUBLIC_API_REGION!,
-      process.env.NEXT_PUBLIC_API_STAGE!,
-      session?.accessToken as string,
-      session?.idToken as string,
-    );
-
-    const fetch = await cartService.getAsync();
-    fetchedCart = await fetchedCart.concat(fetch.data ? fetch.data : fetch as any);
-
-    fetchedCart.forEach((x) => {
-      if (!x.isChanged) {
-        ids.push(x.productId);
+    let axiosResponse;
+    try {
+      axiosResponse = await axios.request({
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/cart`,
+        method: 'GET',
+      });
+    } catch (err) {
+      if (err.response) {
+        throw err.response.data;
+      } else if (err.request) {
+        throw err.request;
       } else {
-        changedProduct += 1;
+        throw err;
       }
-    });
-
-    const filter: ConditionExpression = {
-      type: 'Membership',
-      subject: 'id',
-      values: ids,
-    };
-
-    if (ids.length === 0) {
-      return Promise.resolve([]);
     }
 
-    do {
-      scanResult = await productService.scanAsync(
-        50,
-        scanResult?.lastEvaluatedKey?.id,
-        undefined,
-        undefined,
-        filter,
-      );
-      fetchedProducts = fetchedProducts.concat(scanResult.count
-        ? scanResult.data : scanResult as any);
-    } while (scanResult?.lastEvaluatedKey);
+    const res = axiosResponse.data;
+    changedProduct = res.changedProduct;
+    const { cart } = res;
 
-    const categoryArray: string[] = [];
-    fetchedProducts.forEach((x) => (categoryArray.push(x.categorieId!)));
-
-    const filter2: ConditionExpression = {
-      type: 'Membership',
-      subject: 'id',
-      values: categoryArray,
-    };
-
-    const categoryRet = await categoryService.scanAsync(
-      fetchedProducts.length + 1,
-      undefined,
-      undefined,
-      undefined,
-      filter2,
-    );
-
-    fetchedCategory = fetchedCategory.concat(categoryRet.count ? categoryRet.data
-      : categoryRet as any);
-
-    fetchedProducts.forEach((x) => {
-      const prod: Omit<IProduct, 'id'> & { id?: string } = x;
-      const cart: ICart = fetchedCart.find((y) => y.productId === x.id)!;
-      const category: Omit<ICategory, 'id'> & { id?: string } = fetchedCategory.find((y) => y.id === x.categorieId)!;
-
-      delete prod.id;
-      delete category.id;
-
-      newState.push({
-        ...cart,
-        ...prod,
-        ...category,
-      });
-    });
-
-    return Promise.resolve(newState);
+    return Promise.resolve(cart);
   };
 
   /**
