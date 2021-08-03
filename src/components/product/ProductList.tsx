@@ -69,8 +69,12 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[], vendor: bool
           {productList.map((products) => (
             <GridItem
               key={products.id}
+              border='1px'
+              borderColor='gray.100'
+              borderRadius="15px"
+              h='98%'
             >
-              <Checkbox m='2' value={products.id} hidden={vendor} onChange={handleChange} colorScheme="red" mr='55%' mt='2'>Select product</Checkbox>
+              <Checkbox m='2' value={products.id} hidden={vendor} onChange={handleChange} colorScheme="red" mr='25%' mt='2'>Select product</Checkbox>
               <ProductItem
                 product={products}
                 key={products.id}

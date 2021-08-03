@@ -10,7 +10,7 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
   const { product } = prop;
   const discountedPrice = (product.price * ((100 - product.discount!) / 100));
   return (
-    <Box as="button" w='100%' border='1px' borderColor='gray.100' borderRadius="15px">
+    <Box as="button" w='100%' borderBottom='1px' borderBottomColor='gray.100' borderRadius="15px">
       <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
         <Stack position='relative'>
           <Image src={product.imageURL} fallbackSrc="/images/fallback.png" alt={product.title} w="100%" h='300px' borderRadius="15px" fit="scale-down" />
