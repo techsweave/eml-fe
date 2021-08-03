@@ -127,7 +127,6 @@ const CartList = () => {
       session?.accessToken as string,
       session?.idToken as string,
     );
-
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS!,
       process.env.NEXT_PUBLIC_API_REGION!,
@@ -179,11 +178,13 @@ const CartList = () => {
 
     const categoryArray: string[] = [];
     fetchedProducts.forEach((x) => (categoryArray.push(x.categorieId!)));
+
     const filter2: ConditionExpression = {
       type: 'Membership',
       subject: 'id',
       values: categoryArray,
     };
+
     const categoryRet = await categoryService.scanAsync(
       fetchedProducts.length + 1,
       undefined,
@@ -191,14 +192,17 @@ const CartList = () => {
       undefined,
       filter2,
     );
+
     fetchedCategory = fetchedCategory.concat(categoryRet.count ? categoryRet.data
       : categoryRet as any);
+
     fetchedProducts.forEach((x) => {
       const prod: Omit<IProduct, 'id'> & { id?: string } = x;
       const cart: ICart = fetchedCart.find((y) => y.productId === x.id)!;
-      const category: ICategory = fetchedCategory.find((y) => y.id === x.categorieId)!;
+      const category: Omit<ICategory, 'id'> & { id?: string } = fetchedCategory.find((y) => y.id === x.categorieId)!;
 
       delete prod.id;
+      delete category.id;
 
       newState.push({
         ...cart,
