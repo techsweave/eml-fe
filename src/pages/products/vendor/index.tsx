@@ -29,10 +29,10 @@ export default function productPage(prop) {
 
         <TabPanels p='5'>
           <TabPanel>
-            <ProductList productList={salableProducts} />
+            <ProductList productList={salableProducts} vendor={isVendor} />
           </TabPanel>
           <TabPanel>
-            <ProductList productList={privateProducts} />
+            <ProductList productList={privateProducts} vendor={isVendor} />
           </TabPanel>
         </TabPanels>
       </Tabs>

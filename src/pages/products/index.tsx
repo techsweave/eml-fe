@@ -123,7 +123,7 @@ export default function productPage(prop) {
       <Layout title="Product-page">
         <Stack w='95%'>
           <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} />
-          <ProductList productList={state} />
+          <ProductList productList={state} vendor={false} />
         </Stack>
       </Layout>
     );
@@ -137,7 +137,7 @@ export default function productPage(prop) {
             color='red.300'
             size='3em'
           />
-          <ProductList productList={products} />
+          <ProductList productList={products} vendor={false} />
         </Stack>
       </Flex>
     </Layout>

@@ -6,8 +6,8 @@ import {
 import { useSession } from 'next-auth/client';
 import ProductItem from './ProductItem';
 
-const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
-  const { productList } = prop;
+const ProductList = (prop: { productList: Models.Tables.IProduct[], vendor: boolean }) => {
+  const { productList, vendor } = prop;
   const arrayID: string[] = [];
   const session = useSession()[0];
   const toast = useToast();
@@ -64,13 +64,13 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[] }) => {
   if (productList.length !== 0) {
     return (
       <Box p='5'>
-        <Center><Button mb='5' onClick={submit}>Add selected products to Cart</Button></Center>
+        <Center><Button mb='5' hidden={vendor} onClick={submit}>Add selected products to Cart</Button></Center>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']} gap={10}>
           {productList.map((products) => (
             <GridItem
               key={products.id}
             >
-              <Checkbox m='2' value={products.id} onChange={handleChange} colorScheme="red" mr='55%' mt='2'>Select product</Checkbox>
+              <Checkbox m='2' value={products.id} hidden={vendor} onChange={handleChange} colorScheme="red" mr='55%' mt='2'>Select product</Checkbox>
               <ProductItem
                 product={products}
                 key={products.id}

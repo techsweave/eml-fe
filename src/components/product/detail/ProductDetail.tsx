@@ -15,7 +15,7 @@ import ProductInfo from './ProductInfo';
 
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
-  category: Models.Tables.ICategory
+  category: Models.Tables.ICategory,
 }) => {
   const { product, category } = prop;
   const session = useSession()[0];
@@ -48,7 +48,7 @@ const ProductDetail = (prop: {
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Grid row='2' column='1'>
-        <Button as="a" href="/products" ml={['0', '0', '2,5', '2,5']} mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
+        <Button as="a" href={userState ? '/products/vendor' : '/products'} ml={['0', '0', '2,5', '2,5']} mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">
             <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='scale-down' />
