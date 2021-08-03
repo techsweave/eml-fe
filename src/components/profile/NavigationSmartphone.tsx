@@ -1,91 +1,91 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Stack, Tooltip, Flex, Avatar, Heading, Button, HStack, Box, VStack,
+Flex, Avatar, Heading, Button, VStack, SimpleGrid
 } from '@chakra-ui/react';
 import { RiDashboardLine } from 'react-icons/ri';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { FiTruck } from 'react-icons/fi';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { IconButton } from "@chakra-ui/react"
+import { useSession } from 'next-auth/client';
+import { AuthenticatedUser } from 'utilities-techsweave';
+const initLoading = true;
+const NavigationSmartphone = () => {
+  const session = useSession()[0];
+  const [error, setError] = useState<Error>();
+  const [state, setState] = useState({
+    email: '',
+    username: '',
+  });
+  const [loading, setLoading] = useState(initLoading);
+  async function fetchData(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return {
+      email: await user.getEmail(),
+      username: await user.getUserId(),
+    };
+  }
+  useEffect(() => {
+    const s = session;
+    // Avoid infinte loop render -> useEffect -> setState -> render
+    if (!loading) return;
+    if (error) return;
 
-const NavigationSmartphone = () => (
+    fetchData(s)
+      .then((data) => {
+        setLoading(false);
+        setState(data);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.error);
+      });
+  }, [state, setState, error, setError, loading, setLoading, fetchData]);
+  return (
     <VStack spacing={10}>
-    <Stack
-        direction="row"
-        w="full"
-        spacing={['10', '6']}
-        >
+      <SimpleGrid
+        columns={2} spacing={10}
+      >
         <Button
-            as="a"
-            href="/profile"
-            leftIcon={<RiDashboardLine size={20} />}
-            display={['none','flex']}
+          as="a"
+          href="/profile"
+          leftIcon={<RiDashboardLine size={20} />}
         >
-            Dashboard
-            </Button>
-            <IconButton
-                as="a"
-                href="/profile"
-                aria-label="Dashboard"
-                icon={<RiDashboardLine size={30} />}
-                display={['flex', 'none']}
-            />
+          Dashboard
+        </Button>
         <Button
-            as="a"
-            href="/cart"
-            leftIcon={<AiOutlineShoppingCart size={20} />}
-            display={['none','flex']}
+          as="a"
+          href="/cart"
+          leftIcon={<AiOutlineShoppingCart size={20} />}
         >
           Cart
-            </Button>
-            <IconButton
-                as="a"
-                href="/cart"
-                aria-label="Cart"
-                icon={<AiOutlineShoppingCart size={30} />}
-                display={['flex', 'none']}
-            />
+        </Button>
         <Button
-            as="a"
-            href="/orders"
-            leftIcon={<FiTruck size={20} />}
-            display={['none','flex']}
+          as="a"
+          href="/orders"
+          leftIcon={<FiTruck size={20} />}
         >
           Orders
-            </Button>
-            <IconButton
-                as="a"
-                href="/orders"
-                aria-label="Orders"
-                icon={<FiTruck size={30} />}
-                display={['flex', 'none']}
-            />
+        </Button>
         <Button
-            as="a"
-            href="/profile/profileSettings"
-            leftIcon={<IoSettingsOutline size={20} />}
-            display={['none','flex']}
-      >
-        Edit profile
-            </Button>
-            <IconButton
-                as="a"
-                href="/profile/profileSettings"
-                aria-label="Orders"
-                icon={<IoSettingsOutline size={30} />}
-                display={['flex', 'none']}
-            />
-        </Stack>
-        <Flex
-            w="full"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="space-between"
+          as="a"
+          href="/profile/profileSettings"
+          leftIcon={<IoSettingsOutline size={20} />}
         >
-          <Heading size="sm" textAlign='center' mt={2}>Hi, Name Surname</Heading>
+          Edit profile
+        </Button>
+      </SimpleGrid>
+      <Flex
+        w="full"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+         <Avatar name={state.username} color='inherit' bg="gray.100" size="lg" borderWidth={1} borderColor="gray.400" />
+        <Heading size="sm" textAlign='center' mt={2}>Hi, {state.username}</Heading>
       </Flex>
-        </VStack>
+    </VStack>
     
-);
+  );
+};
 
 export default NavigationSmartphone;

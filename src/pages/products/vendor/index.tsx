@@ -29,10 +29,10 @@ export default function productPage(prop) {
 
         <TabPanels p='5'>
           <TabPanel>
-            <ProductList productList={salableProducts} />
+            <ProductList productList={salableProducts} vendor={isVendor} />
           </TabPanel>
           <TabPanel>
-            <ProductList productList={privateProducts} />
+            <ProductList productList={privateProducts} vendor={isVendor} />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -41,6 +41,13 @@ export default function productPage(prop) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  AWS.config.update({
+    region: process.env.NEXT_PUBLIC_API_REGION as string,
+    credentials: {
+      accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY as string,
+      secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS as string,
+    },
+  });
   const s = await getSession(context);
   const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
   const isVendor = await user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID as string);
@@ -63,8 +70,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     object: true,
   };
   do {
-    salableScanResult = await caller.scanAsync(50, salableScanResult?.lastEvaluatedKey?.id, undefined, undefined, filter);
-    salableProducts = salableProducts.concat(salableScanResult.count ? salableScanResult.data : salableScanResult as any);
+    salableScanResult = await caller.scanAsync(50,
+      salableScanResult?.lastEvaluatedKey?.id, undefined, undefined, filter);
+    salableProducts = salableProducts.concat(salableScanResult.count ? salableScanResult.data
+      : salableScanResult as any);
   } while (salableScanResult?.lastEvaluatedKey);
 
   let privateProducts: Models.Tables.IProduct[] = [];
@@ -75,9 +84,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   do {
     privateScanResult = await caller.scanAsync(50, privateScanResult?.lastEvaluatedKey?.id, undefined, undefined, { type: 'Equals', subject: 'isSalable', object: false });
-    privateProducts = privateProducts.concat(privateScanResult.count ? privateScanResult.data : privateScanResult as any);
+    privateProducts = privateProducts.concat(privateScanResult.count ? privateScanResult.data
+      : privateScanResult as any);
   } while (privateScanResult?.lastEvaluatedKey);
-
+  if (salableScanResult.data && salableScanResult.data.length === 0) {
+    salableProducts = [];
+  }
+  if (privateScanResult.data && privateScanResult.data.length === 0) {
+    privateProducts = [];
+  }
   return {
     props: {
       salableProducts,

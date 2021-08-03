@@ -189,7 +189,7 @@ const PersonalInfo = () => {
         </GridItem>
       </Grid>
       <Center><Button mt='5' type='button' name='button' onClick={submitForm}>Submit</Button></Center>
-      <Box>
+      <Box mt='5'>
         <Text textAlign='center' fontWeight='bold' fontSize='3xl'>
           Change password
         </Text>

@@ -42,7 +42,7 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
             </GridItem>
           ))}
         </Grid>
-        <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='sm'>
+        <Table variant="simple" display={['inherit', 'inherit', 'none', 'none']} size='md'>
           <TableCaption>Orders</TableCaption>
           <Thead>
             <Tr>

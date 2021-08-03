@@ -149,7 +149,7 @@ function CreateNew() {
         </Grid>
       </FormControl>
 
-      <Button mt="1%" type="button" name="button" onClick={submitForm} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
+      <Button mt="5" type="button" name="button" onClick={submitForm} leftIcon={<PlusSquareIcon size={20} alignSelf='center' />}> Submit</Button>
     </form>
   );
 }

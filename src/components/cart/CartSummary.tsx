@@ -12,12 +12,17 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 
 type ICart = Models.Tables.ICart;
 type IProduct = Models.Tables.IProduct;
-type ICartItemDetail = ICart & Omit<IProduct, 'id'>
+type ICategory = Models.Tables.ICategory;
+type ICartItemDetail = ICart & Omit<IProduct, 'id'> & Omit<ICategory, 'id'>
 
 const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   const { cart } = props;
+  console.log(cart);
   let totalNoDiscount = 0;
   let total = 0;
+  let totalTaxes = 0;
+  let totalTaxesD = 0;
+
 
   const session = useSession()[0];
 
@@ -65,6 +70,14 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
     }
     total += price * x.quantity;
   });
+  cart.forEach((x) => {
+    let price = x.price ? x.price : 0;
+    totalTaxes += (price*(x.taxes!/100)) * x.quantity;
+    if (x?.discount) {
+      price -= ((price / 100) * x.discount!);
+      totalTaxes += (price*(x.taxes!/100)) * x.quantity;
+    }
+  });
 
   return (
     <Flex
@@ -92,6 +105,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         as='del'
         color='gray.500'
         fontSize='lg'
+        hidden={total === totalNoDiscount ? true : false}
       >
         {
           totalNoDiscount.toFixed(2)
@@ -103,6 +117,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
       <Text
         color='gray.500'
         fontSize='lg'
+        hidden={total === totalNoDiscount ? true : false}
       >
         {(Math.round(
           100 * 100 * (
@@ -113,6 +128,8 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
           .replace('.', ',')
           .concat(' % saved!')}
       </Text>
+      <Text>Taxes: {' '}{totalTaxes.toFixed(2)
+            .replace('.', ',')}€</Text>
       <Button
         mt='3%'
         leftIcon={<FaShoppingBag />}
