@@ -13,7 +13,7 @@ import CartItem from './CartItem';
 type ICart = Models.Tables.ICart;
 type IProduct = Models.Tables.IProduct;
 type ICategory = Models.Tables.ICategory;
-type ICartItemDetail = ICart & Omit<IProduct, 'id'>;
+type ICartItemDetail = ICart & Omit<IProduct, 'id'> & Omit<ICategory, 'id'>;
 type IState = {
   loading: boolean,
   error?: Error,
