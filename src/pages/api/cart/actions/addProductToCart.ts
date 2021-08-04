@@ -3,7 +3,7 @@ import Cookies from 'cookies';
 import { Services, Models } from 'utilities-techsweave';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 type ICart = Models.Tables.ICart;
 
@@ -14,7 +14,7 @@ const addSingleProductToCookieCart = async (
 ): Promise<ICart> => {
   const currentCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
   const newCart: ICart = {
-    id: uuid(), // fake id
+    id: uuidv4(), // fake id
     productId,
     quantity,
     isChanged: false,
@@ -36,7 +36,7 @@ const addMultipleProductToCookieCart = async (
   const currentCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
   productsIds.forEach((x) => {
     const newCart: ICart = {
-      id: uuid(), // fake id
+      id: uuidv4(), // fake id
       productId: x,
       quantity: 1,
       isChanged: false,
