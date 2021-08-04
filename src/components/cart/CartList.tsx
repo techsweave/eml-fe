@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
-import { Models, Services } from 'utilities-techsweave';
+import { Models } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import {
   Flex, Stack, CircularProgress, useToast, Divider,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/client';
 import axios from 'axios';
 // import { Method } from 'axios';
 import NoItemInCart from './NoItemInCart';
@@ -29,7 +28,6 @@ let changedProduct = 0;
 
 const CartList = () => {
   const [state, setState] = useState(init);
-  const session = useSession()[0];
 
   /**
    * Add error to the current state
@@ -199,17 +197,23 @@ const CartList = () => {
     if (!item) return;
 
     try {
-      const cartService = new Services.Carts(
-        process.env.NEXT_PUBLIC_API_ID_CART!,
-        process.env.NEXT_PUBLIC_API_REGION!,
-        process.env.NEXT_PUBLIC_API_STAGE!,
-        session?.accessToken as string,
-        session?.idToken as string,
-      );
-
       // First set the state and then call the API (better performance)
       setState(removeProductToState(state, item.id));
-      await cartService.removeProductAsync(item.id);
+
+      try {
+        await axios.request({
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/cart/${item.id}`,
+          method: 'DELETE',
+        });
+      } catch (err) {
+        if (err.response) {
+          throw err.response.data;
+        } else if (err.request) {
+          throw err.request;
+        } else {
+          throw err;
+        }
+      }
     } catch (err) {
       // Rollback
       setState(addProductToState(state, item));

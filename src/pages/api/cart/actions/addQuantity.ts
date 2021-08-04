@@ -3,6 +3,7 @@ import { Session } from 'next-auth';
 import { Models, Services } from 'utilities-techsweave';
 import { getSession } from 'next-auth/client';
 import Cookies from 'cookies';
+import { deleteCartToCookies } from './delete';
 
 type ICart = Models.Tables.ICart;
 
@@ -27,6 +28,9 @@ const addQuantityToCookies = (
   cartId: string,
   quantity: number,
 ): Promise<ICart | undefined> => {
+  if (quantity <= 0) {
+    return deleteCartToCookies(cookie, cartId);
+  }
   const currentCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
   const item = currentCart.find((x) => x.id === cartId);
   if (item) {

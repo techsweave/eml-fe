@@ -1,6 +1,7 @@
 import Cors from 'micro-cors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import addQuantity from './actions/addQuantity';
+import deleteCart from './actions/delete';
 
 const cors = Cors({
   allowMethods: ['PUT', 'DELETE', 'OPTIONS', 'HEAD'],
@@ -24,9 +25,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'DELETE') {
-    res.status(20).json(
-      '',
-      // TODO: await addProductToCart(req, res, productsIds, quantity),
+    res.status(200).json(
+      await deleteCart(req, res, id as string),
     );
     return;
   }
