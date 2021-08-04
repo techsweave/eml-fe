@@ -36,7 +36,9 @@ const addQuantityToCookies = (
   if (item) {
     item.quantity = quantity;
   }
-  cookie.set('cart', JSON.stringify(currentCart));
+  cookie.set('cart', JSON.stringify(currentCart), {
+    expires: new Date(Date.now() + (1000 * 3600 * 24 * 7 * 31 * 12)),
+  });
   return Promise.resolve(item);
 };
 

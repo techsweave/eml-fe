@@ -22,7 +22,9 @@ const addSingleProductToCookieCart = async (
   };
 
   currentCart.push(newCart);
-  cookie.set('cart', JSON.stringify(currentCart));
+  cookie.set('cart', JSON.stringify(currentCart), {
+    expires: new Date(Date.now() + (1000 * 3600 * 24 * 7 * 31 * 12)),
+  });
 
   return Promise.resolve(newCart);
 };
@@ -43,7 +45,9 @@ const addMultipleProductToCookieCart = async (
     currentCart.push(newCart);
   });
 
-  cookie.set('cart', JSON.stringify(currentCart));
+  cookie.set('cart', JSON.stringify(currentCart), {
+    expires: new Date(Date.now() + (1000 * 3600 * 24 * 7 * 31 * 12)),
+  });
 
   return Promise.resolve(currentCart);
 };
