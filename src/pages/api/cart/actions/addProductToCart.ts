@@ -3,17 +3,18 @@ import Cookies from 'cookies';
 import { Services, Models } from 'utilities-techsweave';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Session } from 'next-auth';
+import { uuid } from 'uuidv4';
 
-type INewCart = Models.Tables.INewCart;
 type ICart = Models.Tables.ICart;
 
 const addSingleProductToCookieCart = async (
   cookie: any,
   productId: string,
   quantity: number,
-): Promise<INewCart> => {
-  const currentCart: Array<INewCart> = cookie.get('cart') ? cookie.get('cart') : [];
-  const newCart: INewCart = {
+): Promise<ICart> => {
+  const currentCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
+  const newCart: ICart = {
+    id: uuid(), // fake id
     productId,
     quantity,
     isChanged: false,
@@ -21,7 +22,7 @@ const addSingleProductToCookieCart = async (
   };
 
   currentCart.push(newCart);
-  cookie.set('cart', newCart);
+  cookie.set('cart', JSON.stringify(currentCart));
 
   return Promise.resolve(newCart);
 };
@@ -29,18 +30,22 @@ const addSingleProductToCookieCart = async (
 const addMultipleProductToCookieCart = async (
   cookie: any,
   productsIds: Array<string>,
-): Promise<Array<INewCart>> => {
-  const addPromises: Array<Promise<INewCart>> = [];
+): Promise<Array<ICart>> => {
+  const currentCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
   productsIds.forEach((x) => {
-    addPromises.push(
-      addSingleProductToCookieCart(
-        cookie,
-        x,
-        1,
-      ),
-    );
+    const newCart: ICart = {
+      id: uuid(), // fake id
+      productId: x,
+      quantity: 1,
+      isChanged: false,
+      userId: 'localUser',
+    };
+    currentCart.push(newCart);
   });
-  return Promise.all(addPromises);
+
+  cookie.set('cart', JSON.stringify(currentCart));
+
+  return Promise.resolve(currentCart);
 };
 
 const addSingleProductToServiceCart = async (

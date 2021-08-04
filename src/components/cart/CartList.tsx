@@ -127,6 +127,8 @@ const CartList = () => {
       }
     }
 
+    console.log(axiosResponse);
+
     const res = axiosResponse.data;
     changedProduct = res.changedProduct;
     const { cart } = res;

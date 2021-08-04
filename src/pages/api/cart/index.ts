@@ -1,6 +1,7 @@
 import Cors from 'micro-cors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import getCart from './actions/list';
+import addProductToCart from './actions/addProductToCart';
 
 const cors = Cors({
   allowMethods: ['GET', 'OPTIONS', 'HEAD'],
@@ -21,9 +22,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (req.method === 'POST') {
-    res.status(200).json({
-      recived: true,
-    });
+    const { productsIds, quantity } = req.body;
+    res.status(201).json(
+      await addProductToCart(req, res, productsIds, quantity),
+    );
     return;
   }
 

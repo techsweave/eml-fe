@@ -6,16 +6,15 @@ import { ConditionExpression } from '@aws/dynamodb-expressions';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 type ICart = Models.Tables.ICart;
-type INewCart = Models.Tables.INewCart;
 type IProduct = Models.Tables.IProduct;
 type ICategory = Models.Tables.ICategory;
 type ICartItemDetail = ICart & Omit<IProduct, 'id'> & Omit<ICategory, 'id'>;
 
 const getUserCart = async (
-  cookiesCart: Models.Tables.INewCart[],
+  cookiesCart: ICart[],
   cartService: Services.Carts,
   cookie: any,
-  fetchedCart: Models.Tables.ICart[],
+  fetchedCart: ICart[],
   ids: string[],
   changedProduct: number,
 ) => {
@@ -129,7 +128,7 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
     session?.idToken as string,
   );
 
-  let cookiesCart: Array<INewCart> = cookie.get('cart') ? cookie.get('cart') : [];
+  let cookiesCart: Array<ICart> = cookie.get('cart') ? JSON.parse(cookie.get('cart')) : [];
 
   if (session) {
     ({ cookiesCart, fetchedCart, changedProduct } = await getUserCart(
@@ -141,10 +140,12 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
       changedProduct,
     ));
   }
-
-  cookiesCart.forEach((x) => {
-    ids.push(x.productId);
-  });
+  if (cookiesCart.length > 0) {
+    fetchedCart = fetchedCart.concat(cookiesCart);
+    cookiesCart.forEach((x) => {
+      ids.push(x.productId);
+    });
+  }
 
   const filter: ConditionExpression = {
     type: 'Membership',
@@ -153,7 +154,10 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   if (ids.length === 0) {
-    return Promise.resolve([]);
+    return Promise.resolve({
+      cart: [],
+      changedProduct: 0,
+    });
   }
 
   ({ scanResult, fetchedProducts } = await getProductsInCart(
@@ -175,8 +179,8 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
 
   fetchedProducts.forEach((x) => {
     const prod: Omit<IProduct, 'id'> & { id?: string } = x;
-    const cart: ICart = fetchedCart.find((y) => y.productId === x.id)!;
-    const category: Omit<ICategory, 'id'> & { id?: string } = fetchedCategory.find((y) => y.id === x.categorieId)!;
+    const cart: ICart = { ...fetchedCart.find((y) => y.productId === x.id)! };
+    const category: Omit<ICategory, 'id'> & { id?: string } = { ...fetchedCategory.find((y) => y.id === x.categorieId)! };
 
     delete prod.id;
     delete category.id;

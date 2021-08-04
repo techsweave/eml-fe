@@ -1,10 +1,10 @@
-import { AuthenticatedUser, Services, Models } from 'utilities-techsweave';
+import { AuthenticatedUser, Models } from 'utilities-techsweave';
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/client';
 import {
   useToast, Box, Button, Text, Stack,
 } from '@chakra-ui/react';
-import showError from '../../libs/showError';
+import axios from 'axios';
 
 const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) => {
   const toast = useToast();
@@ -12,10 +12,33 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
   const session = useSession()[0];
   const qty = quantity >= product.availabilityQta! ? product.availabilityQta! : quantity;
   const [userState, setState] = useState<boolean>();
+
   const handleClick = async () => {
-    const caller = new Services.Carts(`${process.env.NEXT_PUBLIC_API_ID_CART}`, `${process.env.NEXT_PUBLIC_API_REGION}`, `${process.env.NEXT_PUBLIC_API_STAGE}`, session?.accessToken as string, session?.idToken as string);
     let result;
-    try { result = await caller.addProductAsync(product.id, qty); } catch (error) {
+    let axiosResponse;
+    try {
+      try {
+        axiosResponse = await axios.request({
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/cart`,
+          method: 'POST',
+          data: {
+            productsIds: product.id,
+            quantity: qty,
+          },
+        });
+      } catch (err) {
+        if (err.response) {
+          throw err.response.data;
+        } else if (err.request) {
+          throw err.request;
+        } else {
+          throw err;
+        }
+      }
+      console.log('axiosResponse');
+      console.log(axiosResponse);
+      result = axiosResponse.data;
+    } catch (error) {
       toast({
         title: error.error.name,
         description: error.error.message,
@@ -50,20 +73,25 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
   useEffect(() => {
     const s = session;
     if (userState !== undefined) return;
-    if (!s) return;
+    if (!s) {
+      setState(false);
+      return;
+    }
+
     isVendor(s).then(
       (data) => {
         setState(data);
       },
     ).catch(
       (err) => {
-        showError(err);
+        console.log(err);
+        // showError(err);
       },
     );
   }, [userState, setState, session]);
   return (
     <Button
-      hidden={userState || !session ? true : undefined}
+      hidden={userState}
       onClick={handleClick}
     >
       Add to Cart

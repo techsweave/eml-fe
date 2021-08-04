@@ -1,15 +1,16 @@
-import { Models, Services } from 'utilities-techsweave';
+import { Models } from 'utilities-techsweave';
 import React from 'react';
 import {
   Grid, GridItem, Box, Heading, Checkbox, Button, useToast, Center, Stack, Text,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/client';
+// import { useSession } from 'next-auth/client';
+import axios from 'axios';
 import ProductItem from './ProductItem';
 
 const ProductList = (prop: { productList: Models.Tables.IProduct[], vendor: boolean }) => {
   const { productList, vendor } = prop;
   const arrayID: string[] = [];
-  const session = useSession()[0];
+  // const session = useSession()[0];
   const toast = useToast();
 
   const handleChange = (e) => {
@@ -24,17 +25,27 @@ const ProductList = (prop: { productList: Models.Tables.IProduct[], vendor: bool
     }
   };
   const submit = async () => {
-    const cartService = new Services.Carts(
-      process.env.NEXT_PUBLIC_API_ID_CART!,
-      process.env.NEXT_PUBLIC_API_REGION!,
-      process.env.NEXT_PUBLIC_API_STAGE!,
-      session?.accessToken as string,
-      session?.idToken as string,
-    );
     try {
-      arrayID.forEach(async (x) => {
-        await cartService.addProductAsync(x, 1);
-      });
+      // let axiosResponse;
+      try {
+        // axiosResponse =
+        await axios.request({
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/cart`,
+          method: 'POST',
+          data: {
+            productsIds: arrayID,
+          },
+        });
+      } catch (err) {
+        if (err.response) {
+          throw err.response.data;
+        } else if (err.request) {
+          throw err.request;
+        } else {
+          throw err;
+        }
+      }
+      // const res = axiosResponse.data;
     } catch (error) {
       toast({
         title: error.name,
