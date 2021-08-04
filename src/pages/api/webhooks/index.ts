@@ -41,7 +41,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       event = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
     } catch (err) {
       // On error, log and return the error message.
-      res.status(400).send(`Webhook Error: ${err.message}`);
+      res.status(400).send(`Webhook Error 1: ${err.message} \n Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret}`); // TODO: TOGLIERE SECRET DOPO IL DEBUG SU VERCEL!!!!
       return;
     }
 
@@ -87,7 +87,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         ) as unknown;
         orderId = (result as IOrder).id;
       } catch (err) {
-        res.status(400).send(`Webhook Error: ${err.message}`);
+        res.status(400).send(`Webhook Error 2: ${err.message} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event}`);
         return;
       }
 
@@ -99,7 +99,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       } catch (err) {
         console.warn(`Error: ${err}`);
-        res.status(400).send(`Webhook Error: ${err.message}`);
+        res.status(400).send(`Webhook Error 3: ${err.message} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event} \n Order: ${orderId}`);
         return;
       }
     }

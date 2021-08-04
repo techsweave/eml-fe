@@ -94,7 +94,7 @@ const ProductDetail = (prop: {
                 {category.taxes!}
                 %
               </Text>
-              <HStack hidden={userState || !session}>
+              <HStack hidden={userState}>
                 <Text>
                   Quantity
                 </Text>
