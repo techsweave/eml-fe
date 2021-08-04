@@ -129,7 +129,7 @@ const getCart = async (req: NextApiRequest, res: NextApiResponse) => {
     session?.idToken as string,
   );
 
-  let cookiesCart: Array<INewCart> = cookie.get('cart');
+  let cookiesCart: Array<INewCart> = cookie.get('cart') ? cookie.get('cart') : [];
 
   if (session) {
     ({ cookiesCart, fetchedCart, changedProduct } = await getUserCart(

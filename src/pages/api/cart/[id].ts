@@ -2,7 +2,6 @@ import Cors from 'micro-cors';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/client';
 import Cookies from 'cookies';
-import { String } from 'aws-sdk/clients/batch';
 
 const cors = Cors({
   allowMethods: ['GET', 'OPTIONS', 'HEAD'],
