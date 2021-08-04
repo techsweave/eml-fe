@@ -127,8 +127,6 @@ const CartList = () => {
       }
     }
 
-    console.log(axiosResponse);
-
     const res = axiosResponse.data;
     changedProduct = res.changedProduct;
     const { cart } = res;
@@ -155,14 +153,6 @@ const CartList = () => {
     }
 
     try {
-      const cartService = new Services.Carts(
-        process.env.NEXT_PUBLIC_API_ID_CART!,
-        process.env.NEXT_PUBLIC_API_REGION!,
-        process.env.NEXT_PUBLIC_API_STAGE!,
-        session?.accessToken as string,
-        session?.idToken as string,
-      );
-
       const newQuantity = item.quantity + quantity;
 
       // First set the state and then call the API (better performance)
@@ -172,7 +162,23 @@ const CartList = () => {
         setState(addQuantityToState(state, item.id, quantity));
       }
 
-      await cartService.changeQuantityAsync(item.id, newQuantity);
+      try {
+        await axios.request({
+          url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/cart/${item.id}`,
+          method: 'PUT',
+          data: {
+            quantity: newQuantity,
+          },
+        });
+      } catch (err) {
+        if (err.response) {
+          throw err.response.data;
+        } else if (err.request) {
+          throw err.request;
+        } else {
+          throw err;
+        }
+      }
     } catch (err) {
       // Rollback
       setState(addQuantityToState(state, item.id, 0 - quantity));

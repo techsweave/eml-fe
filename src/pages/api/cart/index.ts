@@ -4,7 +4,7 @@ import getCart from './actions/list';
 import addProductToCart from './actions/addProductToCart';
 
 const cors = Cors({
-  allowMethods: ['GET', 'OPTIONS', 'HEAD'],
+  allowMethods: ['GET', 'POST', 'OPTIONS', 'HEAD'],
 });
 
 /**

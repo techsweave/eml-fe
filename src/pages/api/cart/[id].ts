@@ -1,10 +1,9 @@
 import Cors from 'micro-cors';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/client';
-import Cookies from 'cookies';
+import addQuantity from './actions/addQuantity';
 
 const cors = Cors({
-  allowMethods: ['GET', 'OPTIONS', 'HEAD'],
+  allowMethods: ['PUT', 'DELETE', 'OPTIONS', 'HEAD'],
 });
 
 /**
@@ -14,17 +13,26 @@ const cors = Cors({
  * @returns Void
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = getSession({ req });
-  const cookie = new Cookies(req, res);
-
   const { id } = req.query;
 
-  if (req.method === 'GET') {
-    res.status(200).json({ received: true });
-  } else {
-    res.setHeader('Allow', 'GET');
-    res.status(405).end('Method Not Allowed');
+  if (req.method === 'PUT') {
+    const { quantity } = req.body;
+    res.status(200).json(
+      await addQuantity(req, res, id as string, quantity),
+    );
+    return;
   }
+
+  if (req.method === 'DELETE') {
+    res.status(20).json(
+      '',
+      // TODO: await addProductToCart(req, res, productsIds, quantity),
+    );
+    return;
+  }
+
+  res.setHeader('Allow', ['PUT', 'DELETE']);
+  res.status(405).end('Method Not Allowed');
 };
 
 export default cors(handler as any);
