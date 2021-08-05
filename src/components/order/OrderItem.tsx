@@ -11,8 +11,6 @@ import {
   Th,
   Td,
   TableCaption,
-  Flex,
-  CircularProgress,
   Grid,
   GridItem,
   useToast,
@@ -88,7 +86,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
 
 
 
-  if (!isLoading) {
     return (
       <Box w='100%' border='1px' borderColor={order.status === 'IN PROGRESS' ? 'red' : 'var(--chakra-colors-gray-100)'} borderRadius='15px'>
         <Stack position='relative'>
@@ -160,16 +157,5 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
         </Stack >
       </Box >
     );
-  }
-  return (
-    <Flex justifyContent='center'>
-      <CircularProgress
-        isIndeterminate
-        color='red.300'
-        size='3em'
-      />
-    </Flex>
-
-  );
 };
 export default OrderItem;

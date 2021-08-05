@@ -10,7 +10,6 @@ import {
   Image,
   Flex,
   useToast,
-  HStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { Models, Services } from 'utilities-techsweave';
