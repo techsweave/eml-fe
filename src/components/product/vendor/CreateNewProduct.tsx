@@ -266,7 +266,7 @@ function CreateNew() {
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={['1', '5', '10', '50']}>
           <GridItem>
             <FormControl isRequired>
-              <FormLabel isRequired>Product title</FormLabel>
+              <FormLabel>Product title</FormLabel>
               <Input name="title" id="title" placeholder="Product title" value={formState.title} onChange={handleChange} />
             </FormControl>
             <FormControl isRequired>
@@ -293,7 +293,7 @@ function CreateNew() {
             </FormControl>
             <FormControl isRequired>
               <FormLabel mt="1%">Product image</FormLabel>
-              <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} />
+              <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} border='none' />
             </FormControl>
             <FormControl>
               <FormLabel mt="1%">Add some notes..</FormLabel>
