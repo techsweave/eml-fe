@@ -98,7 +98,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           await ordersService.markAsCompletedAsync(orderId, true);
         }
       } catch (err) {
-        console.warn(`Error: ${err}`);
+        console.warn(`Error: ${JSON.stringify(err)}`);
         res.status(400).send(`Webhook Error 3: ${JSON.stringify(err)} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event} \n Order: ${orderId}`);
         return;
       }
