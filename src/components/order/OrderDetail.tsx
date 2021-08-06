@@ -21,10 +21,11 @@ const initLoading = true;
 
 const OrderDetail = (prop: {
   products: Models.Tables.IOrderedProduct[],
-  order: Models.Tables.IOrder
+  order: Models.Tables.IOrder,
+  vendor: boolean,
 }) => {
   const toast = useToast();
-  const { products, order } = prop;
+  const { products, order, vendor } = prop;
   const [error, setError] = useState<Error>();
   const [state, setState] = useState(init);
   const [loading, setLoading] = useState(initLoading);
@@ -81,6 +82,9 @@ const OrderDetail = (prop: {
   });
   return (
     <Box w="90%">
+      <Center>
+        {vendor ? <Link href={{ pathname: '/usersList/detail/[id]', query: { id: order.userId } }}>{order.userId}</Link> : <Text>{order.userId}</Text>}
+      </Center>
       <Flex justifyContent='space-between' mt='5'>
         <Text fontWeight='bold'>
           {order.id}

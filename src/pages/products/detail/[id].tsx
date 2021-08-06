@@ -2,7 +2,6 @@ import { Services, Models } from 'utilities-techsweave';
 import ProductDetail from '@components/product/detail/ProductDetail';
 import Layout from '@components/Layout';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import RelatedProduct from '@components/product/detail/RelatedProduct/RelatedArticles';
 import React from 'react';
 import { ConditionExpression } from '@aws/dynamodb-expressions';
 import {
@@ -15,11 +14,11 @@ import {
 import ProductInfo from '@components/product/detail/ProductInfo';
 
 export default function productDetailPage(prop) {
-  const { product, relatedProducts, ret } = prop;
+  const { product, alternativeProduct, ret } = prop;
   return (
     <Layout title={product.title}>
       <Flex flexDirection='column' alignSelf="center">
-        <ProductDetail product={product} category={ret} />
+        <ProductDetail product={product} category={ret} alternativeProduct={alternativeProduct} />
         <Box display={['inherit', 'inherit', 'none', 'none']} alignSelf='center' mt='5'>
           <Popover>
             <PopoverTrigger>
@@ -31,7 +30,6 @@ export default function productDetailPage(prop) {
             </PopoverContent>
           </Popover>
         </Box>
-        <RelatedProduct product={relatedProducts} />
       </Flex>
     </Layout>
   );
@@ -52,7 +50,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   let product;
-  let relatedProducts: Models.Tables.IProduct[] = [];
+  let alternativeProduct: Models.Tables.IProduct[] = [];
   let ret;
   let scanResult: Models.IMultipleDataBody<Models.Tables.IProduct> = {
     data: [],
@@ -81,11 +79,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
       ],
     };
     scanResult = await caller.scanAsync(6, undefined, undefined, undefined, filter);
-    relatedProducts = relatedProducts.concat(
+    alternativeProduct = alternativeProduct.concat(
       scanResult.count ? scanResult.data : scanResult as any,
     );
     if (scanResult.data && scanResult.data.length === 0) {
-      relatedProducts = [];
+      alternativeProduct = [];
     }
   } catch (error) {
     console.log(error);
@@ -94,7 +92,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return {
     props: {
       product,
-      relatedProducts,
+      alternativeProduct,
       ret,
     }, // will be passed to the page component as props
     revalidate: 600,

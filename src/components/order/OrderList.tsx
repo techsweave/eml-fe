@@ -1,6 +1,6 @@
 import OrderItem from './OrderItem';
-import { Models } from 'utilities-techsweave';
-import React from 'react';
+import { AuthenticatedUser, Models } from 'utilities-techsweave';
+import React, { useEffect, useState } from 'react';
 import {
   Grid,
   GridItem,
@@ -17,9 +17,30 @@ import {
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import Link from 'next/link';
+import { useSession } from 'next-auth/client';
 
 const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
   const { orderList } = prop;
+  const session = useSession()[0];
+    const [userState, setState] = useState<boolean>();
+  async function isVendor(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
+  }
+  useEffect(() => {
+    const s = session;
+    if (userState !== undefined) return;
+    if (!s) return;
+    isVendor(s).then(
+      (data) => {
+        setState(data);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setState, session]);
   if (!orderList[0].id) {
     return (
       <Text fontWeight='bold' fontSize='4xl' mt='5'>No order found, please continue with <Link href='/products'><Text as='u' color='blue' cursor='pointer'>shopping</Text></Link></Text>)
@@ -36,7 +57,7 @@ const OrderList = (prop: { orderList: Models.Tables.IOrder[] }) => {
             >
               <OrderItem
                 order={orders}
-                key={orders.id}
+                vendor={userState as boolean}
               />
 
             </GridItem>

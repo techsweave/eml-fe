@@ -1,13 +1,10 @@
 import React from 'react';
-import { Box, Text, Link } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import * as AWS from 'aws-sdk';
+import Link from 'next/link';
+
 const userItem = (prop: { user: AWS.CognitoIdentityServiceProvider.UserType }) => {
   const { user } = prop;
-  const handleChange = () => {
-    const a = 2;
-    console.log(a);
-  };
-  console.log(user)
   let u: {
     username: string
     name?: string,
@@ -27,19 +24,30 @@ const userItem = (prop: { user: AWS.CognitoIdentityServiceProvider.UserType }) =
     email: user.Attributes?.find((item) => item.Name === 'email')?.Value,
     birthdate: user.Attributes?.find((item) => item.Name === 'birthdate')?.Value?.toString(),
     emailVerified: user.Attributes?.find((item) => item.Name === 'email_verified')?.Value,
-    address: user.Attributes?.find((item) => item.Name === 'address')?.Value
-  }
+    address: user.Attributes?.find((item) => item.Name === 'address')?.Value,
+  };
   return (
     <Box w='100%' border='1px' borderColor='gray.100' borderRadius="15px" p='5'>
-      <Text fontWeight='bold' fontSize='1.5em' mb='3'>{u.username}</Text>
+      <Text fontWeight='bold' fontSize='1.5em' mb='3'><Link href={{ pathname: '/usersList/detail/[id]', query: { id: u.username } }}>{u.username}</Link></Text>
 
-      <Text>{u.name} {u.familyName}</Text>
-      <Text> {u.birthdate} </Text>
-      <Text mb='3'>Address: {u.address}</Text>
+      <Text>
+        {u.name}
+        {' '}
+        {u.familyName}
+      </Text>
+      <Text>
+        {' '}
+        {u.birthdate}
+        {' '}
+      </Text>
+      <Text mb='3'>
+        Address:
+        {u.address}
+      </Text>
 
       <Text>Write an e-mail:</Text>
       <Link href={`mailto:${u.email}`}>{u.email}</Link>
     </Box>
-  )
+  );
 };
 export default userItem;

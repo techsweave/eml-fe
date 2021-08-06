@@ -17,7 +17,7 @@ const CarouselItem = (prop: { product: Models.Tables.IProduct }) => {
             %
           </Text>
           <Stack position='absolute' bottom='0' bg='rgba(44,44,44,0.7)' textColor='white' w='100%' h={['25%', '25%', '40%', '40%']} borderBottomRadius='15px' justifyContent='center'>
-            <Text fontWeight='bold' fontSize='1.5em' isTruncated>{product.title}</Text>
+            <Text fontWeight='bold' fontSize='1.5em' isTruncated ml='5' mr='5'>{product.title}</Text>
             <Stack direction='row' alignSelf='center'>
               <Text>
                 {DiscountPrice}
