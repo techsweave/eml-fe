@@ -13,8 +13,8 @@ type Props = {
 };
 
 const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
-  <Center bg='gray'>
-    <Stack spacing="2" w={['100%', '100%', '100%', '85%']} bg='white'>
+  <Center bg='gray.100'>
+    <Stack spacing="2" w={['100%', '100%', '100%', '85%']} bg='white' boxShadow={['none', 'none', 'none', 'dark-lg']}>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>{title}</title>
