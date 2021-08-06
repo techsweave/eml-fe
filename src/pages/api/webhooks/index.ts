@@ -99,7 +99,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       } catch (err) {
         console.warn(`Error: ${err}`);
-        res.status(400).send(`Webhook Error 3: ${err.message} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event} \n Order: ${orderId}`);
+        res.status(400).send(`Webhook Error 3: ${JSON.stringify(err)} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event} \n Order: ${orderId}`);
         return;
       }
     }
