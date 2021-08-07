@@ -11,8 +11,6 @@ import {
   Th,
   Td,
   TableCaption,
-  Flex,
-  CircularProgress,
   Grid,
   GridItem,
   useToast,
@@ -20,11 +18,12 @@ import {
 } from '@chakra-ui/react';
 import { VscChevronRight } from 'react-icons/vsc';
 import showError from '../../libs/showError';
+import Link from 'next/link';
 
 const init: any[] = [];
 
-const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
-  const { order } = prop;
+const OrderItem = (prop: { order: Models.Tables.IOrder, vendor: boolean }) => {
+  const { order, vendor } = prop;
     const toast = useToast();
   const [state, setState] = useState(init);
   const [isLoading, setLoading] = useState(true);
@@ -88,7 +87,6 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
 
 
 
-  if (!isLoading) {
     return (
       <Box w='100%' border='1px' borderColor={order.status === 'IN PROGRESS' ? 'red' : 'var(--chakra-colors-gray-100)'} borderRadius='15px'>
         <Stack position='relative'>
@@ -105,7 +103,8 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
                 <Th textAlign='center'>
                   Customer:
                   {' '}
-                  {order.userId}
+                  {vendor ? <Link href={{ pathname: '/usersList/detail/[id]', query: { id: order.userId } }}>{order.userId}</Link> : <Text>{order.userId}</Text>}
+                  
                 </Th>
                 <Th colSpan={1} />
                 <Th textAlign='center'>
@@ -160,16 +159,5 @@ const OrderItem = (prop: { order: Models.Tables.IOrder }) => {
         </Stack >
       </Box >
     );
-  }
-  return (
-    <Flex justifyContent='center'>
-      <CircularProgress
-        isIndeterminate
-        color='red.300'
-        size='3em'
-      />
-    </Flex>
-
-  );
 };
 export default OrderItem;

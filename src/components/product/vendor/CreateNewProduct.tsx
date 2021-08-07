@@ -265,38 +265,48 @@ function CreateNew() {
       <FormControl>
         <Grid templateColumns={['repeat(1, 1fr)', 'repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(2, 1fr)']} gap={['1', '5', '10', '50']}>
           <GridItem>
-            <FormLabel>Product title</FormLabel>
-            <Input name="title" id="title" placeholder="Product title" value={formState.title} onChange={handleChange} />
-
-            <FormLabel mt="1%">Product price</FormLabel>
-            <NumberInput>
-              <NumberInputField name="price" id="price" precision={2} min={1} value={formState.price} onChange={handleChange} />
-            </NumberInput>
-
-            <FormLabel mt="1%">Product description</FormLabel>
-            <Textarea name="description" id="description" placeholder="Product description" value={formState.description} onChange={handleChange} />
-
-            <FormLabel mt="1%">Product discount</FormLabel>
-            <NumberInput min={0} max={100} precision={0}>
-              <NumberInputField name="discount" id="discount" value={formState.discount} onChange={handleChange} />
-            </NumberInput>
-
-            <FormLabel mt="1%" value={formState.availabilityQta}>Product availability  </FormLabel>
-            <NumberInput>
-              <NumberInputField id="availabilityQta" name="availabilityQta" min={0} value={formState.availabilityQta} onChange={handleChange} />
-            </NumberInput>
-
-            <FormLabel mt="1%">Product image</FormLabel>
-            <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} />
-
-            <FormLabel mt="1%">Add some notes..</FormLabel>
-            <Textarea name="notes" id="notes" placeholder="Product notes" value={formState.notes} onChange={handleChange} />
+            <FormControl isRequired>
+              <FormLabel>Product title</FormLabel>
+              <Input name="title" id="title" placeholder="Product title" value={formState.title} onChange={handleChange} />
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel mt="1%">Product price</FormLabel>
+              <NumberInput>
+                <NumberInputField name="price" id="price" precision={2} min={1} value={formState.price} onChange={handleChange} />
+              </NumberInput>
+            </FormControl>
+            <FormControl>
+              <FormLabel mt="1%">Product description</FormLabel>
+              <Textarea name="description" id="description" placeholder="Product description" value={formState.description} onChange={handleChange} />
+            </FormControl>
+            <FormControl>
+              <FormLabel mt="1%">Product discount</FormLabel>
+              <NumberInput min={0} max={100} precision={0}>
+                <NumberInputField name="discount" id="discount" value={formState.discount} onChange={handleChange} />
+              </NumberInput>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel mt="1%" value={formState.availabilityQta}>Product availability  </FormLabel>
+              <NumberInput>
+                <NumberInputField id="availabilityQta" name="availabilityQta" min={0} value={formState.availabilityQta} onChange={handleChange} />
+              </NumberInput>
+            </FormControl>
+            <FormControl isRequired>
+              <FormLabel mt="1%">Product image</FormLabel>
+              <Input type="file" accept="image/*" margin-top="1%" name="imageURL" onChange={handleChange} border='none' />
+            </FormControl>
+            <FormControl>
+              <FormLabel mt="1%">Add some notes..</FormLabel>
+              <Textarea name="notes" id="notes" placeholder="Product notes" value={formState.notes} onChange={handleChange} />
+            </FormControl>
           </GridItem>
           <GridItem>
-            <FormLabel mt="1%">Product category</FormLabel>
-            <Select id="categorieId" name="categorieId" placeholder="Select a category" value={formState.categorieId} onChange={handleChange}>
-              {state?.map((item) => (<option key={item.id}>{item.name}</option>))}
-            </Select>
+            <FormControl isRequired>
+              <FormLabel mt="1%">Product category</FormLabel>
+              <Select id="categorieId" name="categorieId" placeholder="Select a category" value={formState.categorieId} onChange={handleChange}>
+                {state?.map((item) => (<option key={item.id}>{item.name}</option>))}
+              </Select>
+            </FormControl>
 
             <Box hidden={!category}>
               <FormLabel mt="1%">Product specs</FormLabel>

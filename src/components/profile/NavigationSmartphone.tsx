@@ -80,7 +80,7 @@ const NavigationSmartphone = () => {
         alignItems="center"
         justifyContent="space-between"
       >
-         <Avatar name={state.username} color='inherit' bg="gray.100" size="lg" borderWidth={1} borderColor="gray.400" />
+         <Avatar />
         <Heading size="sm" textAlign='center' mt={2}>Hi, {state.username}</Heading>
       </Flex>
     </VStack>

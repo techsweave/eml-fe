@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderDetail from '@components/order/OrderDetail';
 import Layout from '@components/Layout';
-import { Services } from 'utilities-techsweave';
-import { getSession } from 'next-auth/client';
+import { AuthenticatedUser, Services } from 'utilities-techsweave';
+import { getSession, useSession } from 'next-auth/client';
 
 import { GetServerSideProps } from 'next';
 import { VStack } from '@chakra-ui/react';
@@ -10,10 +10,30 @@ import showError from '@libs/showError';
 
 export default function OrderDetailPage(prop) {
   const { order } = prop;
+  const session = useSession()[0];
+  const [userState, setState] = useState<boolean>();
+  async function isVendor(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
+  }
+  useEffect(() => {
+    const s = session;
+    if (userState !== undefined) return;
+    if (!s) return;
+    isVendor(s).then(
+      (data) => {
+        setState(data);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setState, session]);
   return (
     <Layout title={order.id}>
       <VStack justifyContent='center'>
-        <OrderDetail products={order.products} order={order} />
+        <OrderDetail products={order.products} order={order} vendor={userState as boolean} />
       </VStack>
     </Layout>
   );
