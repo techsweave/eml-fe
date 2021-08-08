@@ -55,7 +55,7 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
         render: () => (
           <Box color='white' p={3} bg='green.500' borderRadius='15px'>
             <Text textAlign='center'>Product added successfully</Text>
-            <Text textAlign='center'>Click buttons to contiinue</Text>
+            <Text textAlign='center'>Click buttons to continue</Text>
             <Stack mt='2'>
               <Button color='black' as='a' href='/cart'>Go to cart</Button>
               <Button color='black' as='a' href='/products'>Continue with shopping</Button>
