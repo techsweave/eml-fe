@@ -1,7 +1,7 @@
 import { Models, Services } from 'utilities-techsweave';
 import React from 'react';
 import {
-  Flex, Text, Heading, Button, useToast,
+  Flex, Text, Heading, Button, useToast, Stack,
 } from '@chakra-ui/react';
 import { FaShoppingBag } from 'react-icons/fa';
 import { loadStripe } from '@stripe/stripe-js'
@@ -21,7 +21,6 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   let totalNoDiscount = 0;
   let total = 0;
   let totalTaxes = 0;
-  let totalTaxesD = 0;
 
 
   const session = useSession()[0];
@@ -149,7 +148,7 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
         >
           Checkout
         </Text>
-      </Button> : undefined}
+      </Button> : <Stack><Text>You're not signed-in.</Text><Text>Please sign-in to proced with checkout</Text></Stack>}
     </Flex>
   );
 };

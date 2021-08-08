@@ -15,20 +15,22 @@ type Props = {
 const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
 
   <Stack spacing="2">
-    <Head>
-      <link rel="icon" href="/favicon.ico" />
-      <title>{title}</title>
-    </Head>
-    <Header search={search} />
-    <Divider mb='10' />
-    <Flex
-      as="main"
-      justifyContent='center'
-      justifySelf='stretch'
-      mb='10vh'
-    >
-      {children}
-    </Flex>
+    <Stack minH='calc(100vh - 200px)'>
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+        <title>{title}</title>
+      </Head>
+      <Header search={search} />
+      <Divider mb='10' />
+      <Flex
+        as="main"
+        justifyContent='center'
+        justifySelf='stretch'
+        mb='10vh'
+      >
+        {children}
+      </Flex>
+    </Stack>
     <Footer />
   </Stack>
 );
