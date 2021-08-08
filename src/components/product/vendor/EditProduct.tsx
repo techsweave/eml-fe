@@ -47,10 +47,6 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
 
   const handleChange = (e) => {
-    console.log('formState');
-    console.log(formState);
-    console.log('product');
-    console.log(product);
 
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
