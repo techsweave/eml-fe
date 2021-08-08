@@ -17,7 +17,7 @@ export default function productDetailPage(prop) {
   const { product, alternativeProduct, ret } = prop;
   return (
     <Layout title={product.title}>
-      <Flex flexDirection='column' alignSelf="center">
+      <Flex flexDirection='column' alignSelf="center" w='100%'>
         <ProductDetail product={product} category={ret} alternativeProduct={alternativeProduct} />
         <Box display={['inherit', 'inherit', 'none', 'none']} alignSelf='center' mt='5'>
           <Popover>

@@ -9,7 +9,7 @@ import { FaClipboardCheck, FaCheckCircle } from 'react-icons/fa';
 export default function Success() {
   const [session] = useSession();
   return (
-    <Layout title="Cart page">
+    <Layout title="Succesful checkout">
       <Flex
         direction='column'
         maxWidth='400px'
