@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import Head from 'next/head';
 import {
-  Stack, Flex, Divider, Center,
+  Stack, Flex, Divider,
 } from '@chakra-ui/react';
 import Header from '@components/header/Header';
 import Footer from '@components/footer/Footer';
@@ -13,8 +13,9 @@ type Props = {
 };
 
 const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
-  <Center bg='gray.100'>
-    <Stack spacing="2" w={['100%', '100%', '100%', '85%']} bg='white' boxShadow={['none', 'none', 'none', 'dark-lg']}>
+
+  <Stack spacing="2">
+    <Stack minH='calc(100vh - 200px)'>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>{title}</title>
@@ -29,9 +30,9 @@ const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
       >
         {children}
       </Flex>
-      <Footer />
     </Stack>
-  </Center>
+    <Footer />
+  </Stack>
 );
 
 Layout.defaultProps = {
