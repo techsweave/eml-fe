@@ -31,11 +31,12 @@ import {
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
 import { Services, Models, Image } from 'utilities-techsweave';
+import Link from 'next/link';
 
 function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const { product } = prop;
-
-  const [formState, setFormState] = useState(product);
+  const p = product;
+  const [formState, setFormState] = useState(p);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const onCloseDelete = () => setIsOpenDelete(false);
@@ -44,7 +45,13 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
   const toast = useToast();
   const s3 = new AWS.S3();
 
+
   const handleChange = (e) => {
+    console.log('formState');
+    console.log(formState);
+    console.log('product');
+    console.log(product);
+
     if (e.target.name === 'availabilityQta' || e.target.name === 'price') {
       formState[e.target.name] = +e.target.value;
     } else if (e.target.name === 'discount') {
@@ -97,8 +104,9 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
       if (formState.imageURL !== product.imageURL) {
         const image = await Image.createImageFromPath(
           (formState.imageURL as any).name,
-          product.id,
+          formState.id,
         );
+        console.log(image);
         if (product.imageURL) {
           await s3.deleteBucket(
             { Bucket: product.imageURL as string },
@@ -113,8 +121,8 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
       updatedProduct = await productService.updateAsync(formState);
     } catch (error) {
       toast({
-        title: error.error.name,
-        description: error.error.message,
+        title: error.name,
+        description: error.message,
         status: 'error',
         duration: 10000,
         isClosable: true,
@@ -208,6 +216,12 @@ function EditProduct(prop: { product: Models.Tables.IProduct }) {
 
             <FormLabel mt="1%">Add some notes..</FormLabel>
             <Textarea name="notes" id="notes" placeholder="Product notes" value={formState.notes} onChange={handleChange} />
+            <Center>
+              <Link href={{ pathname: '/products/detail/[id]', query: { id: product.id } }}>
+                <Button mt='16' colorScheme='green' size='lg'>VIEW PRODUCT</Button>
+              </Link>
+            </Center>
+
           </GridItem>
           <GridItem>
             {

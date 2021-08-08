@@ -17,7 +17,7 @@ import ProductInfo from './ProductInfo';
 const ProductDetail = (prop: {
   product: Models.Tables.IProduct,
   category: Models.Tables.ICategory,
-  alternativeProduct:Models.Tables.IProduct[]
+  alternativeProduct: Models.Tables.IProduct[]
 }) => {
   const { product, category, alternativeProduct } = prop;
   const session = useSession()[0];
@@ -113,10 +113,6 @@ const ProductDetail = (prop: {
                 product={product}
                 quantity={quantityState}
               />
-              {/* TODO */}
-              <Link href={{ pathname: '/editProduct/[id]', query: { id: product.id } }}>
-                <Button hidden={!userState ? true : undefined}>Edit product</Button>
-              </Link>
             </VStack>
           </Flex>
         </GridItem>
