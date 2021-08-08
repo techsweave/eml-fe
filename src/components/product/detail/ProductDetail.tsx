@@ -49,7 +49,7 @@ const ProductDetail = (prop: {
   const discountedPrice = (product.price * ((100 - product.discount!) / 100));
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
-      <Grid row='2' column='1'>
+      <Grid row='2' column='1' w='100%'>
         <Button as="a" href={userState ? '/products/vendor' : '/products'} mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">
