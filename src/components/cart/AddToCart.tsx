@@ -1,6 +1,5 @@
-import { AuthenticatedUser, Models } from 'utilities-techsweave';
-import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/client';
+import { Models } from 'utilities-techsweave';
+import React from 'react';
 import {
   useToast, Box, Button, Text, Stack,
 } from '@chakra-ui/react';
@@ -9,9 +8,7 @@ import axios from 'axios';
 const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) => {
   const toast = useToast();
   const { product, quantity } = prop;
-  const session = useSession()[0];
   const qty = quantity >= product.availabilityQta! ? product.availabilityQta! : quantity;
-  const [userState, setState] = useState<boolean>();
 
   const handleClick = async () => {
     let result;
@@ -35,8 +32,6 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
           throw err;
         }
       }
-      console.log('axiosResponse');
-      console.log(axiosResponse);
       result = axiosResponse.data;
     } catch (error) {
       toast({
@@ -66,32 +61,8 @@ const addCart = (prop: { product: Models.Tables.IProduct, quantity: number }) =>
       });
     }
   };
-  async function isVendor(s) {
-    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
-    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
-  }
-  useEffect(() => {
-    const s = session;
-    if (userState !== undefined) return;
-    if (!s) {
-      setState(false);
-      return;
-    }
-
-    isVendor(s).then(
-      (data) => {
-        setState(data);
-      },
-    ).catch(
-      (err) => {
-        console.log(err);
-        // showError(err);
-      },
-    );
-  }, [userState, setState, session]);
   return (
     <Button
-      hidden={userState}
       onClick={handleClick}
     >
       Add to Cart

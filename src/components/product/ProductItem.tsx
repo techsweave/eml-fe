@@ -8,10 +8,8 @@ import {
 import { useSession } from 'next-auth/client';
 
 const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
-
   const session = useSession()[0];
   const [userState, setState] = useState<boolean>();
-
 
   async function isVendor(s) {
     const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
@@ -31,8 +29,6 @@ const ProductItem = (prop: { product: Models.Tables.IProduct }) => {
       },
     );
   }, [userState, setState, session]);
-
-
 
   const { product } = prop;
   const discountedPrice = (product.price * ((100 - product.discount!) / 100));
