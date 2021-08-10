@@ -50,7 +50,9 @@ const ProductDetail = (prop: {
   return (
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Grid row='2' column='1' w='100%'>
-        <Button as="a" href={userState ? '/products/vendor' : '/products'} mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
+        <Link href={userState ? { pathname: '/editProduct/[id]', query: { id: product.id } } : '/products'}>
+          <Button mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
+        </Link>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">
             <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='scale-down' />
@@ -109,10 +111,7 @@ const ProductDetail = (prop: {
                 {' '}
                 {product.availabilityQta}
               </Text>
-              <AddToCart
-                product={product}
-                quantity={quantityState}
-              />
+              {userState ? undefined : <AddToCart product={product} quantity={quantityState} />}
             </VStack>
           </Flex>
         </GridItem>
@@ -123,7 +122,7 @@ const ProductDetail = (prop: {
           </Stack>
         </GridItem>
         <GridItem>
-          <RelatedProduct product={alternativeProduct} />
+          {userState ? undefined : <RelatedProduct product={alternativeProduct} />}
         </GridItem>
       </Grid>
     </Flex>

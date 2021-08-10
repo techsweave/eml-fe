@@ -15,7 +15,7 @@ type Props = {
 const Layout = ({ children, title = 'EmporioLambda', search }: Props) => (
 
   <Stack spacing="2">
-    <Stack minH='calc(100vh - 200px)'>
+    <Stack minH='calc(100vh - 115px)'>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <title>{title}</title>
