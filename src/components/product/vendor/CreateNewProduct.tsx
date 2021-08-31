@@ -27,7 +27,9 @@ import {
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
-import { Services, Models, Image } from 'utilities-techsweave';
+import {
+  Services, Models, Image, AuthenticatedUser,
+} from 'utilities-techsweave';
 
 interface Item {
   label: string;
@@ -259,7 +261,31 @@ function CreateNew() {
     onClose();
     await submitForm(true);
   };
+  const [userState, setUserState] = useState<boolean>();
 
+  async function isVendor(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
+  }
+  useEffect(() => {
+    const s = session;
+    if (userState !== undefined) return;
+    if (!s) return;
+    isVendor(s).then(
+      (data) => {
+        setUserState(data);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setUserState, session]);
+  if (!userState) {
+    return (
+      <h1> 403 - Forbidden, access to the page denied </h1>
+    );
+  }
   return (
     <form>
       <FormControl>

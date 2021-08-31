@@ -15,7 +15,7 @@ export default function productPage(prop) {
   if (!isVendor) {
     return (
       <Layout title='Vendor Products List Page'>
-        <h1> 404 </h1>
+        <h1> 403 - Forbidden, access to the page denied </h1>
       </Layout>
     );
   }
