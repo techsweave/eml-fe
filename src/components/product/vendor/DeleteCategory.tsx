@@ -1,5 +1,7 @@
 import { useSession } from 'next-auth/client';
-import React, { ReactElement, useState, useRef } from 'react';
+import React, {
+  ReactElement, useState, useRef, useEffect,
+} from 'react';
 import {
   Button,
   FormControl,
@@ -21,11 +23,11 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
-import { Services, Models } from 'utilities-techsweave';
+import { Services, Models, AuthenticatedUser } from 'utilities-techsweave';
 
 const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => {
   const { categoriesList } = prop;
@@ -44,12 +46,12 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
   const cancelRef = useRef();
 
   const handleClick = (e) => {
-    setCategoryId(e.target.id)
+    setCategoryId(e.target.id);
     setIsOpenDelete(true);
   };
 
   const deleteCategory = async () => {
-    console.log(categoryId)
+    console.log(categoryId);
     const productService = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
       process.env.NEXT_PUBLIC_API_REGION as string,
@@ -64,23 +66,23 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
       process.env.NEXT_PUBLIC_API_STAGE as string,
       session?.accessToken as string,
       session?.idToken as string,
-    )
+    );
 
     try {
       await categoryService.deleteAsync(categoryId);
       onCloseDelete();
     } catch (error) {
       onCloseDelete();
-      if (error.name == 'CategoryDeleteNotAllowed')
+      if (error.name == 'CategoryDeleteNotAllowed') {
         toast({
           title: 'CategoryDeleteNotAllowed',
-          description: `This category is related to some products`,
+          description: 'This category is related to some products',
           status: 'error',
           duration: 10000,
           isClosable: true,
           position: 'top-right',
         });
-      else
+      } else {
         toast({
           title: error.name,
           description: error.message,
@@ -89,6 +91,7 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
           isClosable: true,
           position: 'top-right',
         });
+      }
       return;
     }
     toast({
@@ -106,7 +109,31 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
       ),
     });
   };
+  const [userState, setState] = useState<boolean>();
 
+  async function isVendor(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
+  }
+  useEffect(() => {
+    const s = session;
+    if (userState !== undefined) return;
+    if (!s) return;
+    isVendor(s).then(
+      (data) => {
+        setState(data);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setState, session]);
+  if (!userState) {
+    return (
+      <h1> 403 - Forbidden, access to the page denied </h1>
+    );
+  }
   return (
     <form>
       <FormControl>
@@ -119,7 +146,11 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
                     <Text fontWeight='bold' fontSize='1.5em'>{item.name}</Text>
                     {
                       item.customSpecTemplates?.map((element) => (
-                        <Text key={element.fieldName} textAlign='left'>{element.fieldName} {element.unitMisure ? `(${element.unitMisure})` : ''}</Text>
+                        <Text key={element.fieldName} textAlign='left'>
+                          {element.fieldName}
+                          {' '}
+                          {element.unitMisure ? `(${element.unitMisure})` : ''}
+                        </Text>
                       ))
                     }
                     <Button id={item.id} mt='16' onClick={handleClick} colorScheme='red'>DELETE CATEGORY</Button>
@@ -156,8 +187,8 @@ const CreateNew = (prop: { categoriesList: Array<Models.Tables.ICategory> }) => 
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
-    </form >
+    </form>
   );
-}
+};
 
 export default CreateNew;

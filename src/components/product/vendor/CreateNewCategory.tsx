@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/client';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Button,
   FormControl,
@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { PlusSquareIcon } from '@chakra-ui/icons';
 import * as AWS from 'aws-sdk';
-import { Services, Models } from 'utilities-techsweave';
+import { Services, Models, AuthenticatedUser } from 'utilities-techsweave';
 
 function CreateNew() {
   AWS.config.update({
@@ -125,6 +125,31 @@ function CreateNew() {
       ));
     }
   };
+  const [userState, setState] = useState<boolean>();
+
+  async function isVendor(s) {
+    const user = await AuthenticatedUser.fromToken(s?.accessToken as string);
+    return user.isVendor(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!);
+  }
+  useEffect(() => {
+    const s = session;
+    if (userState !== undefined) return;
+    if (!s) return;
+    isVendor(s).then(
+      (data) => {
+        setState(data);
+      },
+    ).catch(
+      (err) => {
+        console.log(err.message);
+      },
+    );
+  }, [userState, setState, session]);
+  if (!userState) {
+    return (
+      <h1> 403 - Forbidden, access to the page denied </h1>
+    );
+  }
   return (
     <form>
       <FormControl>
