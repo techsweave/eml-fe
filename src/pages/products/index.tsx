@@ -24,6 +24,7 @@ export default function productPage(prop) {
   const { products } = prop;
   const session = useSession()[0];
   const [state, setState] = useState<Models.Tables.IProduct[]>(products);
+  const [categories, setCategories] = useState<Array<Models.Tables.ICategory>>()
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const router = useRouter();
@@ -110,26 +111,53 @@ export default function productPage(prop) {
     return fetchedProducts;
   }
 
+
+  async function scanCategories() {
+    const productService = new Services.Products(
+      process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
+      process.env.NEXT_PUBLIC_API_REGION as string,
+      process.env.NEXT_PUBLIC_API_STAGE as string,
+    );
+    const caller = new Services.Categories(
+      productService,
+      process.env.NEXT_PUBLIC_API_ID_CATEGORIES as string,
+      process.env.NEXT_PUBLIC_API_REGION as string,
+      process.env.NEXT_PUBLIC_API_STAGE as string,
+    );
+    return caller.scanAsync(1000);
+  }
+
   useEffect(() => {
     const s = session;
     if (s === undefined) return;
+    if (state && categories) {
+      setLoading(false);
+    }
     if (!isLoading) return;
     scanProducts(s).then(
       (data) => {
         setState(data);
-        setLoading(false);
       },
     ).catch(
       (err) => {
         console.log(err);
       },
     );
-  }, [state, setState, isLoading, setLoading, session]);
+    scanCategories().then(
+      (data) => {
+        setCategories(data.data)
+      },
+    ).catch(
+      (err) => {
+        console.log(err);
+      },
+    );
+  }, [state, setState, categories, setCategories, isLoading, setLoading, session]);
   if (!isLoading) {
     return (
       <Layout title="Product-page" search={router.query.search?.toString()}>
         <Stack w='95%'>
-          <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} categoryProp={router.query.categoryId ? router.query.categoryId as string : ''} />
+          <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} categoryIdProp={router.query.categoryId ? router.query.categoryId as string : ''} categoryNameProp={categories?.find((item) => item.id == router.query.categoryId)?.name as string} />
           <ProductList productList={state} vendor={false} />
         </Stack>
       </Layout>

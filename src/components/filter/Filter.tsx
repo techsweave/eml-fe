@@ -9,7 +9,7 @@ import {
 import { VscChevronDown } from 'react-icons/vsc';
 import { Models, Services } from 'utilities-techsweave';
 
-const Filter = (prop: { minProp: string, maxProp: string, categoryProp: string }) => {
+const Filter = (prop: { minProp: string, maxProp: string, categoryIdProp: string, categoryNameProp: string }) => {
   let minProp: number = prop.minProp ? +prop.minProp / 5 : 0;
   let maxProp: number = prop.maxProp ? +prop.maxProp / 10 : 100;
   const [min, setMin] = React.useState<string>(minProp.toString());
@@ -17,8 +17,8 @@ const Filter = (prop: { minProp: string, maxProp: string, categoryProp: string }
   const minValue: number | undefined = +min ? +min * 5 : 0;
   const maxValue: number | undefined = +max ? +max * 10 : 1000;
 
-  const [categoryName, setCategoryName] = React.useState<string>("");
-  const [categoryId, setCategoryId] = React.useState<string>(prop.categoryProp ?? "");
+  const [categoryName, setCategoryName] = React.useState<string>(prop.categoryNameProp ?? "");
+  const [categoryId, setCategoryId] = React.useState<string>(prop.categoryIdProp ?? "");
 
   const [categories, setCategories] = React.useState<Array<Models.Tables.ICategory>>();
 
