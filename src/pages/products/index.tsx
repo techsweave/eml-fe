@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import {
   ConditionExpression,
 } from '@aws/dynamodb-expressions';
-import { CircularProgress, useToast } from '@chakra-ui/react';
+import { CircularProgress } from '@chakra-ui/react';
 import { useSession } from 'next-auth/client';
 import { GetStaticProps } from 'next';
 import * as AWS from 'aws-sdk';
@@ -22,7 +22,6 @@ export default function productPage(prop) {
     },
   });
   const { products } = prop;
-  const toast = useToast();
   const session = useSession()[0];
   const [state, setState] = useState<Models.Tables.IProduct[]>(products);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -31,8 +30,22 @@ export default function productPage(prop) {
   let minPrice: number;
   let maxPrice: number;
   let search = '';
-  let minFilter: ConditionExpression;
-  let maxFilter: ConditionExpression;
+  let categoryId = '';
+  let minFilter: ConditionExpression = {
+    type: 'GreaterThanOrEqualTo',
+    subject: 'price',
+    object: 0,
+  };
+  let maxFilter: ConditionExpression = {
+    type: 'GreaterThanOrEqualTo',
+    subject: 'price',
+    object: 0,
+  };
+  let categoryFilter: ConditionExpression = {
+    type: 'GreaterThanOrEqualTo',
+    subject: 'price',
+    object: 0,
+  };
   let searchFilter: Models.CustomConditionExpression;
 
   async function scanProducts(s) {
@@ -60,6 +73,14 @@ export default function productPage(prop) {
         object: search,
       };
     }
+    if (router.query.categoryId) {
+      categoryId = router.query.categoryId.toString();
+      categoryFilter = {
+        type: 'Equals',
+        subject: 'categorieId',
+        object: categoryId,
+      };
+    }
     const caller = new Services.Products(
       process.env.NEXT_PUBLIC_API_ID_PRODUCTS as string,
       process.env.NEXT_PUBLIC_API_REGION as string,
@@ -68,25 +89,18 @@ export default function productPage(prop) {
       s?.idToken as string,
     );
 
-    let filter: Models.CustomConditionExpression | undefined;
-    if (search !== '') {
-      filter = searchFilter;
-    } else if (minFilter && maxFilter) {
-      filter = {
-        type: 'And',
-        conditions: [
-          minFilter,
-          maxFilter,
-        ],
-      };
-    } else if (minFilter && !maxFilter) {
-      filter = minFilter;
-    } else if (!minFilter && maxFilter) {
-      filter = maxFilter;
-    }
+    const filter: Models.CustomConditionExpression | undefined = {
+      type: 'And',
+      conditions: [
+        minFilter,
+        maxFilter,
+        categoryFilter,
+      ],
+    };
+
     let fetchedProducts: Array<Models.Tables.IProduct> = [];
     const scanResult = await caller.scanAsync(25, undefined, undefined,
-      undefined, minFilter || maxFilter || searchFilter ? filter! : undefined);
+      undefined, minFilter || maxFilter || searchFilter || categoryFilter ? filter! : undefined);
     fetchedProducts = fetchedProducts.concat(
       scanResult.count ? scanResult.data : scanResult as any,
     );
@@ -107,14 +121,7 @@ export default function productPage(prop) {
       },
     ).catch(
       (err) => {
-        toast({
-          title: err.error.name,
-          description: err.error.message,
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-          position: 'top-right',
-        });
+        console.log(err);
       },
     );
   }, [state, setState, isLoading, setLoading, session]);
@@ -122,7 +129,7 @@ export default function productPage(prop) {
     return (
       <Layout title="Product-page" search={router.query.search?.toString()}>
         <Stack w='95%'>
-          <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} />
+          <Filter minProp={router.query.filterMin ? router.query.filterMin as string : ''} maxProp={router.query.filterMax ? router.query.filterMax as string : ''} categoryProp={router.query.categoryId ? router.query.categoryId as string : ''} />
           <ProductList productList={state} vendor={false} />
         </Stack>
       </Layout>
