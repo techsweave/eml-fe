@@ -33,7 +33,7 @@ const CartItem = (prop: {
           boxSize='90%'
           objectFit='scale-down'
           src={cartItem.imageURL}
-          fallbackSrc="/images/fallback.png"
+          fallbackSrc="/images/fallback.jpg"
           borderRadius='10px'
         />
       </Flex>

@@ -24,7 +24,7 @@ const init: any[] = [];
 
 const OrderItem = (prop: { order: Models.Tables.IOrder, vendor: boolean }) => {
   const { order, vendor } = prop;
-    const toast = useToast();
+  const toast = useToast();
   const [state, setState] = useState(init);
   const [isLoading, setLoading] = useState(true);
 
@@ -74,90 +74,90 @@ const OrderItem = (prop: { order: Models.Tables.IOrder, vendor: boolean }) => {
     ).catch(
       (err) => {
         toast({
-    title: err.error.name,
-    description: err.error.message,
-    status: 'error',
-    duration: 10000,
-    isClosable: true,
-    position: 'top-right',
-  });
+          title: err.error.name,
+          description: err.error.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+          position: 'top-right',
+        });
       },
     );
   }, [state, setState, isLoading, setLoading]);
 
 
 
-    return (
-      <Box w='100%' border='1px' borderColor={order.status === 'IN PROGRESS' ? 'red' : 'var(--chakra-colors-gray-100)'} borderRadius='15px'>
-        <Stack position='relative'>
-          <Table variant='striped' alignContent='center'>
-              <TableCaption fontSize='2xl'>
-                Total:
+  return (
+    <Box w='100%' border='1px' borderColor={order.status === 'IN PROGRESS' ? 'red' : 'var(--chakra-colors-gray-100)'} borderRadius='15px'>
+      <Stack position='relative'>
+        <Table variant='striped' alignContent='center'>
+          <TableCaption fontSize='2xl'>
+            Total:
+            {' '}
+            {total}
+            {' '}
+            €
+          </TableCaption>
+          <Thead>
+            <Tr>
+              <Th textAlign='center'>
+                Customer:
                 {' '}
-                {total}
-                {' '}
-                €
-              </TableCaption>
-            <Thead>
-              <Tr>
-                <Th textAlign='center'>
-                  Customer:
-                  {' '}
-                  {vendor ? <Link href={{ pathname: '/usersList/detail/[id]', query: { id: order.userId } }}>{order.userId}</Link> : <Text>{order.userId}</Text>}
-                  
-                </Th>
-                <Th colSpan={1} />
-                <Th textAlign='center'>
-                  Order:
-                  {' '}
-                  {order.id}
-                </Th>
-                <Th>State: <Text color={order.status === 'IN PROGRESS' ? 'red' : 'inherit'}>{order.status}</Text></Th>
+                {vendor ? <Link href={{ pathname: '/usersList/detail/[id]', query: { id: order.userId } }}>{order.userId}</Link> : <Text>{order.userId}</Text>}
 
-              </Tr>
-            </Thead>
-              <Tbody>
-                <Tr>
-                  <Td textAlign='center' colSpan={4} textStyle='bold'>
-                    Date:
-                    {' '}
-                    {JSON.stringify(order.date).split('T')[0].split('"')[1]}
-                    {' '}
-                    Time:
-                    {' '}
-                    {JSON.stringify(order.date).split('T')[1].split('.')[0]}
-                  </Td>
-                </Tr>
-                {state.map((item) => (
-                  <Tr key={item.title}>
-                    <Td><Image fallbackSrc="/images/fallback.png" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
-                    <Td>{item.title}</Td>
-                    <Td>
-                      <Grid>
-                        <GridItem>
-                          Price:
-                          {' '}
-                          {item.price.toFixed(2)}
-                          €
-                        </GridItem>
-                        <GridItem>
-                          Quantity:
-                          {' '}
-                          {item.quantity}
-                        </GridItem>
-                      </Grid>
-                    </Td>
-                    <Td textAlign='center'>
-                      Subtotal:
+              </Th>
+              <Th colSpan={1} />
+              <Th textAlign='center'>
+                Order:
+                {' '}
+                {order.id}
+              </Th>
+              <Th>State: <Text color={order.status === 'IN PROGRESS' ? 'red' : 'inherit'}>{order.status}</Text></Th>
+
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr>
+              <Td textAlign='center' colSpan={4} textStyle='bold'>
+                Date:
+                {' '}
+                {JSON.stringify(order.date).split('T')[0].split('"')[1]}
+                {' '}
+                Time:
+                {' '}
+                {JSON.stringify(order.date).split('T')[1].split('.')[0]}
+              </Td>
+            </Tr>
+            {state.map((item) => (
+              <Tr key={item.title}>
+                <Td><Image fallbackSrc="/images/fallback.jpg" src={item.imageURL} alt={item.title} maxWidth='250px' /></Td>
+                <Td>{item.title}</Td>
+                <Td>
+                  <Grid>
+                    <GridItem>
+                      Price:
                       {' '}
-                      {(item.price * item.quantity.toFixed(2))}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-          </Table>
-        </Stack >
-      </Box >
-    );
+                      {item.price.toFixed(2)}
+                      €
+                    </GridItem>
+                    <GridItem>
+                      Quantity:
+                      {' '}
+                      {item.quantity}
+                    </GridItem>
+                  </Grid>
+                </Td>
+                <Td textAlign='center'>
+                  Subtotal:
+                  {' '}
+                  {(item.price * item.quantity.toFixed(2))}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </Stack >
+    </Box >
+  );
 };
 export default OrderItem;

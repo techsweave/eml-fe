@@ -71,11 +71,10 @@ const CartSummary = (props: { cart: Array<ICartItemDetail> }) => {
   });
   cart.forEach((x) => {
     let price = x.price ? x.price : 0;
-    totalTaxes += (price * (x.taxes! / 100)) * x.quantity;
     if (x?.discount) {
       price -= ((price / 100) * x.discount!);
-      totalTaxes += (price * (x.taxes! / 100)) * x.quantity;
     }
+    totalTaxes += (price * (x.taxes! / 100)) * x.quantity;
   });
 
   return (
