@@ -116,7 +116,7 @@ const OrderDetail = (prop: {
                 <div>
                   <Text fontWeight='bold' textAlign='center' mb='5'>{productData.title}</Text>
                   <Flex justifyContent='space-evenly' alignItems='center'>
-                    <Image src={productData.imageURL} fallbackSrc="/images/fallback.png" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="scale-down" />
+                    <Image src={productData.imageURL} fallbackSrc="/images/fallback.jpg" alt={productData.title} w='200px' h='200px' borderRadius="15px" fit="scale-down" />
                     <Stack>
                       <Text>
                         Price:

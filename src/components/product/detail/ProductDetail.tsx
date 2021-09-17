@@ -55,7 +55,7 @@ const ProductDetail = (prop: {
         </Link>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">
-            <Image src={product.imageURL} fallbackSrc='/images/fallback.png' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='scale-down' />
+            <Image src={product.imageURL} fallbackSrc='/images/fallback.jpg' alt={product.title} w="500px" h="300px" borderRadius="15px" objectFit='scale-down' />
             <VStack flexBasis="50%" alignSelf="center" ml={['2', '2', '12', '12']} mr={['2', '2', '5', '5']} mb={['7', '7', '0', '0']}>
               <Heading as="h2" mb='3' mt='5'>
                 {product.title}
