@@ -51,7 +51,7 @@ const ProductDetail = (prop: {
     <Flex w="95%" direction={['column', 'column', 'row', 'row']} alignSelf="center">
       <Grid row='2' column='1' w='100%'>
         <Link href={userState ? { pathname: '/editProduct/[id]', query: { id: product.id } } : '/products'}>
-          <Button mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>back</Button>
+          <Button mb='5' w='100px' mt='2' leftIcon={<ArrowBackIcon />} bg='gray.100'>BACK</Button>
         </Link>
         <GridItem>
           <Flex direction={['column', 'column', 'row', 'row']} alignSelf="center">

@@ -224,7 +224,7 @@ function CreateNew() {
           <Text textAlign='center'>Creation successfully done</Text>
           <Text textAlign='center'>Click button to continue</Text>
           <Center>
-            <Button color='black' as='a' href="/products">Close</Button>
+            <Button color='black' as='a' href="/products/vendor">Close</Button>
           </Center>
         </Box>
       ),
