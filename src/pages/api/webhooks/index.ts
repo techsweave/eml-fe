@@ -69,6 +69,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           .concat(session.metadata!.idToken_3),
       );
 
+      if (!ordersService) {
+        res.status(400).send('orderService is undefined or null');
+      }
+
       const filter: ConditionExpression = {
         type: 'Equals',
         subject: 'status',
@@ -76,6 +80,8 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       let orderId = '';
+      let countFix = 'Non Esiste!';
+      let resultFixWebhook;
 
       try {
         const result = await ordersService.scanAsync(
@@ -85,9 +91,13 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
           undefined,
           filter,
         ) as unknown;
+        if (result) {
+          countFix = 'Esiste!';
+        }
+        resultFixWebhook = result;
         orderId = (result as IOrder).id;
       } catch (err) {
-        res.status(400).send(`Webhook Error 2: ${err.message} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event}`);
+        res.status(400).send(`Webhook Error 2: ${err.message} Existing Result: ${countFix} Oggetto: ${resultFixWebhook} Request: ${req} \n Result: ${res} \n Signature: ${sig} Secret: ${webhookSecret} \n Event: ${event}`);
         return;
       }
 
