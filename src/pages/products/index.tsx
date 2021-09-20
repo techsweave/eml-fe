@@ -51,7 +51,7 @@ export default function productPage(prop) {
     type: 'GreaterThanOrEqualTo',
     subject: 'price',
     object: 0,
-  };;
+  };
 
   async function scanProducts(s) {
     if (router.query.filterMin) {
