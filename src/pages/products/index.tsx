@@ -95,6 +95,7 @@ export default function productPage(prop) {
       conditions: [
         minFilter,
         maxFilter,
+        searchFilter as ConditionExpression,
         categoryFilter,
       ],
     };
