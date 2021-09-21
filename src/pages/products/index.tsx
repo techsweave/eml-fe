@@ -47,7 +47,11 @@ export default function productPage(prop) {
     subject: 'price',
     object: 0,
   };
-  let searchFilter: Models.CustomConditionExpression;
+  let searchFilter: Models.CustomConditionExpression = {
+    type: 'GreaterThanOrEqualTo',
+    subject: 'price',
+    object: 0,
+  };
 
   async function scanProducts(s) {
     if (router.query.filterMin) {
@@ -95,6 +99,7 @@ export default function productPage(prop) {
       conditions: [
         minFilter,
         maxFilter,
+        searchFilter as ConditionExpression,
         categoryFilter,
       ],
     };
